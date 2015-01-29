@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Editar Padres y Tutores";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "";
 }
 
 
@@ -13,14 +13,8 @@
 <script src="~/Scripts/jquery.maskedinput.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-@using (Html.BeginForm("Edit", "Parent", FormMethod.Post, new { id = "Form"
-                                                                , @class = "form-horizontal"
-                                                                , @Style = "margin:0;"
-                                                                , enctype = "multipart/form-data" 
-                                                                , method = "post"
-                                                              }))
-{
-    @Html.ValidationSummary(true)
+@using (Html.BeginForm("Edit", "parent", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"}))
+{@Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Editar Padre o Tutor</legend>
@@ -31,25 +25,22 @@
             @Html.ValidationMessageFor(model => model.IdNumber)
             @Html.ValidationMessageFor(model => model.BirthDate)
             @Html.ValidationMessageFor(model => model.City)
+            @Html.ValidationMessageFor(model => model.FilePicture)
             @Html.ValidationMessageFor(model => model.FirstName)
             @Html.ValidationMessageFor(model => model.LastName)
-            @Html.ValidationMessageFor(model => model.StrGender)
+            @Html.ValidationMessageFor(model => model.Gender)
             @Html.ValidationMessageFor(model => model.Nationality)
             @Html.ValidationMessageFor(model => model.Country)
             @Html.ValidationMessageFor(model => model.State)
         </p>
-        
-        <div id="Photo">
-            @{
-                var imgSrc = "";
-                if (Model.Photo != null)
-                {
-                    var base64 = Convert.ToBase64String(Model.Photo);
-                    imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
-                }
-            }
-            <img height="150" width="150" src="@imgSrc" />
 
+        <div class="control-group">
+            <div class="control-label">
+                @Html.LabelFor(model => model.FilePicture)
+            </div>
+            <div class="controls">
+                <input type="file" name="FilePicture" id="FilePicture"/>
+            </div>
         </div>
 
         <div class="control-group">
@@ -108,10 +99,10 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.StrGender)
+                @Html.LabelFor(model => model.Gender)
             </div>
             <div class="controls">
-                @Html.DropDownListFor(model => model.StrGender, new List<SelectListItem> { new SelectListItem { Value = "Masculino", Text = "Masculino" }, new SelectListItem { Value = "Femenino", Text = "Femenino" } })
+                @Html.DropDownList("Gender", new List<SelectListItem> { new SelectListItem {Value="Masculino", Text="Masculino" }, new SelectListItem{Value="Femenino", Text="Femenino"}})
             </div>
         </div>
 
@@ -159,31 +150,20 @@
                 @Html.EditorFor(model => model.Country)
             </div>
         </div>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Photo)
-            </div>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.UpladPhoto, new { type = "file" })<br />
-                @Html.ValidationMessageFor(model => model.UpladPhoto)
-            </div>
-        </div>
 
         <div class="space"></div>
 
-        <div class="modal-footer"></div>
-        <p>
-            <a href="~/Parent/Index" data-dismiss="modal" class="btn btn-small">
+        <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
                 Cancel
-            </a>
+            </button>
 
-            <button type="submit" value="Save" class="btn btn-small btn-primary">
+            <button type="submit" class="btn btn-small btn-primary">
                 <i class="icon-ok"></i>
                 Actualizar
             </button>
-        </p>
+        </div>
     </fieldset>
 }
 

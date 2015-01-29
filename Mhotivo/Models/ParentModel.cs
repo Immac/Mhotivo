@@ -43,12 +43,10 @@ namespace Mhotivo.Models
         public string Address { get; set; }
 
         [Display(Name = "Foto Perfil")]
-        public byte[] Photo { get; set; }
+        public string UrlPicture { get; set; }
 
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
     }
 
     public class ParentEditModel
@@ -60,10 +58,9 @@ namespace Mhotivo.Models
         public string FullName { get; set; }
 
         [Display(Name = "Foto Perfil")]
-        public byte[] Photo { get; set; }
-        
-        [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladPhoto { get; set; }
+        public HttpPostedFileBase FilePicture { get; set; }
+
+        public string UrlPicture { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -104,9 +101,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
 
     }
 
@@ -116,8 +111,7 @@ namespace Mhotivo.Models
 
         [Required]
         [Display(Name = "Foto Perfil")]
-        [DataType(DataType.Upload)]
-        public byte[] FilePicture { get; set; }
+        public HttpPostedFileBase FilePicture { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -158,8 +152,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-
         public bool Gender { get; set; }
 
     }

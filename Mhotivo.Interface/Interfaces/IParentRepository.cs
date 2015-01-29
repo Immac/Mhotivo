@@ -21,6 +21,5 @@ namespace Mhotivo.Interface.Interfaces
         Parent GetParentDisplayModelById(long id);
         Parent UpdateParentFromParentEditModel(Parent parentEditModel, Parent parent);
         void SaveChanges();
-        bool ExistIdNumber(string idNumber);
     }
 }

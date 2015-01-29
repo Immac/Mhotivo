@@ -1,4 +1,4 @@
-﻿@model Mhotivo.Models.Group
+﻿@model Mhotivo.Data.Entities.Group
 
 @{
     ViewBag.Title = "Grupos";
@@ -17,11 +17,11 @@
     @Html.ValidationSummary(true)
 
     @Html.HiddenFor(model => model.Id)
-    
-        <p class="text-error">
-            @Html.ValidationMessageFor(model => model.Name)
-        </p>
-        
+
+    <p class="text-error">
+        @Html.ValidationMessageFor(model => model.Name)
+    </p>
+
     <div class="control-group">
         <div class="control-label">
             @Html.LabelFor(model => model.Name)
@@ -30,20 +30,18 @@
             @Html.EditorFor(model => model.Name)
         </div>
     </div>
-    
+
     <div class="control-group">
-            <div class="control-label">
-                Miembros
-            </div>
-            <div class="controls">
-                <input type="text" id="Members"/>
-            </div>
+        <div class="control-label">
+            Miembros
         </div>
-        
-        
-       
-        @Html.HiddenFor(model => model.Users)
-        <table>
+        <div class="controls">
+            <input type="text" id="Members" />
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.Users)
+    <table>
         @foreach (var item in Model.Users)
         {
             <tr>
@@ -54,24 +52,23 @@
                     @using (Html.BeginForm("DeleteUser", "Group", new { id = Html.DisplayFor(modelItem => item.Id), groupId = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                                     new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_"+Html.DisplayFor(model => model.Id), style = "display: none" })) { }
                     <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_@Html.DisplayFor(model => model.Id)_Message"
-                                       value="¿Realmente desea eliminar al usuario @Html.DisplayFor(modelItem => item.DisplayName) de este grupo?" />
+                           value="¿Realmente desea eliminar al usuario @Html.DisplayFor(modelItem => item.DisplayName) de este grupo?" />
                 </td>
             </tr>
         }
-        </table>
-        
-        <div class="space"></div>
+    </table>
 
-        <div class="modal-footer">
-            <div class="btn btn-small"><i class="icon-remove"></i>@Html.ActionLink("Cancel","Index","Group")</div>
-        
+    <div class="space"></div>
 
-            <button type="submit" class="btn btn-small btn-primary">
-                <i class="icon-ok"></i>
-                Crear
-            </button>
-        </div>
-    
+    <div class="modal-footer">
+        <div class="btn btn-small"><i class="icon-remove"></i>@Html.ActionLink("Cancel","Index","Group")</div>
+
+        <button type="submit" class="btn btn-small btn-primary">
+            <i class="icon-ok"></i>
+            Crear
+        </button>
+    </div>
+
 }
 
 <script type="text/javascript">
@@ -88,12 +85,11 @@
             }
         });
 
-
     });
 
     $("#Form_to_edit").submit(function (event) {
         $('#Users').val($('#Members').val());
-        alert("Handler for .submit() called. : <br/>" + $('#Users').val());
+        alert("Handler for .submit() called. : <br />" + $('#Users').val());
         //event.preventDefault();
     });
 

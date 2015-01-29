@@ -28,8 +28,8 @@ else
 			    <th>@Html.DisplayNameFor(model => model.StartDate)</th>
                 <th>@Html.DisplayNameFor(model => model.BloodType)</th>
                 <th>@Html.DisplayNameFor(model => model.AccountNumber)</th>
-			    <th>@Html.DisplayNameFor(model => model.Tutor1)</th>
-			    <th>@Html.DisplayNameFor(model => model.Tutor2)</th>
+			    <th>@Html.DisplayNameFor(model => model.FirstParent)</th>
+			    <th>@Html.DisplayNameFor(model => model.SecondParent)</th>
                 <th></th>
 		    </tr>
 	    </thead>
@@ -50,8 +50,8 @@ else
 			        <td  >@Html.DisplayFor(modelItem => item.StartDate)</td>
                     <td  >@Html.DisplayFor(modelItem => item.BloodType)</td>
                     <td  >@Html.DisplayFor(modelItem => item.AccountNumber)</td>
-			        <td  >@Html.DisplayFor(modelItem => item.Tutor1.FullName)</td>
-			        <td  >@Html.DisplayFor(modelItem => item.Tutor2.FullName)</td>
+			        <td  >@Html.DisplayFor(modelItem => item.FirstParent)</td>
+			        <td >@Html.DisplayFor(modelItem => item.SecondParent)</td>
                     <td>
                         <a data-id="Student/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Student/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>

@@ -61,10 +61,10 @@ namespace Mhotivo.Models
         public string Biography { get; set; }
 
         [Display(Name = "Tutor o Padre")]
-        public Parent Tutor1 { get; set; }
+        public string FirstParent { get; set; }
 
         [Display(Name = "Segundo Tutor o Madre")]
-        public Parent Tutor2 { get; set; }
+        public string SecondParent { get; set; }
     }
 
     public class StudentEditModel
@@ -119,7 +119,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         [Display(Name = "Fecha de Inicio")]
@@ -139,11 +139,11 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Padre o Tutor")]
         [Display(Name = "Padre o Tutor")]
-        public Parent Tutor1 { get; set; }
+        public Parent FirstParent { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Madre o Segundo Tutor")]
         [Display(Name = "Madre o Segundo Tutor")]
-        public Parent Tutor2 { get; set; }
+        public Parent SecondParent { get; set; }
     }
 
     public class StudentBenefactorEditModel
@@ -203,7 +203,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         [Display(Name = "Fecha de Inicio")]
@@ -223,10 +223,10 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Padre o Tutor")]
         [Display(Name = "Padre o Tutor")]
-        public long FirstParent { get; set; }
+        public Parent FirstParent { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Madre o Segundo Tutor")]
         [Display(Name = "Madre o Segundo Tutor")]
-        public long SecondParent { get; set; }
+        public Parent SecondParent { get; set; }
     }
 }

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Context;
+using Mhotivo.Implement.Repositories;
+using Mhotivo.Interface.Interfaces;
+
+//using Mhotivo.App_Data;
+using Mhotivo.Logic.ViewMessage;
+using Mhotivo.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-//using Mhotivo.App_Data;
-using Mhotivo.Logic.ViewMessage;
-using Mhotivo.Models;
-using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
-using Mhotivo.Implement.Context;
-using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Controllers
 {
@@ -59,8 +60,8 @@ namespace Mhotivo.Controllers
                                    Message = eventNotification.Message,
                                    Created = DateTime.Now
                                };
-                db.Notifications.Add(template);
-                db.SaveChanges();
+                //  db.Notifications.Add(template);
+                // db.SaveChanges();
                 const string title = "Notificación Agregado";
                 var content = "El evento " + eventNotification.EventName + " ha sido agregado exitosamente.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
@@ -94,28 +95,28 @@ namespace Mhotivo.Controllers
 
         //
         // POST: /Notification/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, Notification notification)
-        {
-            try
-            {
-                if (ModelState.IsValid)
+        /*
+                [HttpPost]
+                public ActionResult Edit(int id, Notification notification)
                 {
-                    db.Entry(notification).State = EntityState.Modified;
-                    db.SaveChanges();
-                    _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.", ViewMessageType.SuccessMessage);
+                    try
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            //   db.Entry(notification).State = EntityState.Modified;
+
+                            //db.SaveChanges();
+                            _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.", ViewMessageType.SuccessMessage);
+                        }
+                    }
+                    catch
+                    {
+                        _viewMessageLogic.SetNewMessage("Error en edición", "La notificación no pudo ser editada correctamente, por favor intente nuevamente.", ViewMessageType.ErrorMessage);
+                    }
+                    // IQueryable<Group> g = db.Groups.Select(x => x);
+                    return RedirectToAction("Index", g);
                 }
-            }
-            catch
-            {
-                _viewMessageLogic.SetNewMessage("Error en edición", "La notificación no pudo ser editada correctamente, por favor intente nuevamente.", ViewMessageType.ErrorMessage);
-            }
-            IQueryable<Group> g = db.Groups.Select(x => x);
-            return RedirectToAction("Index", g);
-        }
-
-
+                */
         //
         // POST: /Notification/Delete/5
 
@@ -125,8 +126,8 @@ namespace Mhotivo.Controllers
             try
             {
                 Notification toDelete = db.Notifications.FirstOrDefault(x => x.Id.Equals(id));
-                db.Notifications.Remove(toDelete);
-                db.SaveChanges();
+                //  db.Notifications.Remove(toDelete);
+                // db.SaveChanges();
                 IQueryable<long> notifications = db.Notifications.Select(x => x.Id);
                 return RedirectToAction("Index", notifications);
             }

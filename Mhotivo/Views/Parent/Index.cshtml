@@ -9,7 +9,7 @@
 
 <h2>Padres Registrados</h2>
 
-<a class="toAdd" data-toggle="modal" role="button" data-id="Parent/Create"><span class="btn btn-small btn-primary active">Agregar Padres y Tutores</span></a>
+<a class="toAdd" data-toggle="modal" role="button" data-id="Parent/Add" ><span class="btn btn-small btn-primary active">Agregar Padres y Tutores</span></a>
 
 @if(!Model.Any())
 {
@@ -23,7 +23,7 @@ else
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
 	    <thead>
 		    <tr>
-				<th>@Html.DisplayNameFor(model => model.Photo)</th>
+				<th>@Html.DisplayNameFor(model => model.UrlPicture)</th>
 				<th>@Html.DisplayNameFor(model => model.FullName)</th>
 				<th>@Html.DisplayNameFor(model => model.IdNumber)</th>
 				<th>@Html.DisplayNameFor(model => model.Address)</th>
@@ -38,20 +38,11 @@ else
             @foreach (var item in Model) {
                 <tr>
                     <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
-                            <div id="Photo">
-                                @Html.ValidationSummary(true)
-                                @{
-                                    var imgSrc = "";
-                                    if (item.Photo != null)
-                                    {
-                                        var base64 = Convert.ToBase64String(item.Photo);
-                                        imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
-                                    }
-                                 }
-                                <img alt="150x150" height="150" width="150" src="@imgSrc" />
-                            </div>
-                            <div class="text">
+                        <a href="~/@Html.DisplayNameFor(model => model.UrlPicture)" data-rel="colorbox">
+							<img alt="150x150" src="~/@Html.DisplayNameFor(model => model.UrlPicture)" />
+							<div class="text">
 							</div>
+						</a>
                     </td>
 				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.FullName)</td>
 				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.IdNumber)</td>
@@ -60,7 +51,7 @@ else
 				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.State)</td>
 				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Country)</td>
                     <td>
-                        <a href="~/Parent/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Parent/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Parent", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }

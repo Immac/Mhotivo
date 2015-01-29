@@ -9,6 +9,7 @@ namespace Mhotivo.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+
         public string IdNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,9 +21,7 @@ namespace Mhotivo.Data.Entities
         public string Country { get; set; }
         public string Address { get; set; }
         public string UrlPicture { get; set; }
-        public byte[] Photo { get; set; }
         public bool Gender { get; set; }
-        public bool Disable { get; set; }
 
         public virtual ICollection<ContactInformation> Contacts { get; set; }
     }

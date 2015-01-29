@@ -1,5 +1,4 @@
-﻿@using System.Web.Mvc.Html
-@using Microsoft.Ajax.Utilities
+﻿@using Microsoft.Ajax.Utilities
 @using Microsoft.SqlServer.Server
 @model Mhotivo.Models.StudentRegisterModel
 
@@ -99,7 +98,7 @@
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
 
-        @Html.DropDownListFor(model => model.Gender, new SelectList (new [] {"Masculino","Femenino"},new []{true, false}) )
+        @Html.DropDownListFor(model => model.Gender, new SelectList (new [] {"Masculino","Femenino"}) )
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Gender)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.Gender)</p>
 
@@ -137,12 +136,12 @@
     <br style="clear: left;" />
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.FirstParent, new SelectList(ViewBag.Tutor1Id, "Value", "Text"),"  -- Padre o Tutor --")
+        @Html.DropDownList("Tutor1Id", "--Padre o Tutor--")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.FirstParent)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.FirstParent)</p>
     </div>
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.SecondParent, new SelectList(ViewBag.Tutor1Id, "Value", "Text"), "  -- Madre o Tutor --")
+        @Html.DropDownList("Tutor2Id", "--Padre o Tutor--")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.SecondParent)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.SecondParent)</p>
     </div>

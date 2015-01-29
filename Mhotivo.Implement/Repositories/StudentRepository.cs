@@ -88,11 +88,14 @@ namespace Mhotivo.Implement.Repositories
                 City = x.City,
                 State = x.State,
                 Country = x.Country,
+                //Gender = Utilities.GenderToString(x.Gender),
                 Gender = x.Gender,
                 StartDate = x.StartDate,
                 BloodType = x.BloodType,
                 AccountNumber = x.AccountNumber,
                 Biography = x.Biography,
+                //FirstParent = x.Tutor1 == null ? null : x.Tutor1.FullName,
+                //SecondParent = x.Tutor2 == null ? null : x.Tutor2.FullName
                 Tutor1 = x.Tutor1,
                 Tutor2 = x.Tutor2
             });
@@ -115,12 +118,15 @@ namespace Mhotivo.Implement.Repositories
                 City = student.City,
                 State = student.State,
                 Country = student.Country,
+                //Gender = Utilities.GenderToString(student.Gender),
                 Gender = student.Gender,
                 Contacts = student.Contacts,
                 StartDate = student.StartDate,
                 BloodType = student.BloodType,
                 AccountNumber = student.AccountNumber,
                 Biography = student.Biography,
+                //FirstParent = student.Tutor1 == null ? null : student.Tutor1.FullName,
+                //SecondParent = student.Tutor2 == null ? null : student.Tutor2.FullName
                 Tutor1 = student.Tutor1,
                 Tutor2 = student.Tutor2
             };
@@ -134,6 +140,7 @@ namespace Mhotivo.Implement.Repositories
             student.Country = studentEditModel.Country;
             student.IdNumber = studentEditModel.IdNumber;
             student.BirthDate = studentEditModel.BirthDate;
+            //student.Gender = Utilities.IsMasculino(studentEditModel.Gender);
             student.Gender = studentEditModel.Gender;
             student.Nationality = studentEditModel.Nationality;
             student.State = studentEditModel.State;
@@ -143,6 +150,8 @@ namespace Mhotivo.Implement.Repositories
             student.StartDate = studentEditModel.StartDate;
             student.BloodType = studentEditModel.BloodType;
             student.AccountNumber = studentEditModel.AccountNumber;
+            //student.Tutor1 = studentEditModel.FirstParent;
+            //student.Tutor2 = studentEditModel.SecondParent;
             student.Tutor1 = studentEditModel.Tutor1;
             student.Tutor2 = studentEditModel.Tutor2;
             return Update(student);
@@ -158,6 +167,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (studentRegisterModel.FirstName + " " + studentRegisterModel.LastName).Trim(),
                 IdNumber = studentRegisterModel.IdNumber,
                 BirthDate = studentRegisterModel.BirthDate,
+                //Gender = Utilities.IsMasculino(studentRegisterModel.Gender),
                 Gender = studentRegisterModel.Gender,
                 Nationality = studentRegisterModel.Nationality,
                 State = studentRegisterModel.State,
@@ -168,6 +178,8 @@ namespace Mhotivo.Implement.Repositories
                 StartDate = studentRegisterModel.StartDate,
                 BloodType = studentRegisterModel.BloodType,
                 AccountNumber = studentRegisterModel.AccountNumber,
+                //Tutor1 = studentRegisterModel.FirstParent,
+                //Tutor2 = studentRegisterModel.SecondParent,
                 Tutor1 = studentRegisterModel.Tutor1,
                 Tutor2 = studentRegisterModel.Tutor2,
             };
@@ -184,6 +196,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (student.FirstName + " " + student.LastName).Trim(),
                 IdNumber = student.IdNumber,
                 BirthDate = student.BirthDate,
+                //Gender = Utilities.GenderToString(student.Gender),
                 Gender = student.Gender,
                 Nationality = student.Nationality,
                 Country = student.Country,
@@ -195,6 +208,8 @@ namespace Mhotivo.Implement.Repositories
                 Biography = student.Biography,
                 AccountNumber = student.AccountNumber,
                 BloodType = student.BloodType,
+                //FirstParent = student.Tutor1,
+                //SecondParent = student.Tutor2
                 Tutor1 = student.Tutor1,
                 Tutor2 = student.Tutor2
             };

@@ -173,6 +173,8 @@
     <Compile Include="Controllers\SendNotifications.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Encryption\IEncryption.cs" />
+    <Compile Include="Encryption\MD5CryptoService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -189,10 +191,6 @@
     <Compile Include="Migrations\201411210122159_RenameBD.Designer.cs">
       <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201412151627072_RenameActived.cs" />
-    <Compile Include="Migrations\201412151627072_RenameActived.Designer.cs">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AreaModel.cs" />
@@ -203,6 +201,7 @@
     <Compile Include="Models\EnrollModel.cs" />
     <Compile Include="Models\EventCreateModel.cs" />
     <Compile Include="Models\GradeModel.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\MeisterModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
@@ -535,9 +534,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411210122159_RenameBD.resx">
       <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412151627072_RenameActived.resx">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
