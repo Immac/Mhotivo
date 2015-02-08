@@ -36,7 +36,7 @@ namespace Mhotivo.Controllers
             //                   Elements =
             //                       _academicYearRepository.Filter(x => x.IsActive)
             //                       .ToList()
-            //                       .Select(x => new AcademicYearViewData
+            //                       .Select(x => new AcademicYearEditModel
             //                                    {
             //                                        Approved = x.Approved ? "Active" : "Inactive",
             //                                        Course = x.Course.Name,
