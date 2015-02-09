@@ -5,9 +5,5 @@ namespace Mhotivo.Data.Entities
 {
     public class Parent : People
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
-        public string JustARandomColumn { get; set; }
     }
 }
