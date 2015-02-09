@@ -11,7 +11,8 @@ namespace Mhotivo.Interface.Interfaces
     public interface IImportDataRepository
     {
         void Import(DataSet oDataSet);
-        bool ExistAcademicYear(int year, Grade grade, char section);
+        bool ExistAcademicYear(int year, long grade, string section);
 
+        DataSet GetDataSetFromExcelFile(byte[] fileBytes);
     }
 }
