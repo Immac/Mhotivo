@@ -32,6 +32,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             var allStudents = _studentRepository.GetAllStudents();
 
+
             Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
             var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
 
