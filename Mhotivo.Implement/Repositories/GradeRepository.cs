@@ -1,11 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -28,13 +26,14 @@ namespace Mhotivo.Implement.Repositories
 
         public Grade GetById(long id)
         {
-
             return _context.Grades.FirstOrDefault(x => x.Id == id);
         }
 
         public Grade Create(Grade itemToCreate)
         {
-            return _context.Grades.Add(itemToCreate);
+            var grade = _context.Grades.Add(itemToCreate);
+            _context.SaveChanges();
+            return grade;
         }
 
         public IQueryable<Grade> Query(Expression<Func<Grade, Grade>> expression)
@@ -50,6 +49,7 @@ namespace Mhotivo.Implement.Repositories
         public Grade Update(Grade itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
+            _context.SaveChanges();
             return itemToUpdate;
         }
 
@@ -61,6 +61,65 @@ namespace Mhotivo.Implement.Repositories
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Grade> GetAllGrade()
+        {
+            return
+                Query(g => g).ToList().Select(g => new Grade
+                    {
+                        Id = g.Id, 
+                        Name = g.Name, 
+                        EducationLevel = g.EducationLevel
+                    });
+        }
+
+        public Grade GetGradeDisplayModelById(long id)
+        {
+            var grade = GetById(id);
+            return new Grade
+            {
+                Id = grade.Id,
+                Name = grade.Name,
+                EducationLevel = grade.EducationLevel
+            };
+        }
+
+        public Grade GetGradeEditModelById(long id)
+        {
+            var grade = GetById(id);
+
+            return new Grade
+            {
+                Id = grade.Id,
+                Name = grade.Name,
+                EducationLevel = grade.EducationLevel
+            };
+        }
+
+        public Grade UpdateGradeFromGradeEditModel(Grade gradeEditModel, Grade grade)
+        {
+            grade.Name = gradeEditModel.Name;
+            grade.EducationLevel = gradeEditModel.EducationLevel;
+
+            return Update(grade);
+        }
+
+        public Grade GenerateGradeFromRegisterModel(Grade gradeRegisterModel)
+        {
+            return new Grade
+            {
+                Name = gradeRegisterModel.Name,
+                EducationLevel = gradeRegisterModel.EducationLevel
+            };
+        }
+
+        public Grade Delete(long id)
+        {
+            var itemToDelete = GetById(id);
+            _context.Grades.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
     }
 }

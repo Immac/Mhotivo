@@ -1,189 +1,88 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
+using AutoMapper;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using AutoMapper;
 
 namespace Mhotivo.Controllers
 {
     public class GradeController : Controller
     {
+        #region private members
         private readonly IGradeRepository _gradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public GradeController(IGradeRepository gradeRepository)
         {
+            if (gradeRepository == null) throw new ArgumentNullException("gradeRepository");
+
             _gradeRepository = gradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
+        #endregion
 
-        //
-        // GET: /Grade/
+        #region public methods
 
+        /// <summary>
+        /// GET: /Grade/
+        /// </summary>
+        /// <returns />
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            IEnumerable<DisplayGradeModel> displayGradeModels =
-                _gradeRepository.Query(x => x).ToList().Select(x => new DisplayGradeModel
-                                                                    {
-                                                                        Id = x.Id,
-                                                                        Name = x.Name,
-                                                                        EducationLevel = x.EducationLevel
-                                                                    });
+            var grades = _gradeRepository.GetAllGrade();
+
+            Mapper.CreateMap<DisplayGradeModel, Grade>().ReverseMap();
+            var displayGradeModels = grades.Select(Mapper.Map<Grade, DisplayGradeModel>).ToList();
 
             return View(displayGradeModels);
         }
 
-        //
-        // GET: /Grade/Details/5
-
-        public ActionResult Details(long id)
-        {
-            Grade thisgrade = _gradeRepository.GetById(id);
-            var grade = new DisplayGradeModel
-                        {
-                            Id = thisgrade.Id,
-                            Name = thisgrade.Name,
-                            EducationLevel = thisgrade.EducationLevel
-                        };
-
-            return View("Details", grade);
-        }
-
+        /// <summary>
+        /// GET: /Grade/Add
+        /// </summary>
+        /// <returns />
         [HttpGet]
-        public ActionResult DetailsEdit(long id)
-        {
-            Grade thisGrade = _gradeRepository.GetById(id);
-            var grade = new GradeEditModel
-                        {
-                            Id = thisGrade.Id,
-                            Name = thisGrade.Name,
-                            EducationLevel = thisGrade.EducationLevel
-                        };
-            return View("DetailsEdit", grade);
-        }
-
-        [HttpPost]
-        public ActionResult DetailsEdit(GradeEditModel modelGrade)
-        {
-            Grade myGrade = _gradeRepository.GetById(modelGrade.Id);
-            myGrade.Name = modelGrade.Name;
-            myGrade.EducationLevel = modelGrade.EducationLevel;
-
-            Grade grade = _gradeRepository.Update(myGrade);
-            _gradeRepository.SaveChanges();
-            const string title = "Padre o Tutor Actualizado";
-            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
-            return RedirectToAction("Details/" + modelGrade.Id);
-        }
-
-        //
-        // GET: /Grade/Add
-
         public ActionResult Add()
         {
             return View("Create");
         }
 
-        //
-        // POST: /Grade/Add
-
+        /// <summary>
+        /// POST: /Grade/Add
+        /// </summary>
+        /// <param name="modelGrade" />
+        /// <returns />
         [HttpPost]
         public ActionResult Add(GradeRegisterModel modelGrade)
         {
-            var myGrade = new Grade
-                          {
-                              Name = modelGrade.Name,
-                              EducationLevel = modelGrade.EducationLevel
-                          };
+            Mapper.CreateMap<Grade, GradeRegisterModel>().ReverseMap();
 
-            if (IsNameAvailble(modelGrade.Name))
-            {
-                Grade grade = _gradeRepository.Create(myGrade);
-                _gradeRepository.SaveChanges();
-                const string title = "Alumno Agregado al Grado";
-                var content = "El Alumno " + myGrade.Name + " ha sido agregado exitosamente.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            }
-            else
-            {
-                const string title = "Error";
-                var content = "El Alumno " + myGrade.Name + " no fue agregado.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
-            }
-            
+            var gradeModel = Mapper.Map<GradeRegisterModel, Grade>(modelGrade);
 
-            
+            var myGrade = _gradeRepository.GenerateGradeFromRegisterModel(gradeModel);
+            var grade = _gradeRepository.Create(myGrade);
+            const string title = "Alumno Agregado al Grado";
+            var content = "El Alumno " + grade.Name + " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
             return RedirectToAction("Index");
         }
 
-        public bool IsNameAvailble(string name)
-        {
-            var tag = _gradeRepository.First(g => g.Name.CompareTo(name) == 0);
-            if (tag == null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        //
-        // GET: /Grade/Edit/5
-
-        public ActionResult Edit(int id)
-        {
-            Grade thisGrade = _gradeRepository.GetById(id);
-            var grade = new GradeEditModel
-                        {
-                            Id = thisGrade.Id,
-                            Name = thisGrade.Name,
-                            EducationLevel = thisGrade.EducationLevel
-                        };
-
-            return View("Edit", grade);
-        }
-
-        //
-        // POST: /Grade/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(GradeEditModel modelGrade)
-        {
-            Grade myGrade = _gradeRepository.GetById(modelGrade.Id);
-
-            myGrade.Name = modelGrade.Name;
-            myGrade.EducationLevel = modelGrade.EducationLevel;
-
-            Grade grade = _gradeRepository.Update(myGrade);
-            _gradeRepository.SaveChanges();
-
-            const string title = "Grado Actualizado";
-            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
-            return RedirectToAction("Index");
-        }
-
-
-        //
-        // POST: /Grade/Delete/5
-
+        /// <summary>
+        /// POST: /Grade/Delete/5
+        /// </summary>
+        /// <param name="id" />
+        /// <returns />
         [HttpPost]
         public ActionResult Delete(long id)
         {
-            Grade grade = _gradeRepository.GetById(id);
-            _gradeRepository.Delete(grade);
-            _gradeRepository.SaveChanges();
+            var grade = _gradeRepository.Delete(id);
 
             const string title = "Alumno ha sido Eliminado del Grado";
             var content = "El Alumno " + grade.Name + " ha sido eliminado exitosamente.";
@@ -192,15 +91,84 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// GET: /Grade/Details/5
+        /// </summary>
+        /// <param name="id" />
+        /// <returns />
         [HttpGet]
-        public ActionResult ContactAdd(long id)
+        public ActionResult Details(long id)
         {
-            var model = new ContactInformationRegisterModel
-                        {
-                            Id = (int) id,
-                            Controller = "Parent"
-                        };
-            return View("ContactAdd", model);
+            var thisgrade = _gradeRepository.GetGradeDisplayModelById(id);
+            Mapper.CreateMap<DisplayGradeModel, Grade>().ReverseMap();
+
+            var grade = Mapper.Map<Grade, DisplayGradeModel>(thisgrade);
+
+            return View("Details", grade);
         }
+
+        [HttpGet]
+        public ActionResult DetailsEdit(long id)
+        {
+            var grade = _gradeRepository.GetGradeEditModelById(id);
+            Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();
+            var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
+
+            return View("DetailsEdit", gradeModel);
+        }
+
+        [HttpPost]
+        public ActionResult DetailsEdit(GradeEditModel modelGrade)
+        {
+            var myGrade = _gradeRepository.GetById(modelGrade.Id);
+            Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();
+            var gradeModel = Mapper.Map<GradeEditModel, Grade>(modelGrade);
+
+            _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
+
+            const string title = "Padre o Tutor Actualizado";
+            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+
+            return RedirectToAction("Details/" + modelGrade.Id);
+        }
+
+        /// <summary>
+        /// GET: /Grade/Edit/5
+        /// </summary>
+        /// <param name="id" />
+        /// <returns />
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var grade = _gradeRepository.GetGradeEditModelById(id);
+            Mapper.CreateMap<GradeEditModel, Grade>().ReverseMap();
+            var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
+
+            return View("Edit", gradeModel);
+        }
+
+        /// <summary>
+        ///  POST: /Grade/Edit/5
+        /// </summary>
+        /// <param name="modelGrade" />
+        /// <returns />
+        [HttpPost]
+        public ActionResult Edit(GradeEditModel modelGrade)
+        {
+            var myGrade = _gradeRepository.GetById(modelGrade.Id);
+            Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();
+
+            var gradeModel = Mapper.Map<GradeEditModel, Grade>(modelGrade);
+            _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
+
+            const string title = "Grado Actualizado";
+            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion
     }
 }

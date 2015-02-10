@@ -1,11 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.ComponentModel;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -24,6 +22,54 @@ namespace Mhotivo.Implement.Repositories
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Course> GetAllCourse()
+        {
+            return Query(c => c).ToList().Select(c => new Course
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Area = c.Area
+            });
+        }
+
+        public Course GenerateCourseFromRegisterModel(Course courseRegisterModel)
+        {
+            return new Course
+            {
+                Id = courseRegisterModel.Id,
+                Name = courseRegisterModel.Name,
+                Area = courseRegisterModel.Area
+            };
+        }
+
+        public Course GetCourseEditModelById(int id)
+        {
+            var course = GetById(id);
+            return new Course
+            {
+                Id = course.Id,
+                Name = course.Name,
+                Area = course.Area
+            };
+        }
+
+        public Course UpdateCourseFromCourseEditModel(Course courseEditModel, Course course)
+        {
+            course.Id = courseEditModel.Id;
+            course.Name = courseEditModel.Name;
+            course.Area = courseEditModel.Area;
+
+            return Update(course);
+        }
+
+        public Course Delete(int id)
+        {
+            var itemToDelete = GetById(id);
+            _context.Courses.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
 
         public Course First(Expression<Func<Course, Course>> query)

@@ -1,15 +1,41 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mhotivo.Models
 {
-    public class Course /* TODO: This should have a separate model */
+    public class DisplayCourseModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Display(Name = "Nombre")]
         public string Name { get; set; }
+
+        [Display(Name = "Area")]
+        public virtual Area Area { get; set; }
+
+    }
+
+    public class CourseEditModel
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Nombre")]
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Area")]
+        [Display(Name = "Area")]
         public virtual Area Area { get; set; }
     }
+
+    public class CourseRegisterModel
+    {
+        [Required(ErrorMessage = "Debe Ingresar Nombre")]
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Area")]
+        [Display(Name = "Area")]
+        public virtual Area Area { get; set; }
+    }
+
 }

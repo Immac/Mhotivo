@@ -1,91 +1,110 @@
-﻿using System.Data.Entity;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
+using AutoMapper;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using AutoMapper;
+
 
 namespace Mhotivo.Controllers
 {
     public class CourseController : Controller
     {
+        #region private members
+
         private readonly ICourseRepository _courseRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public CourseController(ICourseRepository courseRepository)
         {
+            if (courseRepository == null) throw new ArgumentNullException("courseRepository");
+
             _courseRepository = courseRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        //
-        // GET: /Course/
+        #endregion
 
+        #region public methods
+
+        /// <summary>
+        /// GET: /Course/
+        /// </summary>
+        /// <returns />
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            IQueryable<Course> v = _courseRepository.Query(x => x).Include("Area");
 
-            return View(v);
+            var listCourses = _courseRepository.GetAllCourse();
+
+            var listCoursesModel = listCourses.Select(Mapper.Map<DisplayCourseModel>);
+
+            return View(listCoursesModel);
         }
 
-        //
-        // GET: /Course/Create
-
+        /// <summary>
+        /// GET: /Course/Create
+        /// </summary>
+        /// <returns />
+        [HttpGet]
         public ActionResult Add()
         {
-            return View();
+            return View("Add");
         }
 
-        //
-        // POST: /Course/Create
-
+        /// <summary>
+        /// POST: /Course/Create
+        /// </summary>
+        /// <param name="group" />
+        /// <returns />
         [HttpPost]
-        public ActionResult Add(Course group)
+        public ActionResult Add(CourseRegisterModel group)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _courseRepository.Create(group);
-                    _courseRepository.SaveChanges();
-                    _viewMessageLogic.SetNewMessage("Agregado", "El grupo fue agregado exitosamente.", ViewMessageType.SuccessMessage);
-                }
-                else
-                {
-                    _viewMessageLogic.SetNewMessage("Validación de Información", "La información no es válida.", ViewMessageType.InformationMessage);
-                }
-            }
-            catch
-            {
-                _viewMessageLogic.SetNewMessage("Error", "Algo salió mal, por favor intente de nuevo.", ViewMessageType.ErrorMessage);
-            }
-            IQueryable<Course> groups = _courseRepository.Query(x => x);
-            return RedirectToAction("Index", groups);
+            Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
+
+            var courseModel = Mapper.Map<CourseRegisterModel, Course>(group);
+            var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
+
+            var course = _courseRepository.Create(myCourse);
+            const string title = "Curso Agregado";
+            var content = "El curso " + myCourse.Name + " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            
+            return RedirectToAction("Index");
         }
 
-        //
-        // GET: /Course/Edit/5
-
+        /// <summary>
+        /// GET: /Course/Edit/5
+        /// </summary>
+        /// <param name="id" />
+        /// <returns />
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            Course c = _courseRepository.GetById(id);
+            var course = _courseRepository.GetCourseEditModelById(id);
+            Mapper.CreateMap<CourseEditModel, Course>().ReverseMap();
 
-            return View(c);
+            var courseModel = Mapper.Map<Course, CourseEditModel>(course);
+
+            return View("Edit", courseModel);
         }
 
-        //
-        // POST: /Course/Edit/5
-
+        /// <summary>
+        /// POST: /Course/Edit/5
+        /// </summary>
+        /// <param name="modelCourse" />
+        /// <returns />
         [HttpPost]
-        public ActionResult Edit(Course course)
+        public ActionResult Edit(CourseEditModel modelCourse)
         {
-            Course role = _courseRepository.Update(course);
+            var role = _courseRepository.GetById(modelCourse.Id);
+
+            Mapper.CreateMap<Course, CourseEditModel>().ReverseMap();
+            var courseModel = Mapper.Map<CourseEditModel, Course>(modelCourse);
+            _courseRepository.UpdateCourseFromCourseEditModel(courseModel, role);
+
             const string title = "Curso Actualizado";
             var content = "El curso " + role.Name + " ha sido modificado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
@@ -93,27 +112,6 @@ namespace Mhotivo.Controllers
 
             return RedirectToAction("Index");
         }
-
-        //
-        // POST: /Course/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                Course group = _courseRepository.GetById(id);
-                _courseRepository.Delete(group);
-                _courseRepository.SaveChanges();
-                _viewMessageLogic.SetNewMessage("Eliminado", "Eliminado exitosamente.", ViewMessageType.SuccessMessage);
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                _viewMessageLogic.SetNewMessage("Error en eliminación", "El grupo no pudo ser eliminado correctamente, por favor intente nuevamente.", ViewMessageType.ErrorMessage);
-                return View("Index");
-            }
-        }
+        #endregion
     }
 }

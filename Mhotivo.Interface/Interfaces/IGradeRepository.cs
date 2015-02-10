@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Data.Entities;
@@ -15,5 +16,11 @@ namespace Mhotivo.Interface.Interfaces
         Grade Update(Grade itemToUpdate);
         void Delete(Grade itemToDelete);
         void SaveChanges();
+        IEnumerable<Grade> GetAllGrade();
+        Grade GetGradeDisplayModelById(long id);
+        Grade GetGradeEditModelById(long id);
+        Grade UpdateGradeFromGradeEditModel(Grade gradeEditModel, Grade grade);
+        Grade GenerateGradeFromRegisterModel(Grade gradeRegisterModel);
+        Grade Delete(long id);
     }
 }
