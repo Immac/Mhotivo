@@ -6,8 +6,7 @@ namespace Mhotivo.Data.Entities
 {
     public class Benefactor : People
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public int Capacity { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }

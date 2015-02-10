@@ -48,11 +48,11 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -185,46 +185,6 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201406232303419__initial.cs" />
-    <Compile Include="Migrations\201406232303419__initial.Designer.cs">
-      <DependentUpon>201406232303419__initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201411210122159_RenameBD.cs" />
-    <Compile Include="Migrations\201411210122159_RenameBD.Designer.cs">
-      <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412032215213_Allen.cs" />
-    <Compile Include="Migrations\201412032215213_Allen.Designer.cs">
-      <DependentUpon>201412032215213_Allen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412151627072_RenameActived.cs" />
-    <Compile Include="Migrations\201412151627072_RenameActived.Designer.cs">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502030229588_Test.cs" />
-    <Compile Include="Migrations\201502030229588_Test.Designer.cs">
-      <DependentUpon>201502030229588_Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502080634374_InitialMigrations.cs" />
-    <Compile Include="Migrations\201502080634374_InitialMigrations.Designer.cs">
-      <DependentUpon>201502080634374_InitialMigrations.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502080638116_InitialMigrations1.cs" />
-    <Compile Include="Migrations\201502080638116_InitialMigrations1.Designer.cs">
-      <DependentUpon>201502080638116_InitialMigrations1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502082050400_InitialMigrations2.cs" />
-    <Compile Include="Migrations\201502082050400_InitialMigrations2.Designer.cs">
-      <DependentUpon>201502082050400_InitialMigrations2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502082200568_InitialMigrations3.cs" />
-    <Compile Include="Migrations\201502082200568_InitialMigrations3.Designer.cs">
-      <DependentUpon>201502082200568_InitialMigrations3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502082209303_InitialMigrations4.cs" />
-    <Compile Include="Migrations\201502082209303_InitialMigrations4.Designer.cs">
-      <DependentUpon>201502082209303_InitialMigrations4.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -548,6 +508,7 @@
     <Content Include="Views\Event\PrincipalIndex.cshtml" />
     <Content Include="Views\Event\Agenda.cshtml" />
     <Content Include="Views\Homework\Index.cshtml" />
+    <Content Include="Views\Homework\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -568,40 +529,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201406232303419__initial.resx">
-      <DependentUpon>201406232303419__initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201411210122159_RenameBD.resx">
-      <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412032215213_Allen.resx">
-      <DependentUpon>201412032215213_Allen.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412151627072_RenameActived.resx">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502030229588_Test.resx">
-      <DependentUpon>201502030229588_Test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502080634374_InitialMigrations.resx">
-      <DependentUpon>201502080634374_InitialMigrations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502080638116_InitialMigrations1.resx">
-      <DependentUpon>201502080638116_InitialMigrations1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502082050400_InitialMigrations2.resx">
-      <DependentUpon>201502082050400_InitialMigrations2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502082200568_InitialMigrations3.resx">
-      <DependentUpon>201502082200568_InitialMigrations3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502082209303_InitialMigrations4.resx">
-      <DependentUpon>201502082209303_InitialMigrations4.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

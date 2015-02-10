@@ -10,7 +10,7 @@ using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
-    class HomeworkRepository:IHomeworkRepository
+    public class HomeworkRepository:IHomeworkRepository
     {
         private readonly MhotivoContext _context;
 

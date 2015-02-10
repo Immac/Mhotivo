@@ -13,6 +13,7 @@ namespace Mhotivo.Controllers
 {
     public class HomeworkController : Controller
     {
+        private readonly ICourseRepository _courseRepository;
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
@@ -49,25 +50,29 @@ namespace Mhotivo.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Id = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
+            var modelRegister = new DisplayHomeworkModel();
+            return View(modelRegister);
         }
 
-        //
-        // POST: /Homework/Create
-
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(DisplayHomeworkModel modelHomework)
         {
-            try
-            {
-                // TODO: Add insert logic here
+           
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            Mapper.CreateMap<Parent, ParentRegisterModel>().ReverseMap();
+            Homework parentModel = Mapper.Map<DisplayHomeworkModel, Homework>(modelHomework);
+
+            Homework myHomework = _homeworkRepository.GenerateHomeworkFromRegisterModel(parentModel);
+
+            
+
+            Homework parent = _homeworkRepository.Create(myHomework);
+            const string title = "Tarea agregada";
+            string content = "La tarea " + myHomework.Title + " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+
+            return RedirectToAction("Index");
         }
 
         //
