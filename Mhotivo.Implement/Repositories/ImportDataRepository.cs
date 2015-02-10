@@ -25,7 +25,61 @@ namespace Mhotivo.Implement.Repositories
 
         public void Import(DataSet oDataSet)
         {
-            throw new NotImplementedException();
+            if(oDataSet.Tables.Count == 0)
+                return;
+
+            if(oDataSet.Tables[0].Rows.Count <= 15)
+                return;
+
+            var dtDatos = oDataSet.Tables[0];
+
+            var listStudents = new List<Student>();
+            var listParents = new List<Parent>();
+            for (var indice = 15; indice < dtDatos.Rows.Count; indice++)
+            {
+                if(dtDatos.Rows[indice][2].ToString().Trim().Length == 0)
+                    continue;
+
+                var newStudents = new Student
+                {
+                    IdNumber = dtDatos.Rows[indice][2].ToString()
+                    ,LastName = (dtDatos.Rows[indice][3].ToString() + " " + dtDatos.Rows[indice][4].ToString()).Trim()
+                    ,FirstName = dtDatos.Rows[indice][6].ToString()
+                    ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][8].ToString())
+                    ,BirthDate = Utilities.ConvertStringToDateTime(dtDatos.Rows[indice][9].ToString()).ToShortDateString()
+                    ,Nationality = dtDatos.Rows[indice][13].ToString()
+                    ,State = dtDatos.Rows[indice][15].ToString()
+                };
+
+                var newParent = new Parent
+                {
+                    Nationality = dtDatos.Rows[indice][16].ToString()
+                    ,IdNumber = dtDatos.Rows[indice][18].ToString()
+                    ,LastName = (dtDatos.Rows[indice][19].ToString() + " " + dtDatos.Rows[indice][20].ToString()).Trim()
+                    ,FirstName = dtDatos.Rows[indice][21].ToString()
+                    ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][22].ToString())
+                    ,BirthDate = Utilities.ConvertStringToDateTime(dtDatos.Rows[indice][24].ToString()).ToShortDateString()
+                    ,State = dtDatos.Rows[indice][25].ToString()
+                    ,City = dtDatos.Rows[indice][26].ToString()
+                };
+
+                var newContactInformation = new ContactInformation
+                {
+                    Type = "Telefono"
+                    ,Value = dtDatos.Rows[indice][27].ToString()
+                    ,People = newParent
+                };
+
+                var listContacts = new List<ContactInformation> {newContactInformation};
+
+                newParent.Contacts = listContacts;
+                newStudents.Tutor1 = newParent;
+                
+                listStudents.Add(newStudents);
+                listParents.Add(newParent);
+            }
+
+            SaveData(listStudents, listParents);
         }
 
         public bool ExistAcademicYear(int year, long grade, string section)
@@ -62,5 +116,12 @@ namespace Mhotivo.Implement.Repositories
 
             return oSet;
         }
+
+
+        private void SaveData(List<Student> listStudents, List<Parent> listParents)
+        {
+            //CODIGO KEHIMER
+        }
+
     }
 }
