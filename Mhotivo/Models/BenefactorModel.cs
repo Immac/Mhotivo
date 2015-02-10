@@ -1,4 +1,5 @@
 ﻿using Mhotivo.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
@@ -130,7 +131,7 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar Capacidad")]
         [Range(0, int.MaxValue, ErrorMessage = "La Capacidad debe ser un número entero.")]
         [Display(Name = "Capacidad")]
-        public int Capacity { get; set; }
+        public string Capacity { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -171,8 +172,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public bool Gender { get; set; }
-
-        public string StrGender { get; set; }
+        public string Gender { get; set; }
     }
 }

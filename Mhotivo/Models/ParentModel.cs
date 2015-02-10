@@ -1,4 +1,5 @@
 ﻿using Mhotivo.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
@@ -60,7 +61,7 @@ namespace Mhotivo.Models
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
-
+        
         [DataType(DataType.Upload)]
         public HttpPostedFileBase UpladPhoto { get; set; }
 
@@ -106,6 +107,7 @@ namespace Mhotivo.Models
         public string StrGender { get; set; }
 
         public bool Gender { get; set; }
+
     }
 
     public class ParentRegisterModel
@@ -159,5 +161,6 @@ namespace Mhotivo.Models
         public string StrGender { get; set; }
 
         public bool Gender { get; set; }
+
     }
 }
