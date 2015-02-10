@@ -9,8 +9,6 @@ namespace Mhotivo.Migrations
         {
             DropForeignKey("dbo.AppointmentDiaries", "AppointmentParticipants_Id", "dbo.AppointmentParticipants");
             DropIndex("dbo.AppointmentDiaries", new[] { "AppointmentParticipants_Id" });
-            //AddColumn("dbo.People", "Photo", c => c.Binary());
-            //AddColumn("dbo.People", "Disable", c => c.Boolean(nullable: false));
             DropColumn("dbo.AppointmentDiaries", "AppointmentParticipants_Id");
             DropTable("dbo.AppointmentParticipants");
         }
@@ -28,8 +26,6 @@ namespace Mhotivo.Migrations
                 .PrimaryKey(t => t.Id);
             
             AddColumn("dbo.AppointmentDiaries", "AppointmentParticipants_Id", c => c.Int());
-            //DropColumn("dbo.People", "Disable");
-            //DropColumn("dbo.People", "Photo");
             CreateIndex("dbo.AppointmentDiaries", "AppointmentParticipants_Id");
             AddForeignKey("dbo.AppointmentDiaries", "AppointmentParticipants_Id", "dbo.AppointmentParticipants", "Id");
         }

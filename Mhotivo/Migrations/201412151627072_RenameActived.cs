@@ -7,14 +7,12 @@ namespace Mhotivo.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.People", "Disable", c => c.Boolean(nullable: false));
             DropColumn("dbo.People", "Activate");
         }
         
         public override void Down()
         {
             AddColumn("dbo.People", "Activate", c => c.Boolean(nullable: false));
-            DropColumn("dbo.People", "Disable");
         }
     }
 }
