@@ -70,16 +70,23 @@ namespace Mhotivo.Controllers
 
             try
             {
-                byte[] fileBytes = null;
+                var path = "";
                 if (importModel.UpladFile != null)
                 {
-                    using (var binaryReader = new BinaryReader(importModel.UpladFile.InputStream))
-                    {
-                        fileBytes = binaryReader.ReadBytes(importModel.UpladFile.ContentLength);
-                    }
+                    var extension = System.IO.Path.GetExtension(importModel.UpladFile.FileName);
+                    path = string.Format("{0}\\{1}", Server.MapPath("~/Content/UploadedFolder"), importModel.UpladFile.FileName);
+                    var directory = Server.MapPath("~/Content/UploadedFolder");
+
+                    if (!System.IO.Directory.Exists(directory))
+                        System.IO.Directory.CreateDirectory(directory);
+
+                    if (System.IO.File.Exists(path))
+                        System.IO.File.Delete(path);
+
+                    importModel.UpladFile.SaveAs(path);
                 }
 
-                var myDataSet = _importDataRepository.GetDataSetFromExcelFile(fileBytes);
+                var myDataSet = _importDataRepository.GetDataSetFromExcelFile(path);
                 _importDataRepository.Import(myDataSet);
 
                 const string title = "Importación de Datos Correcta";

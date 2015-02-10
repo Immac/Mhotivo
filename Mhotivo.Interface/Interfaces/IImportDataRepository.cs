@@ -13,6 +13,6 @@ namespace Mhotivo.Interface.Interfaces
         void Import(DataSet oDataSet);
         bool ExistAcademicYear(int year, long grade, string section);
 
-        DataSet GetDataSetFromExcelFile(byte[] fileBytes);
+        DataSet GetDataSetFromExcelFile(string path);
     }
 }
