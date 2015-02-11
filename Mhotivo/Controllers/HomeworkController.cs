@@ -53,7 +53,7 @@ namespace Mhotivo.Controllers
         public ActionResult Create()
         {
             ViewBag.Id = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
-            var modelRegister = new DisplayHomeworkModel();
+            var modelRegister = new CreateHomeworkModel();
             return View(modelRegister);
         }
 
@@ -61,15 +61,19 @@ namespace Mhotivo.Controllers
         public ActionResult Create(DisplayHomeworkModel modelHomework)
         {
 
-            modelHomework.Course= _courseRepository.GetById(ViewBag.idCourse);
-            Mapper.CreateMap<Homework,DisplayHomeworkModel>().ReverseMap();
-            Homework parentModel = Mapper.Map<DisplayHomeworkModel, Homework>(modelHomework);
 
-            Homework myHomework = _homeworkRepository.GenerateHomeworkFromRegisterModel(parentModel);
+            var myHomework = new Homework
+            {
+                Title = modelHomework.Title,
+                Description = modelHomework.Description,
+                DeliverDate = modelHomework.DeliverDate,
+                Points = modelHomework.Points,
+                //Password = Md5CryptoService.EncryptData(modelUser.Password),
+                Course = _courseRepository.GetById(modelHomework.Id)
+            };
 
-            
 
-            Homework parent = _homeworkRepository.Create(myHomework);
+            var user = _homeworkRepository.Create(myHomework);
             const string title = "Tarea agregada";
             string content = "La tarea " + myHomework.Title + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
