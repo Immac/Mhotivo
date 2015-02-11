@@ -87,7 +87,7 @@ namespace Mhotivo.Controllers
                 }
 
                 var myDataSet = _importDataRepository.GetDataSetFromExcelFile(path);
-                _importDataRepository.Import(myDataSet);
+                _importDataRepository.Import(myDataSet, importModel.Year,importModel.Section,(int)importModel.GradeImport);
 
                 const string title = "Importación de Datos Correcta";
                 var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"

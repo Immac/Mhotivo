@@ -3,7 +3,7 @@ namespace Mhotivo.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _initial : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {

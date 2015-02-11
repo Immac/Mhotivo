@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.OleDb;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Interface;
@@ -23,7 +24,7 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public void Import(DataSet oDataSet)
+        public void Import(DataSet oDataSet, int year, string section, int grade)
         {
             if(oDataSet.Tables.Count == 0)
                 return;
@@ -79,7 +80,7 @@ namespace Mhotivo.Implement.Repositories
                 listParents.Add(newParent);
             }
 
-            SaveData(listStudents, listParents);
+            SaveData(listStudents, listParents, year, section, grade);
         }
 
         public bool ExistAcademicYear(int year, long grade, string section)
@@ -118,9 +119,42 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        private void SaveData(List<Student> listStudents, List<Parent> listParents)
+        private void SaveData(List<Student> listStudents, List<Parent> listParents,int year, string section,int grade)
         {
-            //CODIGO KEHIMER
+
+            foreach (var pare in listParents)
+            {
+                var temp = _context.Parents.Find(pare);
+                if (temp != null)
+                {
+                    _context.Parents.Add(pare);
+                }
+
+
+            }
+            
+            foreach (var stu in listStudents)
+            {
+                
+                var temp = _context.Students.Find(stu);
+                if (temp!=null)
+                {
+                    _context.Students.Add(stu);
+                    var academicYear = _context.AcademicYears.Where(x => x.Year.Year == year && x.Section.ToString().Equals(section) && x.Grade.Id == grade).ToList();
+                    if (academicYear.Any()&&academicYear.First().Approved)
+                    {
+                        var t = new Enroll {AcademicYear = academicYear.First(),Student = stu};
+                        _context.Enrolls.Add(t);
+                    }
+
+                }
+
+
+                
+            }
+
+            
+            
         }
 
     }

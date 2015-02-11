@@ -185,25 +185,9 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201406232303419__initial.cs" />
-    <Compile Include="Migrations\201406232303419__initial.Designer.cs">
-      <DependentUpon>201406232303419__initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201411210122159_RenameBD.cs" />
-    <Compile Include="Migrations\201411210122159_RenameBD.Designer.cs">
-      <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412151627072_RenameActived.cs" />
-    <Compile Include="Migrations\201412151627072_RenameActived.Designer.cs">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502030229588_Test.cs" />
-    <Compile Include="Migrations\201502030229588_Test.Designer.cs">
-      <DependentUpon>201502030229588_Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502040255578_AcademicYearDetail.cs" />
-    <Compile Include="Migrations\201502040255578_AcademicYearDetail.Designer.cs">
-      <DependentUpon>201502040255578_AcademicYearDetail.cs</DependentUpon>
+    <Compile Include="Migrations\201502110257327_Initial.cs" />
+    <Compile Include="Migrations\201502110257327_Initial.Designer.cs">
+      <DependentUpon>201502110257327_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -550,20 +534,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201406232303419__initial.resx">
-      <DependentUpon>201406232303419__initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201411210122159_RenameBD.resx">
-      <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412151627072_RenameActived.resx">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502030229588_Test.resx">
-      <DependentUpon>201502030229588_Test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502040255578_AcademicYearDetail.resx">
-      <DependentUpon>201502040255578_AcademicYearDetail.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201502110257327_Initial.resx">
+      <DependentUpon>201502110257327_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
