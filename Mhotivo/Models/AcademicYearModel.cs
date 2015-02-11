@@ -17,10 +17,15 @@ namespace Mhotivo.Models
         public int Year { get; set; }
 
         [Display(Name = "Sección")]
-        public char Section { get; set; }
+        public string Section { get; set; }
+
+        [Display(Name = "Nivel")]
+        public string EducationLevel { get; set; }
 
         [Display(Name = "Aprovado")]
         public bool Approved { get; set; }
+
+        public bool IsActive { get; set; }
 
     }
 
@@ -36,7 +41,11 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar una Sección")]
         [Display(Name = "Sección")]
-        public char Section { get; set; }
+        public string Section { get; set; }
+
+        [Required(ErrorMessage = "Debe Asignar un Nivel Educativo")]
+        [Display(Name = "Sección")]
+        public string EducationLevel { get; set; }
 
         [Display(Name = "Aprovado")]
         public bool Approved { get; set; }
@@ -45,6 +54,7 @@ namespace Mhotivo.Models
 
     public class AcademicYearEditModel
     {
+        
         public ICollection<AcademicYear> AcademicYears { get; set; }
         public int Id { get; set; }
 
@@ -58,7 +68,11 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar una Sección")]
         [Display(Name = "Sección")]
-        public char Section { get; set; }
+        public string Section { get; set; }
+
+        [Required(ErrorMessage = "Debe Asignar un Nivel Educativo")]
+        [Display(Name = "Sección")]
+        public string EducationLevel { get; set; }
 
         [Display(Name = "Aprovado")]
         public bool Approved { get; set; }
