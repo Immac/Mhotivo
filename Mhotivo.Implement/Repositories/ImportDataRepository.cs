@@ -106,8 +106,9 @@ namespace Mhotivo.Implement.Repositories
         {
             var allParents = parentRepository.GetAllParents();
             var allStudents = studentRepository.GetAllStudents();
-            
+            var allEnrolls = enrollRepository.GetAllsEnrolls();
 
+            
             foreach (var pare in listParents)
             {
                 var temp = allParents.Where(x => Equals(x.IdNumber, pare.IdNumber));
@@ -121,9 +122,12 @@ namespace Mhotivo.Implement.Repositories
                 if (!temp.Any())
                 {
                     studentRepository.Create(stu);
-
-                    
-
+                    var enr = allEnrolls.Where(x => Equals(x.AcademicYear, academicYear) && Equals(x.Student, stu));
+                    if (!enr.Any())
+                    {
+                        var te = new Enroll() {AcademicYear = academicYear,Student = stu};
+                        enrollRepository.Create(te);
+                    }
                     //if (academicYear.Any() && academicYear.First().Approved)
                     //{
                     //    var t = new Enroll { AcademicYear = academicYear.First(), Student = stu };

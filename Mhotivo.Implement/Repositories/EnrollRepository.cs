@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -97,6 +98,19 @@ namespace Mhotivo.Implement.Repositories
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Enroll> GetAllsEnrolls()
+        {
+           
+            return Query(x => x).ToList().Select(x => new Enroll
+            {
+                Id = x.Id,
+               AcademicYear = x.AcademicYear,
+               Student = x.Student
+
+            });
+        
         }
 
         public void Detach(Enroll enroll)
