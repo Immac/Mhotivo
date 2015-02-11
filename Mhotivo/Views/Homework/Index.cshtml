@@ -38,7 +38,7 @@ else
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Description)</td>
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.DeliverDate)</td>
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Points)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Course)</td>
+                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Course.Name)</td>
 
                     <td>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Homework/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>

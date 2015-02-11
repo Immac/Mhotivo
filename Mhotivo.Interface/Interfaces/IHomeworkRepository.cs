@@ -26,8 +26,6 @@ namespace Mhotivo.Interface.Interfaces
 
         IEnumerable<Homework> GetAllHomeworks();
 
-        Homework GenerateHomeworkFromRegisterModel(Homework homeworkRegisterModel);
-
         Homework GetHomeworkEditModelById(long id);
 
         Homework GetHomeworkDisplayModelById(long id);
@@ -35,5 +33,6 @@ namespace Mhotivo.Interface.Interfaces
         Homework UpdateHomeworkFromHomeworkEditModel(Homework homeworkEditModel, Homework homework);
 
         void SaveChanges();
+        Homework GenerateHomeworkFromRegisterModel(Homework homeworkRegisterModel);
     }
 }

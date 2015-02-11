@@ -4,6 +4,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
+using Area = Mhotivo.Data.Entities.Area;
 
 namespace Mhotivo.Migrations
 {
@@ -41,7 +42,9 @@ namespace Mhotivo.Migrations
             context.Users.AddOrUpdate(new User {Id = 1,DisplayName = "Alex Fernandez", Email = "olorenzo@outlook.com", Password = "123", Role = context.Roles.First(), Status = true });
             context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Franklin Castellanos", Email = "castellarfrank@hotmail.com", Password = "siniestro", Role = context.Roles.First(), Status = true });
             context.Users.AddOrUpdate(new User { Id = 3, DisplayName = "La directora", Email = "holis@holis.com", Password = "holis", Role = context.Roles.Find(2), Status = true });
-            
+            context.Areas.AddOrUpdate(new Area {Id=1,Name="Ciencias Sociales"});
+            context.Courses.AddOrUpdate(new Course { Id = 1, Area = new Area { Id = 1, Name = "Ciencias Sociales" }, Name = "Estudios Sociales" });
+            context.Courses.AddOrUpdate(new Course { Id = 2, Area = new Area { Id = 1, Name = "Ciencias Sociales" }, Name = "Sociologia" });
         }
     }
 }

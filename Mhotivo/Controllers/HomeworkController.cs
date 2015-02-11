@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -17,11 +18,12 @@ namespace Mhotivo.Controllers
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public HomeworkController(IHomeworkRepository homeworkRepository
+        public HomeworkController(IHomeworkRepository homeworkRepository,ICourseRepository courseRepository
            )
         {
             _homeworkRepository = homeworkRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
+            _courseRepository = courseRepository;
         }
 
         public ActionResult Index()
@@ -58,9 +60,9 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Create(DisplayHomeworkModel modelHomework)
         {
-           
 
-            Mapper.CreateMap<Parent, ParentRegisterModel>().ReverseMap();
+            modelHomework.Course= _courseRepository.GetById(ViewBag.idCourse);
+            Mapper.CreateMap<Homework,DisplayHomeworkModel>().ReverseMap();
             Homework parentModel = Mapper.Map<DisplayHomeworkModel, Homework>(modelHomework);
 
             Homework myHomework = _homeworkRepository.GenerateHomeworkFromRegisterModel(parentModel);

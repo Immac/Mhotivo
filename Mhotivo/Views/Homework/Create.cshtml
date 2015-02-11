@@ -15,7 +15,7 @@
         @Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Nuevo Usuario</legend>
+            <legend>Nueva Tarea</legend>
 
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Title)
@@ -68,7 +68,7 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.Id)
+                    @Html.LabelFor(model =>ViewBag.id )
                 </div>
                 <div class="controls">
                     @Html.DropDownList("Id")
