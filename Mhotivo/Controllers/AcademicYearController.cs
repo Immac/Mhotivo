@@ -1,100 +1,94 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.WebPages;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
-
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement.Repositories;
-using AutoMapper;
-using Mhotivo.Logic;
+using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using Mhotivo.Data;
-using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Controllers
 {
     public class AcademicYearController : Controller
     {
-        private readonly AcademicYearLogic _academicYearLogic;
         private readonly IAcademicYearRepository _academicYearRepository;
-        private readonly IMeisterRepository _meisterRepository;
+        private readonly ViewMessageLogic _viewMessageLogic;
 
-        public AcademicYearController(IAcademicYearRepository academicYearRepository,
-            IMeisterRepository meisterRepository, AcademicYearLogic academicYearLogic)
+        public AcademicYearController(IAcademicYearRepository academicYearRepository)
         {
             _academicYearRepository = academicYearRepository;
-            _meisterRepository = meisterRepository;
-            _academicYearLogic = academicYearLogic;
+            _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Management()
+        public ActionResult Index()
         {
-            //var elements = new AcademicYearViewManagement
-            //               {
-            //                   Elements =
-            //                       _academicYearRepository.Filter(x => x.IsActive)
-            //                       .ToList()
-            //                       .Select(x => new AcademicYearEditModel
-            //                                    {
-            //                                        Approved = x.Approved ? "Active" : "Inactive",
-            //                                        Course = x.Course.Name,
-            //                                        Grade = x.Grade.Name,
-            //                                        Id = x.Id,
-            //                                        EndDate =
-            //                                            (x.TeacherEndDate == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.TeacherEndDate.Value.ToShortDateString()),
-            //                                        Limit = x.StudentsLimit,
-            //                                        Meister =
-            //                                            x.Teacher == null ? "Sin Maestro Asignado" : x.Teacher.FullName,
-            //                                        Room = x.Room.IsEmpty() ? "Sin Aula Asignada" : x.Room,
-            //                                        Schedule =
-            //                                            x.Schedule == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.Schedule.Value.ToShortTimeString(),
-            //                                        Section = x.Section,
-            //                                        StartDate =
-            //                                            x.TeacherStartDate == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.TeacherStartDate.Value.ToShortDateString(),
-            //                                        Year = x.Year.Year
-            //                                    }),
-            //                   CurrentYear = DateTime.Now.Year,
-            //                   CanGenerate = true
-            //               };
-
-            //return View(elements);
-            return ViewBag();//TODO: Esto no va.
-
+            _viewMessageLogic.SetViewMessageIfExist();
+            var allAcademicYears = _academicYearRepository.GetAllAcademicYears();
+            var academicYears = allAcademicYears.Select(academicYear => new DisplayAcademicYearModel
+            {
+                Id = academicYear.Id,
+                Year = academicYear.Year.Year,
+                Section = academicYear.Section,
+                Approved = academicYear.Approved,
+                IsActive = academicYear.IsActive,
+                EducationLevel = academicYear.Grade.EducationLevel,
+                Grade = academicYear.Grade.Name
+            }).ToList();
+            
+            return View(academicYears);
         }
 
         [HttpGet]
-        public ActionResult SelectNewTeacher(long id)
+        public ActionResult AcademicYearEdit(long id)
         {
-            IQueryable<Meister> meisters = _meisterRepository.Query(x => x);
-            ViewBag.AcademicYearId = id;
-            return View(meisters);
+            return null;
         }
 
         [HttpGet]
-        public ActionResult ChangeTeacher(long id, long teacherId)
+        public ActionResult Edit(long id)
         {
-            AcademicYear academicYear = _academicYearRepository.GetById(id);
-            Meister meister = _meisterRepository.GetById(teacherId);
-           // academicYear.Teacher = meister;
-            _academicYearRepository.Update(academicYear, false, false, false);
-            _academicYearRepository.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return null;
         }
 
         [HttpPost]
-        public ActionResult ManagementPost()
+        public ActionResult Edit(AcademicYearEditModel academicYearModel)
         {
-            _academicYearLogic.GenerateSectionForGrades();
+            return null;
+        }
 
-            return RedirectToAction("Management");
+        [HttpPost]
+        public ActionResult Delete(long id)
+        {
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult Add(AcademicYearRegisterModel academicYearModel)
+        {
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult Details(long id)
+        {
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult Details(DisplayAcademicYearModel academicYearModel)
+        {
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult DetailsEdit(long id)
+        {
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult DetailsEdit(AcademicYearEditModel academicYearModel)
+        {
+            return null;
         }
     }
 }
