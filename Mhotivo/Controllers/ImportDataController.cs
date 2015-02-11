@@ -21,13 +21,27 @@ namespace Mhotivo.Controllers
         // GET: /ImportData/
         private readonly IImportDataRepository _importDataRepository;
         private readonly IGradeRepository _gradeRepository;
+        private readonly IAcademicYearRepository _academicYearRepository;
+        private readonly IParentRepository _parentRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IEnrollRepository _enrollRepository;
 
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public ImportDataController(IImportDataRepository importDataRepository, IGradeRepository gradeRepository)
+        public ImportDataController(IImportDataRepository importDataRepository
+                                    ,IGradeRepository gradeRepository
+                                    ,IAcademicYearRepository academicYearRepository
+                                    ,IParentRepository parentRepository
+                                    ,IStudentRepository studentRepository
+                                    ,IEnrollRepository enrollRepository
+                                   )
         {
             _importDataRepository = importDataRepository;
             _gradeRepository = gradeRepository;
+            _academicYearRepository = academicYearRepository;
+            _parentRepository = parentRepository;
+            _studentRepository = studentRepository;
+            _enrollRepository = enrollRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -43,12 +57,11 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Import(ImportDataModel importModel)
+        public ActionResult Index(ImportDataModel importModel)
         {
             var validImageTypes = new string[]
             {
                 "application/vnd.ms-excel",
-                "image/jpeg"
             };
 
             var errorExcel = false;
@@ -60,12 +73,14 @@ namespace Mhotivo.Controllers
             if(errorExcel)
                 ModelState.AddModelError("UpladFile", "Por favor seleccione un archivo de Excel");
 
-            if(_importDataRepository.ExistAcademicYear(importModel.Year, importModel.GradeImport, importModel.Section))
-                ModelState.AddModelError("Year", "");
+            var academicYear = _academicYearRepository.GetByFields(importModel.Year, (int) importModel.GradeImport, importModel.Section);
+            if (academicYear == null)
+                ModelState.AddModelError("Year", "No existe ese año academico");
 
+            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                return View(importModel);
             }
 
             try
@@ -87,7 +102,8 @@ namespace Mhotivo.Controllers
                 }
 
                 var myDataSet = _importDataRepository.GetDataSetFromExcelFile(path);
-                _importDataRepository.Import(myDataSet, importModel.Year,importModel.Section,(int)importModel.GradeImport);
+
+                _importDataRepository.Import(myDataSet, academicYear, _parentRepository, _studentRepository, _enrollRepository);
 
                 const string title = "Importación de Datos Correcta";
                 var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
@@ -101,7 +117,7 @@ namespace Mhotivo.Controllers
             }
             catch
             {
-                return RedirectToAction("Index");
+                return View(importModel);
             }
 
             return RedirectToAction("Index");

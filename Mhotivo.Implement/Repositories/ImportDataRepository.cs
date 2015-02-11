@@ -24,7 +24,7 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public void Import(DataSet oDataSet, int year, string section, int grade)
+        public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository)
         {
             if(oDataSet.Tables.Count == 0)
                 return;
@@ -80,24 +80,7 @@ namespace Mhotivo.Implement.Repositories
                 listParents.Add(newParent);
             }
 
-            SaveData(listStudents, listParents, year, section, grade);
-        }
-
-        public bool ExistAcademicYear(int year, long grade, string section)
-        {
-            if (!_context.AcademicYears.Any())
-                return false;
-
-            var academicYears = _context.AcademicYears.Where(x => Equals(year, x.Year.Year) && x.Grade != null).ToList();
-            if (academicYears.Any())
-                return false;
-            
-            var academicYears2 = academicYears.Where(x => Equals(grade, x.Grade.Id) && Equals(section, x.Section.ToString())).ToList();
-
-            if (academicYears.Any())
-                return true;
-
-            return false;
+            SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository);
         }
 
         public DataSet GetDataSetFromExcelFile(string path)
@@ -119,43 +102,35 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        private void SaveData(List<Student> listStudents, List<Parent> listParents,int year, string section,int grade)
+        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository)
         {
+            var allParents = parentRepository.GetAllParents();
+            var allStudents = studentRepository.GetAllStudents();
+            
 
             foreach (var pare in listParents)
             {
-                var temp = _context.Parents.Find(pare);
-                if (temp != null)
-                {
-                    _context.Parents.Add(pare);
-                }
-
-
+                var temp = allParents.Where(x => Equals(x.IdNumber, pare.IdNumber));
+                if (!temp.Any())
+                    parentRepository.Create(pare);
             }
             
             foreach (var stu in listStudents)
             {
-                
-                var temp = _context.Students.Find(stu);
-                if (temp!=null)
+                var temp = allStudents.Where(x => Equals(x.IdNumber, stu.IdNumber));
+                if (!temp.Any())
                 {
-                    _context.Students.Add(stu);
-                    var academicYear = _context.AcademicYears.Where(x => x.Year.Year == year && x.Section.ToString().Equals(section) && x.Grade.Id == grade).ToList();
-                    if (academicYear.Any()&&academicYear.First().Approved)
-                    {
-                        var t = new Enroll {AcademicYear = academicYear.First(),Student = stu};
-                        _context.Enrolls.Add(t);
-                    }
+                    studentRepository.Create(stu);
 
+                    
+
+                    //if (academicYear.Any() && academicYear.First().Approved)
+                    //{
+                    //    var t = new Enroll { AcademicYear = academicYear.First(), Student = stu };
+                    //    _context.Enrolls.Add(t);
+                    //}
                 }
-
-
-                
             }
-
-            
-            
         }
-
     }
 }

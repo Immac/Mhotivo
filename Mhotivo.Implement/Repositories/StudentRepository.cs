@@ -34,7 +34,13 @@ namespace Mhotivo.Implement.Repositories
         public Student GetById(long id)
         {
             var student = _context.Students.Where(x => x.Id == id);
-            return student.Count() != 0 ? student.Include(x => x.Benefactor).First() : null;
+            return student.Count() != 0 ? student.Include(x => x.Tutor1).First() : null;
+        }
+
+        public Student GetByIdNumber(string idNumber)
+        {
+            var student = _context.Students.Where(x => x.IdNumber == idNumber);
+            return student.Count() != 0 ? student.Include(x => x.Tutor1).First() : null;
         }
 
         public Student Create(Student itemToCreate)

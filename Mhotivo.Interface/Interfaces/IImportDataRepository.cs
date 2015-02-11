@@ -10,9 +10,7 @@ namespace Mhotivo.Interface.Interfaces
 {
     public interface IImportDataRepository
     {
-        void Import(DataSet oDataSet, int year, string section, int grade);
-        bool ExistAcademicYear(int year, long grade, string section);
-
         DataSet GetDataSetFromExcelFile(string path);
+        void Import(DataSet myDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository);
     }
 }

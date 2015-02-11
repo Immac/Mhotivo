@@ -189,6 +189,14 @@
     <Compile Include="Migrations\201502110257327_Initial.Designer.cs">
       <DependentUpon>201502110257327_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502111638417_ChangeSectionType.cs" />
+    <Compile Include="Migrations\201502111638417_ChangeSectionType.Designer.cs">
+      <DependentUpon>201502111638417_ChangeSectionType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502111913018_Test.cs" />
+    <Compile Include="Migrations\201502111913018_Test.Designer.cs">
+      <DependentUpon>201502111913018_Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -536,6 +544,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201502110257327_Initial.resx">
       <DependentUpon>201502110257327_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502111638417_ChangeSectionType.resx">
+      <DependentUpon>201502111638417_ChangeSectionType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502111913018_Test.resx">
+      <DependentUpon>201502111913018_Test.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

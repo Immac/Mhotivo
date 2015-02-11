@@ -32,6 +32,12 @@ namespace Mhotivo.Implement.Repositories
             return parent.Count() != 0 ? parent.First() : null;
         }
 
+        public Parent GetByIdNumber(string idNumber)
+        {
+            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable);
+            return parent.Count() != 0 ? parent.First() : null;
+        }
+
         public Parent Create(Parent itemToCreate)
         {
             itemToCreate.Disable = false;
