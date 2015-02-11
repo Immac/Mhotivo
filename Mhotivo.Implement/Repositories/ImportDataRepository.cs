@@ -114,26 +114,25 @@ namespace Mhotivo.Implement.Repositories
                 var temp = allParents.Where(x => Equals(x.IdNumber, pare.IdNumber));
                 if (!temp.Any())
                     parentRepository.Create(pare);
+                else
+                    pare.Id = temp.First().Id;
             }
             
             foreach (var stu in listStudents)
             {
                 var temp = allStudents.Where(x => Equals(x.IdNumber, stu.IdNumber));
                 if (!temp.Any())
-                {
                     studentRepository.Create(stu);
-                    var enr = allEnrolls.Where(x => Equals(x.AcademicYear, academicYear) && Equals(x.Student, stu));
-                    if (!enr.Any())
-                    {
-                        var te = new Enroll() {AcademicYear = academicYear,Student = stu};
-                        enrollRepository.Create(te);
-                    }
-                    //if (academicYear.Any() && academicYear.First().Approved)
-                    //{
-                    //    var t = new Enroll { AcademicYear = academicYear.First(), Student = stu };
-                    //    _context.Enrolls.Add(t);
-                    //}
+                else
+                    stu.Id = temp.First().Id;
+
+                var enr = allEnrolls.Where(x => Equals(x.AcademicYear.Id, academicYear.Id) && Equals(x.Student.Id, stu.Id));
+                if (!enr.Any())
+                {
+                    var te = new Enroll() { AcademicYear = academicYear, Student = stu };
+                    enrollRepository.Create(te);
                 }
+
             }
         }
     }
