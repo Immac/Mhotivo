@@ -35,7 +35,7 @@ namespace Mhotivo.Controllers
             return View(_classActivityRepository.Query(x => x).ToList()
                 .Select(x => new DisplayClassActivityModel
                              {
-                                 AcademicYear = Convert.ToString(x.AcademicYear.Year.Year),
+                                 AcademicYear = Convert.ToString(x.AcademicYear.Year),
                                  DisplayName = x.Name,
                                  Type = x.Type,
                                  Description = x.Description,
