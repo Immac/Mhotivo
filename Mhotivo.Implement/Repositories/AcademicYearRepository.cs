@@ -25,7 +25,7 @@ namespace Mhotivo.Implement.Repositories
 
         public AcademicYear GetById(long id)
         {
-            var academicYearById = _context.AcademicYears.Where(x => x.Id == id && !x.IsActive);
+            var academicYearById = _context.AcademicYears.Where(x => x.Id == id && x.IsActive);
             return academicYearById.Count() != 0 ? academicYearById.First() : null;
         }
 
@@ -57,7 +57,8 @@ namespace Mhotivo.Implement.Repositories
                 Grade = x.Grade,
                 Year = x.Year,
                 Section = x.Section,
-                Approved = x.Approved
+                Approved = x.Approved,
+                IsActive = x.IsActive
             });
         }
 
