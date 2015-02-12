@@ -27,8 +27,5 @@ namespace Mhotivo.Models
         [Display(Name = "Nombre")]
         public string DisplaName { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Email")]
-        [Display(Name = "Email")]
-        public string UserName { get; set; }
-    }
+     }
 }
