@@ -4,9 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mhotivo.Data.Entities
 {
-
-
-
     public class AcademicYear
     {
         [Key]
@@ -14,11 +11,13 @@ namespace Mhotivo.Data.Entities
         public int Id { get; set; }
 
         public virtual Grade Grade { get; set; }
-        
-        public DateTime Year { get; set; }
-        public char Section { get; set; }
+
+        public int Year { get; set; }
+
+        public String Section { get; set; }
+
         public bool Approved { get; set; }
+
         public bool IsActive { get; set; }
-        
     }
 }

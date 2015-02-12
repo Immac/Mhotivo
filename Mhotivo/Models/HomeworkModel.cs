@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Mhotivo.Data.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
@@ -23,11 +20,35 @@ namespace Mhotivo.Models
         [Display(Name = "puntaje")]
         public float Points { get; set; }
 
-        [Display(Name = "Materia")]
-        public virtual Course Course { get; set; }
+        public int AcademicYearId { get; set; }
+
+        [Display(Name = "Academic Year")]
+        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
     }
+
     public class CreateHomeworkModel
     {
+        [Display(Name = "Titulo")]
+        public string Title { get; set; }
+
+        [Display(Name = "Descripcion")]
+        public string Description { get; set; }
+
+        [Display(Name = "Dia de entrega")]
+        public DateTime DeliverDate { get; set; }
+
+        [Display(Name = "puntaje")]
+        public float Points { get; set; }
+
+        public int AcademicYearId { get; set; }
+
+        [Display(Name = "Academic Year")]
+        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
+    }
+
+    public class EditHomeworkModel
+    {
+        public int Id { get; set; }
 
         [Display(Name = "Titulo")]
         public string Title { get; set; }
@@ -42,6 +63,6 @@ namespace Mhotivo.Models
         public float Points { get; set; }
 
         [Display(Name = "Materia")]
-        public int Id { get; set; }
+        public int AcademicYearDetailId { get; set; }
     }
 }

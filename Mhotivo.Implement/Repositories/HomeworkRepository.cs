@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Context;
+using Mhotivo.Interface.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Context;
-using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
-    public class HomeworkRepository:IHomeworkRepository
+    public class HomeworkRepository : IHomeworkRepository
     {
         private readonly MhotivoContext _context;
 
@@ -72,7 +72,7 @@ namespace Mhotivo.Implement.Repositories
                 Description = x.Description,
                 DeliverDate = x.DeliverDate,
                 Points = x.Points,
-                Course = x.Course
+                AcademicYearDetail = x.AcademicYearDetail
             });
         }
 
@@ -85,7 +85,7 @@ namespace Mhotivo.Implement.Repositories
                 Description = homeworkRegisterModel.Description,
                 DeliverDate = homeworkRegisterModel.DeliverDate,
                 Points = homeworkRegisterModel.Points,
-                Course = homeworkRegisterModel.Course
+                AcademicYearDetail = homeworkRegisterModel.AcademicYearDetail
             };
         }
 
@@ -99,7 +99,7 @@ namespace Mhotivo.Implement.Repositories
                 Description = homework.Description,
                 DeliverDate = homework.DeliverDate,
                 Points = homework.Points,
-                Course = homework.Course
+                AcademicYearDetail = homework.AcademicYearDetail
             };
         }
 
@@ -113,7 +113,7 @@ namespace Mhotivo.Implement.Repositories
                 Description = homework.Description,
                 DeliverDate = homework.DeliverDate,
                 Points = homework.Points,
-                Course = homework.Course
+                AcademicYearDetail = homework.AcademicYearDetail
             };
         }
 
@@ -124,7 +124,7 @@ namespace Mhotivo.Implement.Repositories
             homework.Description = homework.Description;
             homework.DeliverDate = homework.DeliverDate;
             homework.Points = homework.Points;
-            homework.Course = homework.Course;
+            homework.AcademicYearDetail = homework.AcademicYearDetail;
 
             return Update(homework);
         }

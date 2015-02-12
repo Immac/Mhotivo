@@ -22,6 +22,6 @@ namespace Mhotivo.Data.Entities
 
         public float Points { get; set; }
 
-        public virtual Course Course { get; set; }
+        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
     }
 }
