@@ -1,0 +1,15 @@
+﻿@model Mhotivo.Models.DisplayAreaModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+<h2>Area Actuales</h2>
+@Html.ActionLink("Crear nuevo", "Add");
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Area/Add/"><span class="btn btn-small btn-primary active">Agregar Area</span></a>
+    <div class="well well-large">
+        <h4 class="blue">Tabla Vacía</h4>
+        No hay actividades a mostrar.
+    </div>

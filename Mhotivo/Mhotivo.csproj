@@ -157,6 +157,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BenefactorController.cs" />
     <Compile Include="Controllers\ClassActivityController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
@@ -525,6 +526,8 @@
     <Content Include="Views\Pensum\Index.cshtml" />
     <Content Include="Views\Event\PrincipalIndex.cshtml" />
     <Content Include="Views\Event\Agenda.cshtml" />
+    <Content Include="Views\Area\Add.cshtml" />
+    <Content Include="Views\Area\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
