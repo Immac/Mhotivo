@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mhotivo.Implement.Repositories
 {
@@ -59,6 +57,7 @@ namespace Mhotivo.Implement.Repositories
         public Homework Delete(long id)
         {
             Homework itemToDelete = GetById(id);
+
             _context.SaveChanges();
             return itemToDelete;
         }
@@ -119,12 +118,12 @@ namespace Mhotivo.Implement.Repositories
 
         public Homework UpdateHomeworkFromHomeworkEditModel(Homework displayHomeworkModel, Homework homework)
         {
-            homework.Id = homework.Id;
-            homework.Title = homework.Title;
-            homework.Description = homework.Description;
-            homework.DeliverDate = homework.DeliverDate;
-            homework.Points = homework.Points;
-            homework.AcademicYearDetail = homework.AcademicYearDetail;
+            homework.Id = displayHomeworkModel.Id;
+            homework.Title = displayHomeworkModel.Title;
+            homework.Description = displayHomeworkModel.Description;
+            homework.DeliverDate = displayHomeworkModel.DeliverDate;
+            homework.Points = displayHomeworkModel.Points;
+            homework.AcademicYearDetail = displayHomeworkModel.AcademicYearDetail;
 
             return Update(homework);
         }

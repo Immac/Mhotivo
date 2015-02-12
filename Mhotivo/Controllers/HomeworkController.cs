@@ -12,15 +12,19 @@ namespace Mhotivo.Controllers
     public class HomeworkController : Controller
     {
         private readonly IAcademicYearDetailRepository _academicYearDetailRepository;
+        private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
-            IAcademicYearDetailRepository academicYearDetailRepository
+            IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository
             )
         {
             _homeworkRepository = homeworkRepository;
+            _academicYearRepository = academicYearRepository;
+
             _viewMessageLogic = new ViewMessageLogic(this);
+
             _academicYearDetailRepository = academicYearDetailRepository;
         }
 
@@ -50,7 +54,10 @@ namespace Mhotivo.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Id = new SelectList(_academicYearDetailRepository.Query(x => x), "Id", "Name");
+            ViewBag.Year = new SelectList(_academicYearRepository.Query(x => x), "Id", "Year");
+            // ViewBag.Grade = "Primer Grado";
+            // new SelectList(_academicYearRepository.Query(x => x), "Id", "Grade.Name");
+            //ViewBag.Section = "A"; // new SelectList(_academicYearRepository.Query(x => x), "Id", "Section");
             var modelRegister = new CreateHomeworkModel();
             return View(modelRegister);
         }

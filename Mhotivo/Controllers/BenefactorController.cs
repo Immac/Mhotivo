@@ -100,7 +100,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
             {
-                Id = (int) id,
+                Id = (int)id,
                 Controller = "Benefactor"
             };
             return View("ContactAdd", model);
@@ -122,8 +122,8 @@ namespace Mhotivo.Controllers
             Benefactor myBenefactor = _benefactorRepository.GenerateBenefactorFromRegisterModel(regBenefactor);
             myBenefactor.Capacity = modelBenefactor.Capacity;
             _benefactorRepository.Create(myBenefactor);
-            const string title = "Padre o Tutor Agregado";
-            string content = "El Padre o Tutor " + myBenefactor.FullName + "ha sido agregado exitosamente.";
+            const string title = "Benefactor Agregado";
+            string content = "El Benefactor " + myBenefactor.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
             return RedirectToAction("Index");
@@ -185,7 +185,7 @@ namespace Mhotivo.Controllers
             Student thisStudent = _studentRepository.GetById(id);
             var student = new StudentBenefactorEditModel
             {
-                OldId = (int) id,
+                OldId = (int)id,
                 Id = thisStudent.Benefactor == null ? -1 : thisStudent.Benefactor.Id
             };
             ViewBag.NewID = new SelectList(_studentRepository.Query(x => x), "Id", "FullName", student.OldId);
@@ -197,7 +197,7 @@ namespace Mhotivo.Controllers
         {
             var student = new StudentBenefactorEditModel
             {
-                Id = (int) id
+                Id = (int)id
             };
             ViewBag.NewID = new SelectList(_studentRepository.Query(x => x), "Id", "FullName");
             return View("StudentAdd", student);

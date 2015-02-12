@@ -1,17 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.WebPages;
+﻿using AutoMapper;
+using Mhotivo.Data;
+using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Repositories;
+
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
 
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement.Repositories;
-using AutoMapper;
 using Mhotivo.Logic;
 using Mhotivo.Models;
-using Mhotivo.Data;
-using Mhotivo.Data.Entities;
+using System;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.WebPages;
 
 namespace Mhotivo.Controllers
 {
@@ -67,7 +68,6 @@ namespace Mhotivo.Controllers
 
             //return View(elements);
             return ViewBag();//TODO: Esto no va.
-
         }
 
         [HttpGet]
@@ -83,8 +83,8 @@ namespace Mhotivo.Controllers
         {
             AcademicYear academicYear = _academicYearRepository.GetById(id);
             Meister meister = _meisterRepository.GetById(teacherId);
-           // academicYear.Teacher = meister;
-            _academicYearRepository.Update(academicYear, false, false, false);
+            // academicYear.Teacher = meister;
+            //  _academicYearRepository.Update(academicYear, false, false, false);
             _academicYearRepository.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
