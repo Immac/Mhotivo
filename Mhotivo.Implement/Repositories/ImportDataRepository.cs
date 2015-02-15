@@ -24,7 +24,7 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository)
+        public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository)
         {
             if(oDataSet.Tables.Count == 0)
                 return;
@@ -80,7 +80,7 @@ namespace Mhotivo.Implement.Repositories
                 listParents.Add(newParent);
             }
 
-            SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository);
+            SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository, academicYearRepository);
         }
 
         public DataSet GetDataSetFromExcelFile(string path)
@@ -102,16 +102,19 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository)
+        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository)
         {
             var allParents = parentRepository.GetAllParents();
             var allStudents = studentRepository.GetAllStudents();
             var allEnrolls = enrollRepository.GetAllsEnrolls();
 
-            if (!(((EnrollRepository)enrollRepository).GeContext() == ((ParentRepository)parentRepository).GeContext()))
+            if (!(((EnrollRepository)enrollRepository).GeContext().Equals(((ParentRepository)parentRepository).GeContext())))
                 return;
 
-            if (!(((EnrollRepository)enrollRepository).GeContext() == ((StudentRepository)studentRepository).GeContext()))
+            if (!(((EnrollRepository)enrollRepository).GeContext().Equals(((StudentRepository)studentRepository).GeContext())))
+                return;
+
+            if (!(((EnrollRepository)enrollRepository).GeContext().Equals(((AcademicYearRepository)academicYearRepository).GeContext())))
                 return;
             
             foreach (var pare in listParents)
@@ -134,7 +137,13 @@ namespace Mhotivo.Implement.Repositories
                 var enr = allEnrolls.Where(x => x.AcademicYear.Id == academicYear.Id && x.Student.Id == stu.Id);
                 if (!enr.Any())
                 {
-                    var te = new Enroll() { AcademicYear = academicYear, Student = stu };
+                    var te = new Enroll();
+
+                    var academicYearTemp = academicYearRepository.GetById(academicYear.Id);
+
+                    te.AcademicYear = academicYearTemp;
+                    te.Student = stu;
+                    
                     enrollRepository.Create(te);
                 }
 
