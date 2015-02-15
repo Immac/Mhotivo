@@ -19,11 +19,6 @@ namespace Mhotivo.Implement.Repositories
            
         }
         
-        public Grade First(Expression<Func<Grade, bool>> query)
-        {
-            return _context.Grades.First(query);
-        }
-
         public Grade GetById(long id)
         {
             return _context.Grades.FirstOrDefault(x => x.Id == id);
@@ -41,26 +36,11 @@ namespace Mhotivo.Implement.Repositories
             return _context.Grades.Select(expression);
         }
 
-        public IQueryable<Grade> Filter(Expression<Func<Grade, bool>> expression)
-        {
-            return _context.Grades.Where(expression);
-        }
-
         public Grade Update(Grade itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
             _context.SaveChanges();
             return itemToUpdate;
-        }
-
-        public void Delete(Grade itemToDelete)
-        {
-            _context.Grades.Remove(itemToDelete);
-        }
-
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
         }
 
         public IEnumerable<Grade> GetAllGrade()
@@ -72,17 +52,6 @@ namespace Mhotivo.Implement.Repositories
                         Name = g.Name, 
                         EducationLevel = g.EducationLevel
                     });
-        }
-
-        public Grade GetGradeDisplayModelById(long id)
-        {
-            var grade = GetById(id);
-            return new Grade
-            {
-                Id = grade.Id,
-                Name = grade.Name,
-                EducationLevel = grade.EducationLevel
-            };
         }
 
         public Grade GetGradeEditModelById(long id)

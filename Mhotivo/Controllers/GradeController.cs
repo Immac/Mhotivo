@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
@@ -61,14 +59,31 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Add(GradeRegisterModel modelGrade)
         {
-            Mapper.CreateMap<Grade, GradeRegisterModel>().ReverseMap();
+            string title;
+            string content;
 
+            Mapper.CreateMap<Grade, GradeRegisterModel>().ReverseMap();
             var gradeModel = Mapper.Map<GradeRegisterModel, Grade>(modelGrade);
 
             var myGrade = _gradeRepository.GenerateGradeFromRegisterModel(gradeModel);
+
+            var existGrade =
+                _gradeRepository.GetAllGrade()
+                    .FirstOrDefault(
+                        g => g.Name.Equals(modelGrade.Name) && g.EducationLevel.Equals(modelGrade.EducationLevel));
+
+            if (existGrade != null)
+            {
+                title = "Grado";
+                content = "El grado " + existGrade.Name + " ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+                return RedirectToAction("Index");
+            }
+
+
             var grade = _gradeRepository.Create(myGrade);
-            const string title = "Alumno Agregado al Grado";
-            var content = "El Alumno " + grade.Name + " ha sido agregado exitosamente.";
+            title = "Grado Agregado";
+            content = grade.Name + " grado ha sido guardado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
             return RedirectToAction("Index");
@@ -84,55 +99,13 @@ namespace Mhotivo.Controllers
         {
             var grade = _gradeRepository.Delete(id);
 
-            const string title = "Alumno ha sido Eliminado del Grado";
-            var content = "El Alumno " + grade.Name + " ha sido eliminado exitosamente.";
+            const string title = "Grado ha sido Eliminado";
+            var content = grade.Name + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
             return RedirectToAction("Index");
         }
-
-        /// <summary>
-        /// GET: /Grade/Details/5
-        /// </summary>
-        /// <param name="id" />
-        /// <returns />
-        [HttpGet]
-        public ActionResult Details(long id)
-        {
-            var thisgrade = _gradeRepository.GetGradeDisplayModelById(id);
-            Mapper.CreateMap<DisplayGradeModel, Grade>().ReverseMap();
-
-            var grade = Mapper.Map<Grade, DisplayGradeModel>(thisgrade);
-
-            return View("Details", grade);
-        }
-
-        [HttpGet]
-        public ActionResult DetailsEdit(long id)
-        {
-            var grade = _gradeRepository.GetGradeEditModelById(id);
-            Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();
-            var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
-
-            return View("DetailsEdit", gradeModel);
-        }
-
-        [HttpPost]
-        public ActionResult DetailsEdit(GradeEditModel modelGrade)
-        {
-            var myGrade = _gradeRepository.GetById(modelGrade.Id);
-            Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();
-            var gradeModel = Mapper.Map<GradeEditModel, Grade>(modelGrade);
-
-            _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
-
-            const string title = "Padre o Tutor Actualizado";
-            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
-            return RedirectToAction("Details/" + modelGrade.Id);
-        }
-
+        
         /// <summary>
         /// GET: /Grade/Edit/5
         /// </summary>
@@ -163,7 +136,7 @@ namespace Mhotivo.Controllers
             _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
 
             const string title = "Grado Actualizado";
-            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
+            var content = myGrade.Name + " grado ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
             return RedirectToAction("Index");
