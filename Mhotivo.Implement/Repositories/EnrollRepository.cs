@@ -20,6 +20,11 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
+
         public Enroll First(Expression<Func<Enroll, Enroll>> query)
         {
             var enroll = _context.Enrolls.Select(query);
@@ -35,8 +40,8 @@ namespace Mhotivo.Implement.Repositories
         public Enroll Create(Enroll itemToCreate)
         {
             var enroll = _context.Enrolls.Add(itemToCreate);
-            //_context.Entry(enroll.AcademicYear).State = EntityState.Modified;
-            //_context.Entry(enroll.Student).State = EntityState.Modified;
+            _context.Entry(enroll.AcademicYear).State = EntityState.Modified;
+            _context.Entry(enroll.Student).State = EntityState.Modified;
             _context.SaveChanges();
             return enroll;
         }

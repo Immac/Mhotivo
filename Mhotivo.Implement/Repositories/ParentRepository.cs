@@ -19,6 +19,11 @@ namespace Mhotivo.Implement.Repositories
         {
             _context = ctx;
         }
+
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
         
         public Parent First(Expression<Func<Parent, Parent>> query)
         {

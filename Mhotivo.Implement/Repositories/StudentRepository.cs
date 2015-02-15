@@ -20,6 +20,10 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
         public static StudentRepository Instance
         {
             get { return new StudentRepository(new MhotivoContext()); }

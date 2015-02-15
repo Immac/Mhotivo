@@ -108,10 +108,15 @@ namespace Mhotivo.Implement.Repositories
             var allStudents = studentRepository.GetAllStudents();
             var allEnrolls = enrollRepository.GetAllsEnrolls();
 
+            if (!(((EnrollRepository)enrollRepository).GeContext() == ((ParentRepository)parentRepository).GeContext()))
+                return;
+
+            if (!(((EnrollRepository)enrollRepository).GeContext() == ((StudentRepository)studentRepository).GeContext()))
+                return;
             
             foreach (var pare in listParents)
             {
-                var temp = allParents.Where(x => Equals(x.IdNumber, pare.IdNumber));
+                var temp = allParents.Where(x => x.IdNumber == pare.IdNumber);
                 if (!temp.Any())
                     parentRepository.Create(pare);
                 else
@@ -120,13 +125,13 @@ namespace Mhotivo.Implement.Repositories
             
             foreach (var stu in listStudents)
             {
-                var temp = allStudents.Where(x => Equals(x.IdNumber, stu.IdNumber));
+                var temp = allStudents.Where(x => x.IdNumber == stu.IdNumber);
                 if (!temp.Any())
                     studentRepository.Create(stu);
                 else
                     stu.Id = temp.First().Id;
 
-                var enr = allEnrolls.Where(x => Equals(x.AcademicYear.Id, academicYear.Id) && Equals(x.Student.Id, stu.Id));
+                var enr = allEnrolls.Where(x => x.AcademicYear.Id == academicYear.Id && x.Student.Id == stu.Id);
                 if (!enr.Any())
                 {
                     var te = new Enroll() { AcademicYear = academicYear, Student = stu };

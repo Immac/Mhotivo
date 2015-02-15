@@ -20,6 +20,11 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
+
         public AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query)
         {
             var academicYear = _context.AcademicYears.Select(query);
