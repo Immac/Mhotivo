@@ -140,9 +140,10 @@ namespace Mhotivo.Implement.Repositories
                     var te = new Enroll();
 
                     var academicYearTemp = academicYearRepository.GetById(academicYear.Id);
+                    var studentTemp = studentRepository.GetById(stu.Id);
 
                     te.AcademicYear = academicYearTemp;
-                    te.Student = stu;
+                    te.Student = studentTemp;
                     
                     enrollRepository.Create(te);
                 }

@@ -40,8 +40,6 @@ namespace Mhotivo.Implement.Repositories
         public Enroll Create(Enroll itemToCreate)
         {
             var enroll = _context.Enrolls.Add(itemToCreate);
-            //_context.Entry(enroll.AcademicYear).State = EntityState.Modified;
-            //_context.Entry(enroll.Student).State = EntityState.Modified;
             _context.SaveChanges();
             return enroll;
         }
