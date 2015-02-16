@@ -48,6 +48,7 @@
     <Compile Include="Interfaces\ICourseRepository.cs" />
     <Compile Include="Interfaces\IEnrollRepository.cs" />
     <Compile Include="Interfaces\IGradeRepository.cs" />
+    <Compile Include="Interfaces\IImportDataRepository.cs" />
     <Compile Include="Interfaces\IMeisterRepository.cs" />
     <Compile Include="Interfaces\IParentRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />

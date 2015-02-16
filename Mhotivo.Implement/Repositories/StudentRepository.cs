@@ -20,6 +20,10 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
         public static StudentRepository Instance
         {
             get { return new StudentRepository(new MhotivoContext()); }
@@ -34,7 +38,13 @@ namespace Mhotivo.Implement.Repositories
         public Student GetById(long id)
         {
             var student = _context.Students.Where(x => x.Id == id);
-            return student.Count() != 0 ? student.Include(x => x.Benefactor).First() : null;
+            return student.Count() != 0 ? student.Include(x => x.Tutor1).First() : null;
+        }
+
+        public Student GetByIdNumber(string idNumber)
+        {
+            var student = _context.Students.Where(x => x.IdNumber == idNumber);
+            return student.Count() != 0 ? student.Include(x => x.Tutor1).First() : null;
         }
 
         public Student Create(Student itemToCreate)
@@ -77,9 +87,10 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<Student> GetAllStudents()
         {
-            return Query(x => x).ToList().Select(x => new Student
+            return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Student
             {
                 Id = x.Id,
+                IdNumber = x.IdNumber,
                 UrlPicture = x.UrlPicture,
                 FullName = x.FullName,
                 BirthDate = x.BirthDate,
@@ -94,7 +105,8 @@ namespace Mhotivo.Implement.Repositories
                 AccountNumber = x.AccountNumber,
                 Biography = x.Biography,
                 Tutor1 = x.Tutor1,
-                Tutor2 = x.Tutor2
+                Tutor2 = x.Tutor2,
+                Disable = x.Disable
             });
         }
 

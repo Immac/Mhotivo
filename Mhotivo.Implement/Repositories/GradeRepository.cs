@@ -20,7 +20,12 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
            
         }
-        
+
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
+
         public Grade First(Expression<Func<Grade, bool>> query)
         {
             return _context.Grades.First(query);

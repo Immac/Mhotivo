@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Data.Entities;
@@ -15,5 +16,11 @@ namespace Mhotivo.Interface.Interfaces
         AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse, bool updateGrade, bool updateTeacher);
         AcademicYear Delete(long id);
         void SaveChanges();
+
+        IEnumerable<AcademicYear> GetAllAcademicYears();
+
+        bool ExistAcademicYear(int year, int grade, string section);
+
+        AcademicYear GetByFields(int year, int grade, string section);
     }
 }

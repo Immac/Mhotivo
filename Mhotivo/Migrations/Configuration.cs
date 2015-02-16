@@ -16,7 +16,7 @@ namespace Mhotivo.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             ContextKey = "Mhotivo.Implement.Context.MhotivoContext";
         }
 
