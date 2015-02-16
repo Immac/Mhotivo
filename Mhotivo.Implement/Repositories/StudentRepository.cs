@@ -87,9 +87,10 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<Student> GetAllStudents()
         {
-            return Query(x => x).ToList().Where(x => !x.Disable).Select(x => new Student
+            return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Student
             {
                 Id = x.Id,
+                IdNumber = x.IdNumber,
                 UrlPicture = x.UrlPicture,
                 FullName = x.FullName,
                 BirthDate = x.BirthDate,
