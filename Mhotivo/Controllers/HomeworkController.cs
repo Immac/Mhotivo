@@ -54,8 +54,12 @@ namespace Mhotivo.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Year = new SelectList(_academicYearRepository.Query(x => x), "Id", "Year");
-            // ViewBag.Grade = "Primer Grado";
+            var query = _academicYearRepository.Query(x => x);
+            var y=new SelectList(query, "Id", "Year");
+            ViewBag.Year = y;
+
+            var g = new SelectList(query, "Id", "Section");
+            ViewBag.Grade = g;
             // new SelectList(_academicYearRepository.Query(x => x), "Id", "Grade.Name");
             //ViewBag.Section = "A"; // new SelectList(_academicYearRepository.Query(x => x), "Id", "Section");
             var modelRegister = new CreateHomeworkModel();
