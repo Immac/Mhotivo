@@ -9,7 +9,7 @@
 
     <h2>Años Académicos Registrados  </h2>
 
-    <a class="toAdd" data-toggle="modal" role="button" data-id="AcademicYear/Add"><span class="btn btn-small btn-primary active">Agregar Año Académico</span></a>
+    <a class="toAdd" data-toggle="modal" role="button" href="~/AcademicYear/Add"><span class="btn btn-small btn-primary active">Agregar Año Académico</span></a>
 
     @if (!Model.Any())
     {
@@ -42,7 +42,7 @@
                         <td>@Html.DisplayFor(modelItem => item.EducationLevel)</td>
                         <td>@Html.DisplayFor(modelItem => item.Approved)</td>
                         <td>
-                            <a data-id="AcademicYear/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
+                            <a href="~/AcademicYearDetails/Index/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
                             <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                             <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                             @*@using (Html.BeginForm("Delete", "AcademicYear", new {id = Html.DisplayFor(modelItem => item.Id)}, FormMethod.Post,

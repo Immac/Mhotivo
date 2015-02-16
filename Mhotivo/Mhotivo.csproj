@@ -156,6 +156,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
+    <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BenefactorController.cs" />
     <Compile Include="Controllers\ClassActivityController.cs" />
@@ -188,6 +189,7 @@
       <DependentUpon>201502110237400_changeSectionType.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
     <Compile Include="Models\AreaModel.cs" />
@@ -507,6 +509,10 @@
     <Content Include="Views\Event\PrincipalIndex.cshtml" />
     <Content Include="Views\Event\Agenda.cshtml" />
     <Content Include="Views\AcademicYear\Index.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Index.cshtml" />
+    <Content Include="Views\AcademicYear\Edit.cshtml" />
+    <Content Include="Views\AcademicYear\Create.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,10 +12,10 @@ namespace Mhotivo.Models
         public ICollection<AcademicYearDetail> AcademicYears { get; set; }
         public int Id { get; set; }
 
-        [Display(Name = "Fecha ingreso del maestro")]
+        [Display(Name = "Fecha inicio de clase")]
         public DateTime TeacherStartDate { get; set; }
 
-        [Display(Name = "Fecha de salida del maestro")]
+        [Display(Name = "Fecha de fin de clase")]
         public DateTime TeacherEndDate { get; set; }
 
         [Display(Name = "Horario")]
@@ -49,10 +49,10 @@ namespace Mhotivo.Models
         public string Room { get; set; }
 
         [Display(Name = "Debe asignar un Curso")]
-        public string Course { get; set; }
+        public Course Course { get; set; }
 
         [Display(Name = "Debe asignar el Maestro")]
-        public string Teacher { get; set; }
+        public Meister Teacher { get; set; }
 
     }
 
@@ -74,9 +74,9 @@ namespace Mhotivo.Models
         public string Room { get; set; }
 
         [Display(Name = "Debe asignar un Curso")]
-        public string Course { get; set; }
+        public Course Course { get; set; }
 
         [Display(Name = "Debe asignar un Maestro/a")]
-        public string Teacher { get; set; }
+        public Meister Teacher { get; set; }
     }
 }

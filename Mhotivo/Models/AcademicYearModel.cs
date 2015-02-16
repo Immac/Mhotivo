@@ -33,7 +33,7 @@ namespace Mhotivo.Models
     {
         [Required(ErrorMessage = "Debe Ingresar un Grado")]
         [Display(Name = "Grado")]
-        public string Grade { get; set; }
+        public Grade Grade { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Año")]
         [Display(Name = "Año")]
@@ -60,7 +60,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar un Grado")]
         [Display(Name = "Grado")]
-        public string Grade { get; set; }
+        public Grade Grade { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Año")]
         [Display(Name = "Año")]
@@ -71,11 +71,11 @@ namespace Mhotivo.Models
         public string Section { get; set; }
 
         [Required(ErrorMessage = "Debe Asignar un Nivel Educativo")]
-        [Display(Name = "Sección")]
+        [Display(Name = "Nivel")]
         public string EducationLevel { get; set; }
 
         [Display(Name = "Aprovado")]
-        public bool Approved { get; set; }
+        public string Approved { get; set; }
     }
 
     public class AcademicYearViewManagement

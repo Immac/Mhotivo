@@ -49,6 +49,7 @@
     <Compile Include="Context\MhotivoContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AcademicYearDetailsRepository.cs" />
     <Compile Include="Repositories\AcademicYearRepository.cs" />
     <Compile Include="Repositories\AppoimentParticipant.cs" />
     <Compile Include="Repositories\BenefactorRepository.cs" />
