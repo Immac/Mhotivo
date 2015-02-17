@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201502121552485_Initial.Designer.cs">
       <DependentUpon>201502121552485_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502170631452_siwady2.cs" />
+    <Compile Include="Migrations\201502170631452_siwady2.Designer.cs">
+      <DependentUpon>201502170631452_siwady2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -537,6 +541,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201502121552485_Initial.resx">
       <DependentUpon>201502121552485_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502170631452_siwady2.resx">
+      <DependentUpon>201502170631452_siwady2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

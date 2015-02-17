@@ -12,7 +12,7 @@ namespace Mhotivo.Data.Entities
 
         public virtual Grade Grade { get; set; }
 
-        public int Year { get; set; }
+        public DateTime Year { get; set; }
 
         public String Section { get; set; }
 

@@ -1,3 +1,4 @@
+using System;
 using AutoMapper.Mappers;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
@@ -75,7 +76,7 @@ namespace Mhotivo.Migrations
                 Id = 2,
                 IsActive = true,
                 Section = "A",
-                Year = 2015
+                Year = DateTime.Now
             });
             context.AcademicYearDetails.AddOrUpdate(new AcademicYearDetail
             {
@@ -87,7 +88,7 @@ namespace Mhotivo.Migrations
                         Id = 1,
                         IsActive = true,
                         Section = "A",
-                        Year = 2015
+                        Year = DateTime.Now
                     },
                 Course = new Course
                 {
