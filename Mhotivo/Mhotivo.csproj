@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201502170609516_carlos.Designer.cs">
       <DependentUpon>201502170609516_carlos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502170643512_carlos2.cs" />
+    <Compile Include="Migrations\201502170643512_carlos2.Designer.cs">
+      <DependentUpon>201502170643512_carlos2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -537,6 +541,9 @@
     <EmbeddedResource Include="Migrations\201502170609516_carlos.resx">
       <DependentUpon>201502170609516_carlos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502170643512_carlos2.resx">
+      <DependentUpon>201502170643512_carlos2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -556,7 +563,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:9801/</IISUrl>
+          <IISUrl>http://localhost:1765/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
