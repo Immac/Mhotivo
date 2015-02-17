@@ -51,6 +51,7 @@ namespace Mhotivo.Implement.Repositories
                     ,Nationality = dtDatos.Rows[indice][13].ToString()
                     ,State = dtDatos.Rows[indice][15].ToString()
                 };
+                newStudents.FullName = (newStudents.FirstName + " " + newStudents.LastName).Trim();
 
                 var newParent = new Parent
                 {
@@ -63,6 +64,7 @@ namespace Mhotivo.Implement.Repositories
                     ,State = dtDatos.Rows[indice][25].ToString()
                     ,City = dtDatos.Rows[indice][26].ToString()
                 };
+                newParent.FullName = (newParent.FirstName + " " + newParent.LastName).Trim();
 
                 var newContactInformation = new ContactInformation
                 {
