@@ -87,7 +87,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        public ActionResult Add()
+        public ActionResult Create()
         {
             ViewBag.Id = new SelectList(_peopleRepository.Query(x => x), "Id", "FullName");
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "GradeId", "Name");
@@ -95,7 +95,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(EnrollRegisterModel modelEnroll)
+        public ActionResult Create(EnrollRegisterModel modelEnroll)
         {
             List<AcademicYear> Collection =
                 _academicYearRepository.Filter(x => x.Grade.Id == modelEnroll.GradeId).ToList();

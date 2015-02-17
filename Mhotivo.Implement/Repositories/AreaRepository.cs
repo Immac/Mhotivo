@@ -23,52 +23,75 @@ namespace Mhotivo.Implement.Repositories
 
         public Area First(Expression<Func<Area, Area>> query)
         {
-            throw new NotImplementedException();
+            var areas = _context.Areas.Select(query);
+            return areas.Count() != 0 ? areas.First() : null;
         }
 
         public Area GetById(long id)
         {
-            throw new NotImplementedException();
+            var areas = _context.Areas.Where(x => x.Id == id);
+            return areas.Count() != 0 ? areas.First() : null;
         }
 
         public Area Create(Area itemToCreate)
         {
-            throw new NotImplementedException();
+            var role = _context.Areas.Add(itemToCreate);
+            _context.SaveChanges();
+            return role;
         }
 
         public IQueryable<Area> Query(Expression<Func<Area, Area>> expression)
         {
-            throw new NotImplementedException();
+            return _context.Areas.Select(expression);
         }
 
         public IQueryable<Area> Filter(Expression<Func<Area, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _context.Areas.Where(expression);
         }
 
         public Area Update(Area itemToUpdate)
         {
-            throw new NotImplementedException();
+            _context.Entry(itemToUpdate).State = EntityState.Modified;
+            SaveChanges();
+            return itemToUpdate;
         }
-
-        public Area Delete(Area itemToDelete)
+        public Area UpdateAreaFromAreaEditModel(Area areaEditModel, Area area)
         {
-            throw new NotImplementedException();
+            area.Name = areaEditModel.Name;
+            return Update(area);
+        }
+        public Area Delete(long id)
+        {
+            //_context.Areas.Remove(itemToDelete);
+            var itemToDelete = GetById(id);
+            _context.Areas.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
 
         public System.Collections.Generic.IEnumerable<Area> GetAllAreas()
         {
-            throw new NotImplementedException();
+            return Query(x => x).ToList().Select(x => new Area
+            {
+                Name = x.Name,
+                //Email = x.Email,
+                //Role = x.Role.Name,
+                //Status = x.Status ? "Activo" : "Inactivo",
+                //Role = x.Role,
+                //Status = x.Status,
+                Id = x.Id
+            });
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context.Dispose();
         }
     }
 }

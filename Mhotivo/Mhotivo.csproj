@@ -526,8 +526,9 @@
     <Content Include="Views\Pensum\Index.cshtml" />
     <Content Include="Views\Event\PrincipalIndex.cshtml" />
     <Content Include="Views\Event\Agenda.cshtml" />
-    <Content Include="Views\Area\Add.cshtml" />
     <Content Include="Views\Area\Index.cshtml" />
+    <Content Include="Views\Area\Create.cshtml" />
+    <Content Include="Views\Area\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

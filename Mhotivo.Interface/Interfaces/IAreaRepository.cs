@@ -14,7 +14,8 @@ namespace Mhotivo.Interface.Interfaces
         IQueryable<Area> Query(Expression<Func<Area, Area>> expression);
         IQueryable<Area> Filter(Expression<Func<Area, bool>> expression);
         Area Update(Area itemToUpdate);
-        Area Delete(Area itemToDelete);
+        Area UpdateAreaFromAreaEditModel(Area areaEditModel, Area area);
+        Area Delete(long id);
         void SaveChanges();
         IEnumerable<Area> GetAllAreas();
     }
