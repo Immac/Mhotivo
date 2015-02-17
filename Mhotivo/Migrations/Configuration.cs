@@ -65,7 +65,7 @@ namespace Mhotivo.Migrations
             {
                 Id = 2,
                 Area = new Area { Id = 1, Name = "Ciencias Sociales" },
-                Name = "Sociologia"
+                Name = "Estudios Sociales"
             });
 
             context.AcademicYears.AddOrUpdate(new AcademicYear

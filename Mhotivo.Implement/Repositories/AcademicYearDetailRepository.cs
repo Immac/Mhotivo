@@ -23,10 +23,24 @@ namespace Mhotivo.Implement.Repositories
             return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
         }
 
+        public AcademicYearDetail FindByCourse(long id)
+        {
+            IQueryable<AcademicYearDetail> academicYearDetail =
+                _context.AcademicYearDetails.Where(x => x.Course.Id == id && !false);
+            return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
+        }
+
         public AcademicYearDetail GetById(long id)
         {
             IQueryable<AcademicYearDetail> academicYearDetail =
                 _context.AcademicYearDetails.Where(x => x.Id == id && !false);
+            return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
+        }
+
+        public AcademicYearDetail FindByAcademicYear(long id)
+        {
+            IQueryable<AcademicYearDetail> academicYearDetail =
+                _context.AcademicYearDetails.Where(x => x.AcademicYear.Id == id && !false);
             return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
         }
 

@@ -17,6 +17,7 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
+        
         public AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query)
         {
             IQueryable<AcademicYear> academicYear = _context.AcademicYears.Select(query);

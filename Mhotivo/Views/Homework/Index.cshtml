@@ -25,13 +25,7 @@ else
                 <th>@Html.DisplayNameFor(model => model.Description)</th>
                 <th>@Html.DisplayNameFor(model => model.DeliverDate)</th>
                 <th>@Html.DisplayNameFor(model => model.Points)</th>
-                <th>@Html.DisplayNameFor(model => model.AcademicYearDetail.Course.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.AcademicYearDetail.Teacher.FullName)</th>
-                <th>@Html.DisplayNameFor(model => model.AcademicYearDetail.Room)</th>
-                <th>@Html.DisplayNameFor(model => model.AcademicYearDetail.Schedule)</th>
-                <th>@Html.DisplayNameFor(model => model.AcademicYearDetail.AcademicYear.Grade.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.AcademicYearDetail.AcademicYear.Section)</th>
-                <th>@Html.DisplayNameFor(model => model.AcademicYearDetail.AcademicYear.Year)</th>
+                <th>Materia</th>
                 <th></th>
             </tr>
         </thead>
@@ -46,12 +40,6 @@ else
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.DeliverDate)</td>
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Points)</td>
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.Course.Name)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.Teacher.FullName)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.Room)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.Schedule)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.AcademicYear.Grade.Name)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.AcademicYear.Section)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.AcademicYear.Year)</td>
                     <td>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Homework/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>

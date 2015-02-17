@@ -9,8 +9,12 @@ namespace Mhotivo.Interface.Interfaces
     public interface IAcademicYearDetailRepository
     {
         AcademicYearDetail First(Expression<Func<AcademicYearDetail, AcademicYearDetail>> query);
+       
+        AcademicYearDetail FindByCourse(long id);
 
         AcademicYearDetail GetById(long id);
+
+        AcademicYearDetail FindByAcademicYear(long id);
 
         AcademicYearDetail Create(AcademicYearDetail itemToCreate);
 

@@ -14,17 +14,20 @@ namespace Mhotivo.Controllers
         private readonly IAcademicYearDetailRepository _academicYearDetailRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
+        private readonly IGradeRepository _gradeRepository;
+        private readonly ICourseRepository _courseRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
-            IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository
+            IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
+            IGradeRepository gradeRepository,ICourseRepository courseRepository
             )
         {
             _homeworkRepository = homeworkRepository;
             _academicYearRepository = academicYearRepository;
-
+            _gradeRepository = gradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
-
+            _courseRepository = courseRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
         }
 
@@ -54,20 +57,14 @@ namespace Mhotivo.Controllers
 
         public ActionResult Create()
         {
-            var query = _academicYearRepository.Query(x => x);
-            var y=new SelectList(query, "Id", "Year");
-            ViewBag.Year = y;
-
-            var g = new SelectList(query, "Id", "Section");
-            ViewBag.Grade = g;
-            // new SelectList(_academicYearRepository.Query(x => x), "Id", "Grade.Name");
-            //ViewBag.Section = "A"; // new SelectList(_academicYearRepository.Query(x => x), "Id", "Section");
+            var query = _courseRepository.Query(x => x);
+            ViewBag.course = new SelectList(query, "Id", "Name");
             var modelRegister = new CreateHomeworkModel();
             return View(modelRegister);
         }
 
         [HttpPost]
-        public ActionResult Create(DisplayHomeworkModel modelHomework)
+        public ActionResult Create(CreateHomeworkModel modelHomework)
         {
             var myHomework = new Homework
             {
@@ -75,7 +72,8 @@ namespace Mhotivo.Controllers
                 Description = modelHomework.Description,
                 DeliverDate = modelHomework.DeliverDate,
                 Points = modelHomework.Points,
-                AcademicYearDetail = _academicYearDetailRepository.GetById(modelHomework.AcademicYearId)
+                AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.course).Id)
+
             };
 
             Homework user = _homeworkRepository.Create(myHomework);
