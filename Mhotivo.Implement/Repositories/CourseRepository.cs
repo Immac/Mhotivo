@@ -26,6 +26,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
+
         public Course First(Expression<Func<Course, Course>> query)
         {
             var courses = _context.Courses.Select(query);

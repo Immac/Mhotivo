@@ -48,11 +48,11 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -167,6 +167,7 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
+    <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\MeisterController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\NotificationTypeController.cs" />
@@ -186,7 +187,6 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-
     <Compile Include="Migrations\201502170609516_carlos.cs" />
     <Compile Include="Migrations\201502170609516_carlos.Designer.cs">
       <DependentUpon>201502170609516_carlos.cs</DependentUpon>
@@ -198,6 +198,18 @@
     <Compile Include="Migrations\201502162215487_20150216.cs" />
     <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502121552485_Initial.cs" />
+    <Compile Include="Migrations\201502121552485_Initial.Designer.cs">
+      <DependentUpon>201502121552485_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502170631452_siwady2.cs" />
+    <Compile Include="Migrations\201502170631452_siwady2.Designer.cs">
+      <DependentUpon>201502170631452_siwady2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502170844417_gabriel_migration.cs" />
+    <Compile Include="Migrations\201502170844417_gabriel_migration.Designer.cs">
+      <DependentUpon>201502170844417_gabriel_migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -212,6 +224,7 @@
     <Compile Include="Models\GradeModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\ImportDataModel.cs" />
+    <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\MeisterModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
@@ -522,13 +535,12 @@
     <Content Include="Views\Pensum\Index.cshtml" />
     <Content Include="Views\Event\PrincipalIndex.cshtml" />
     <Content Include="Views\Event\Agenda.cshtml" />
-
     <Content Include="Views\ImportData\Index.cshtml" />
-
     <Content Include="Views\NotificationType\Index.cshtml" />
     <Content Include="Views\NotificationType\Edit.cshtml" />
     <Content Include="Views\NotificationType\Add.cshtml" />
-
+    <Content Include="Views\Homework\Index.cshtml" />
+    <Content Include="Views\Homework\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -551,16 +563,23 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-
     <EmbeddedResource Include="Migrations\201502170609516_carlos.resx">
       <DependentUpon>201502170609516_carlos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502170643512_carlos2.resx">
       <DependentUpon>201502170643512_carlos2.cs</DependentUpon>
-     </EmbeddedResource>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
-
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502121552485_Initial.resx">
+      <DependentUpon>201502121552485_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502170631452_siwady2.resx">
+      <DependentUpon>201502170631452_siwady2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502170844417_gabriel_migration.resx">
+      <DependentUpon>201502170844417_gabriel_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

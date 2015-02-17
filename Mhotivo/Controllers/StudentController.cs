@@ -30,13 +30,18 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var allStudents = _studentRepository.GetAllStudents();
+
 
 
             Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
-            var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
+           // var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
 
-            return View(allStudentDisplaysModel);
+            var listaStudiantes = _studentRepository.GetAllStudents();
+
+            var listaEstudiantesModel = listaStudiantes.Select(Mapper.Map<DisplayStudentModel>);
+
+
+            return View(listaEstudiantesModel);
         }
 
         [HttpGet]

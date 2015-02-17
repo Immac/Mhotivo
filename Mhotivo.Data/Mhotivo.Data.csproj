@@ -70,6 +70,7 @@
     <Compile Include="Entities\AppointmentParticipants.cs" />
     <Compile Include="Entities\Grade.cs" />
     <Compile Include="Entities\Group.cs" />
+    <Compile Include="Entities\Homework.cs" />
     <Compile Include="Entities\Meister.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationType.cs" />

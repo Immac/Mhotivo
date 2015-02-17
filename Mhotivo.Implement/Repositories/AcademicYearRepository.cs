@@ -1,13 +1,13 @@
+
 ﻿using System;
 using System.Collections.Generic;
+
+﻿using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Context;
+using Mhotivo.Interface.Interfaces;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
-using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
-using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Context;
 
 namespace Mhotivo.Implement.Repositories
 {
@@ -25,34 +25,56 @@ namespace Mhotivo.Implement.Repositories
             return _context;
         }
 
+        //public AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query)
+        //{
+        //    var academicYear = _context.AcademicYears.Select(query);
+        //    return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade).First() : null;
+
+        
         public AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query)
         {
-            var academicYear = _context.AcademicYears.Select(query);
-            return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade).First() : null;
+            IQueryable<AcademicYear> academicYear = _context.AcademicYears.Select(query);
+            return academicYear.Count() != 0 ? academicYear.First() : null;
+
         }
 
         public AcademicYear GetById(long id)
         {
-            var academicYear = _context.AcademicYears.Where(x => x.Id == id && x.Approved);
-            return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade).First() : null;
+
+            //var academicYear = _context.AcademicYears.Where(x => x.Id == id && x.Approved);
+            //return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade).First() : null;
+
+            IQueryable<AcademicYear> academicYear = _context.AcademicYears.Where(x => x.Id == id && !false);
+            return academicYear.Count() != 0 ? academicYear.First() : null;
+
         }
 
         public AcademicYear Create(AcademicYear itemToCreate)
         {
+
             var academicYear = _context.AcademicYears.Add(itemToCreate);
             _context.Entry(academicYear.Grade).State = EntityState.Modified;
+
+           // AcademicYear academicYear = _context.AcademicYears.Add(itemToCreate);
+
             _context.SaveChanges();
             return academicYear;
         }
 
         public IQueryable<AcademicYear> Query(Expression<Func<AcademicYear, AcademicYear>> expression)
         {
-            var academicYear = _context.AcademicYears.Select(expression);
-            return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
+
+           // var academicYear = _context.AcademicYears.Select(expression);
+            //return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
+
+            IQueryable<AcademicYear> myAcademicYear = _context.AcademicYears.Select(expression);
+            return myAcademicYear;
+
         }
 
         public IQueryable<AcademicYear> Filter(Expression<Func<AcademicYear, bool>> expression)
         {
+
             var academicYear = _context.AcademicYears.Where(expression);
             return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
         }
@@ -71,33 +93,47 @@ namespace Mhotivo.Implement.Repositories
 
             _context.SaveChanges();
             return itemToUpdate;   
+//=======
+//            IQueryable<AcademicYear> myAcademicYear = _context.AcademicYears.Where(expression);
+//            return myAcademicYear;
+//>>>>>>> homew2
         }
 
-        public AcademicYear Update(AcademicYear itemToUpdate)
+        public AcademicYear Update(AcademicYear displayAcademicYearModel, AcademicYear academicYear)
         {
-            var updateCourse = false;
-            var updateGrade = false;
-            var updateTeacher = false;
+//<<<<<<< HEAD
+//            var updateCourse = false;
+//            var updateGrade = false;
+//            var updateTeacher = false;
 
-            var ayear = GetById(itemToUpdate.Id);
-            ayear.Approved = itemToUpdate.Approved;
-            ayear.IsActive = itemToUpdate.IsActive;
-            ayear.Section = itemToUpdate.Section;
-            ayear.Year = itemToUpdate.Year;
+//            var ayear = GetById(itemToUpdate.Id);
+//            ayear.Approved = itemToUpdate.Approved;
+//            ayear.IsActive = itemToUpdate.IsActive;
+//            ayear.Section = itemToUpdate.Section;
+//            ayear.Year = itemToUpdate.Year;
 
-            if (ayear.Grade.Id != itemToUpdate.Grade.Id)
-            {
-                ayear.Grade = itemToUpdate.Grade;
-                updateGrade = true;
-            }
+//            if (ayear.Grade.Id != itemToUpdate.Grade.Id)
+//            {
+//                ayear.Grade = itemToUpdate.Grade;
+//                updateGrade = true;
+//            }
 
-            return Update(ayear, updateCourse, updateGrade, updateTeacher);  
+//            return Update(ayear, updateCourse, updateGrade, updateTeacher);  
+//=======
+            academicYear.Id = displayAcademicYearModel.Id;
+            academicYear.Grade = displayAcademicYearModel.Grade;
+            academicYear.Section = displayAcademicYearModel.Section;
+            academicYear.IsActive = displayAcademicYearModel.IsActive;
+            academicYear.Approved = displayAcademicYearModel.Approved;
+
+            return Update(academicYear);
+//>>>>>>> homew2
         }
 
         public AcademicYear Delete(long id)
         {
-            var itemToDelete = GetById(id);
-            _context.AcademicYears.Remove(itemToDelete);
+            AcademicYear itemToDelete = GetById(id);
+
             _context.SaveChanges();
             return itemToDelete;
         }
@@ -148,6 +184,12 @@ namespace Mhotivo.Implement.Repositories
         public void Dispose()
         {
             _context.Dispose();
+        }
+
+        public AcademicYear Update(AcademicYear itemToUpdate)
+        {
+            _context.SaveChanges();
+            return itemToUpdate;
         }
 
         public void Detach(AcademicYear academicYear)

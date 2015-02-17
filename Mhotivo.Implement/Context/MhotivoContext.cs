@@ -9,7 +9,8 @@ namespace Mhotivo.Implement.Context
         public MhotivoContext() : base("DefaultConnection")
         {
         }
-
+        public DbSet<Homework> Homeworks { get; set; }
+       // public DbSet<AcademicYearDetail> AcademicYearDetails { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<AcademicYearDetail> AcademicYearDetails { get; set; }
         public DbSet<AppointmentDiary> AppointmentDiary { get; set; }
