@@ -42,6 +42,7 @@
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
     <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
     <Compile Include="Interfaces\IAppointmentParticipants.cs" />
+    <Compile Include="Interfaces\IAreaReporsitory.cs" />
     <Compile Include="Interfaces\IBenefactorRepository.cs" />
     <Compile Include="Interfaces\IClassActivityRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />
@@ -50,6 +51,8 @@
     <Compile Include="Interfaces\IGradeRepository.cs" />
     <Compile Include="Interfaces\IImportDataRepository.cs" />
     <Compile Include="Interfaces\IMeisterRepository.cs" />
+    <Compile Include="Interfaces\INotificationRepository.cs" />
+    <Compile Include="Interfaces\INotificationTypeRepository.cs" />
     <Compile Include="Interfaces\IParentRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />
     <Compile Include="Interfaces\IPeopleRepository.cs" />

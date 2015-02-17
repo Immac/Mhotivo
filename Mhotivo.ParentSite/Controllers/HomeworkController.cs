@@ -6,12 +6,15 @@ using System.Web.Mvc;
 
 namespace Mhotivo.ParentSite.Controllers
 {
-    public class HomeController : Controller
+    public class HomeworkController : Controller
     {
+        //
+        // GET: /Homework/
+
         public ActionResult Index()
         {
-            return RedirectToAction("Index","Notification");
-            //return View();
+            return View();
         }
+
     }
 }

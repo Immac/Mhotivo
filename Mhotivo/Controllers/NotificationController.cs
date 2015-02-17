@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 //using Mhotivo.App_Data;
+using System.Web.WebPages;
 using AutoMapper;
+using Mhotivo.Logic;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using Mhotivo.Data.Entities;
@@ -18,9 +21,58 @@ namespace Mhotivo.Controllers
     {
         public MhotivoContext db = new MhotivoContext();
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly ISessionManagement _sessionManagement;
+        private readonly IUserRepository _userRepository;
+        private readonly INotificationRepository _notificationRepository;
+        //private readonly IGradeRepository _gradeRepository;
+        //private readonly IAreaReporsitory _areaReporsitory;
 
-        public NotificationController()
+        private void LoadTypeNotification(ref NotificationModel model)
         {
+            var items = db.NotificationTypes.Select(c => new SelectListItem()
+            {
+                Text = c.TypeDescription,
+                Value = c.NotificationTypeId.ToString()
+            }).ToList();
+            model.NotificationTypeSelectList = new SelectList(items, "Value", "Text", model.NotificationTypeId);
+
+
+            var list = new List<SelectListItem>().ToList();
+            switch (model.NotificationTypeId.ToString(CultureInfo.InvariantCulture))
+            {
+                case "2":
+                    list = db.Areas.Select(c => new SelectListItem()
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    }).ToList();
+                    break;
+                case "3":
+                    list = db.Grades.Select(c => new SelectListItem()
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    }).ToList();
+                    break;
+                case "4":
+                    list = db.Users.Select(c => new SelectListItem()
+                    {
+                        Text = c.DisplayName,
+                        Value = c.Id.ToString()
+                    }).ToList();
+                    break;
+            }
+
+            model.NotificationTypeOpionSelectList = new SelectList(list, "Value", "Text", model.IdGradeAreaUserGeneralSelected);
+        }
+
+        public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository)
+        {
+            _sessionManagement = sessionManagement;
+            _userRepository = userRepository;
+            _notificationRepository = notificationRepository;
+            //_gradeRepository = gradeRepository;
+            //_areaReporsitory = areaReporsitory;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -32,6 +84,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             var notifications = db.Notifications.Where(x => true);
             var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+            
             return View(notificationsModel);
         }
 
@@ -41,6 +94,7 @@ namespace Mhotivo.Controllers
         public ActionResult Add()
         {
             var notification = new NotificationModel();
+            LoadTypeNotification(ref notification);
     
             return View("Add", notification);
         }
@@ -48,34 +102,54 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Add(NotificationModel eventNotification)
         {
-            //if (ModelState.IsValid)
-            //{
-                //var template = new Notification
-                //               {
-                //                   EventName = eventNotification.EventName,
-                //                   From = eventNotification.From,
-                //                   To = eventNotification.To,
-                //                   WithCopyTo = eventNotification.WithCopyTo,
-                //                   WithHiddenCopyTo = eventNotification.WithHiddenCopyTo,
-                //                   Subject = eventNotification.Subject,
-                //                   Message = eventNotification.Message,
-                //                   Created = DateTime.Now
-                //               };
+            var notificationIdentity = Mapper.Map<Notification>(eventNotification);
+            notificationIdentity.Created = DateTime.Now;
 
-                var template = Mapper.Map<Notification>(eventNotification);
-                template.Created = DateTime.Now;
+            var notificationType = db.NotificationTypes.FirstOrDefault(c => c.NotificationTypeId ==eventNotification.NotificationTypeId);
+            notificationIdentity.NotificationType = notificationType;
 
-                db.Notifications.Add(template);
-                db.SaveChanges();
-                const string title = "Notificación Agregado";
-                var content = "El evento " + eventNotification.EventName + " ha sido agregado exitosamente.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            //}
-            //else
-            //{
-            //    _viewMessageLogic.SetNewMessage("", "Oooops we have encountered an error, please try again later...", ViewMessageType.ErrorMessage);
-            //}
+            //if (AddressedTo.IsEmpty() || AddressedTo == null)
+            //    AddressedTo = "0";
+
+            //notificationIdentity.IdGradeAreaUserGeneralSelected = Convert.ToInt64(AddressedTo);
+
+            db.Notifications.Add(notificationIdentity);
+            db.SaveChanges();
+            const string title = "Notificación Agregado";
+            var content = "El evento " + eventNotification.NotificationName + " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+
             return RedirectToAction("Index");
+        }
+
+        public JsonResult OptiontList(string Id)
+        {
+            var list = new List<SelectListItem>();
+            switch (Id)
+            {
+                case "2":
+                    list = db.Areas.Select(c => new SelectListItem()
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    }).ToList();
+                    break;
+                case "3":
+                    list = db.Grades.Select(c => new SelectListItem()
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    }).ToList();
+                    break;
+                case "4":
+                    list = db.Users.Select(c => new SelectListItem()
+                    {
+                        Text = c.DisplayName,
+                        Value = c.Id.ToString()
+                    }).ToList();
+                    break;
+            }
+            return Json(new SelectList(list, "Value", "Text"), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetGroupsAndEmails(string filter)
@@ -94,9 +168,14 @@ namespace Mhotivo.Controllers
 
         public ActionResult Edit(int id)
         {
-            var toEdit = db.Notifications.FirstOrDefault(x => x.Id.Equals(id));
-
+            var toEdit = _notificationRepository.Query(x => x).Include("NotificationType").FirstOrDefault(x => x.Id.Equals(id));
+            //var toEdit = db.Notifications.FirstOrDefault(x => x.Id.Equals(id));
             var toEditModel = Mapper.Map<NotificationModel>(toEdit);
+            if (toEdit != null)
+                if (toEdit.NotificationType != null)
+                    toEditModel.NotificationTypeId = toEdit.NotificationType.NotificationTypeId;
+
+            LoadTypeNotification(ref toEditModel);
 
             return View(toEditModel);
         }
@@ -105,20 +184,24 @@ namespace Mhotivo.Controllers
         // POST: /NotificationModel/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, Notification notification)
+        public ActionResult Edit(int id, NotificationModel eventNotification)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    db.Entry(notification).State = EntityState.Modified;
-                    db.SaveChanges();
-                    _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.", ViewMessageType.SuccessMessage);
-                }
+                var notificationIdentity = Mapper.Map<Notification>(eventNotification);
+                
+                db.Entry(notificationIdentity.NotificationType).State = EntityState.Modified;
+                db.Entry(notificationIdentity).State = EntityState.Modified;
+                db.SaveChanges();
+                _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.",
+                    ViewMessageType.SuccessMessage);
+                //}
             }
             catch
             {
-                _viewMessageLogic.SetNewMessage("Error en edición", "La notificación no pudo ser editada correctamente, por favor intente nuevamente.", ViewMessageType.ErrorMessage);
+                _viewMessageLogic.SetNewMessage("Error en edición",
+                    "La notificación no pudo ser editada correctamente, por favor intente nuevamente.",
+                    ViewMessageType.ErrorMessage);
             }
             IQueryable<Group> g = db.Groups.Select(x => x);
             return RedirectToAction("Index", g);
@@ -144,5 +227,23 @@ namespace Mhotivo.Controllers
                 return View("Index");
             }
         }
+
+
+        public bool SendEmailForGeneralNotifications(AcademicYear currentAcademicYear)
+        {
+            var currentYear = currentAcademicYear.Year;
+            var generalNotifications = db.Notifications.Where(n => n.Created.Year.Equals(currentYear) && n.NotificationType.NotificationTypeId == 1);
+
+            foreach (var notification in generalNotifications)
+            {
+
+
+            }
+
+
+            return false;
+
+        }
+
     }
 }
