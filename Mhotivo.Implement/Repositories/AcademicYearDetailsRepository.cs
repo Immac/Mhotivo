@@ -46,9 +46,10 @@ namespace Mhotivo.Implement.Repositories
         {
             int id = 0;
             var academicYearDetails = _context.AcademicYearsDetails.Select(expression);
-            return academicYearDetails.Count() != 0 ? academicYearDetails.Include(x => x.AcademicYear)
+            var result = academicYearDetails.Count() != 0 ? academicYearDetails.Include(x => x.AcademicYear)
                                                                          .Include(x => x.Course)
-                                                                         .Include(x => x.Teacher): academicYearDetails;
+                                                                         .Include(x => x.Teacher).Where(x => x.AcademicYear.Year != null): academicYearDetails;
+            return result;
         }
 
         public IQueryable<AcademicYearDetail> Filter(Expression<Func<AcademicYearDetail, bool>> expression)
