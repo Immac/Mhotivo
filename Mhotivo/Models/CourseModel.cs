@@ -10,8 +10,7 @@ namespace Mhotivo.Models
         public string Name { get; set; }
 
         [Display(Name = "Area")]
-        public virtual Area Area { get; set; }
-
+        public Area Area { get; set; }
     }
 
     public class CourseEditModel
@@ -24,7 +23,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Area")]
         [Display(Name = "Area")]
-        public virtual Area Area { get; set; }
+        public Area Area { get; set; }
     }
 
     public class CourseRegisterModel
@@ -35,7 +34,14 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Area")]
         [Display(Name = "Area")]
-        public virtual Area Area { get; set; }
+        public Area Area { get; set; }
     }
 
+    public class DisplayAreaModel
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+    }
 }

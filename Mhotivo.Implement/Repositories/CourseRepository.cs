@@ -19,11 +19,6 @@ namespace Mhotivo.Implement.Repositories
            
         }
 
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
-
         public IEnumerable<Course> GetAllCourse()
         {
             return Query(c => c).ToList().Select(c => new Course
@@ -31,6 +26,15 @@ namespace Mhotivo.Implement.Repositories
                 Id = c.Id,
                 Name = c.Name,
                 Area = c.Area
+            });
+        }
+
+        public IEnumerable<Area> GetAllAreas()
+        {
+            return _context.Areas.Select(a => a).ToList().Select(a => new Area
+            {
+                Id = a.Id,
+                Name = a.Name
             });
         }
 
@@ -44,7 +48,7 @@ namespace Mhotivo.Implement.Repositories
             };
         }
 
-        public Course GetCourseEditModelById(int id)
+        public Course GetCourseEditModelById(long id)
         {
             var course = GetById(id);
             return new Course
@@ -64,18 +68,12 @@ namespace Mhotivo.Implement.Repositories
             return Update(course);
         }
 
-        public Course Delete(int id)
+        public Course Delete(long id)
         {
             var itemToDelete = GetById(id);
             _context.Courses.Remove(itemToDelete);
             _context.SaveChanges();
             return itemToDelete;
-        }
-
-        public Course First(Expression<Func<Course, Course>> query)
-        {
-            var courses = _context.Courses.Select(query);
-            return courses.Count() != 0 ? courses.First() : null;
         }
 
         public Course GetById(long id)
@@ -97,21 +95,16 @@ namespace Mhotivo.Implement.Repositories
 
         }
 
-        public IQueryable<Course> Filter(Expression<Func<Course, bool>> expression)
+        public IQueryable<TResult> QueryAreaResults<TResult>(Expression<Func<Area, TResult>> expression)
         {
-            return _context.Courses.Where(expression);
+            return _context.Areas.Select(expression);
         }
 
         public Course Update(Course itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
-            SaveChanges();
+            _context.SaveChanges();
             return itemToUpdate;
-        }
-
-        public void Delete(Course itemToDelete)
-        {
-            _context.Courses.Remove(itemToDelete);
         }
 
         public void Dispose()

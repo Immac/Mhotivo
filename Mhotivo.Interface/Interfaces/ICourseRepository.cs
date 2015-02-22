@@ -8,18 +8,26 @@ namespace Mhotivo.Interface.Interfaces
 {
     public interface ICourseRepository :  IDisposable
     {
-        Course First(Expression<Func<Course, Course>> query);
-        Course GetById(long id);
         Course Create(Course itemToCreate);
-        IQueryable<TResult> Query<TResult>(Expression<Func<Course, TResult>> expression);
-        IQueryable<Course> Filter(Expression<Func<Course, bool>> expression);
-        Course Update(Course itemToUpdate);
-        void Delete(Course itemToDelete);
-        void SaveChanges();
+
+        Course Delete(long id);
+        
         IEnumerable<Course> GetAllCourse();
+
+        IEnumerable<Area> GetAllAreas();
+
+        Course GetById(long id);
+
+        Course GetCourseEditModelById(long id);
+
         Course GenerateCourseFromRegisterModel(Course courseRegisterModel);
-        Course GetCourseEditModelById(int id);
+        
+        IQueryable<TResult> Query<TResult>(Expression<Func<Course, TResult>> expression);
+
+        IQueryable<TResult> QueryAreaResults<TResult>(Expression<Func<Area, TResult>> expression);
+
+        Course Update(Course itemToUpdate);
+
         Course UpdateCourseFromCourseEditModel(Course courseEditModel, Course course);
-        Course Delete(int id);
     }
 }

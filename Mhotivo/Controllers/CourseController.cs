@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -6,7 +7,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-
+using Area = Mhotivo.Models.Area;
 
 namespace Mhotivo.Controllers
 {
@@ -36,12 +37,18 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-
             var listCourses = _courseRepository.GetAllCourse();
+            
+            Mapper.CreateMap<DisplayCourseModel, Course>().ReverseMap();
+            
+            var list = listCourses.Select(item => item.Area != null ? new DisplayCourseModel
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Area = new Area {Id = item.Area.Id, Name = item.Area.Name}
+            } : null).ToList();
 
-            var listCoursesModel = listCourses.Select(Mapper.Map<DisplayCourseModel>);
-
-            return View(listCoursesModel);
+            return View(list);
         }
 
         /// <summary>
@@ -51,7 +58,7 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            return View("Add");
+            return View("Create");
         }
 
         /// <summary>
@@ -62,21 +69,56 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Add(CourseRegisterModel group)
         {
-            Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
+            string title;
+            string content;
 
+            Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
             var courseModel = Mapper.Map<CourseRegisterModel, Course>(group);
+
             var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
 
+            var existCourse =
+                _courseRepository.GetAllCourse()
+                    .FirstOrDefault(c => c.Name.Equals(group.Name) && c.Area.Equals(group.Area));
+
+            if (existCourse != null)
+            {
+                title = "Materia";
+                content = "La materia " + existCourse.Name + " ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+                return RedirectToAction("Index");
+            }
+
             var course = _courseRepository.Create(myCourse);
-            const string title = "Curso Agregado";
-            var content = "El curso " + myCourse.Name + " ha sido agregado exitosamente.";
+            ViewBag.AreaId = new SelectList(_courseRepository.QueryAreaResults(x => x), "Id", "Name",
+               course.Area.Id);
+
+            title = "Materia Agregada";
+            content = "La materia " + course.Name + " ha sido agregada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             
             return RedirectToAction("Index");
         }
 
         /// <summary>
-        /// GET: /Course/Edit/5
+        /// POST: /Course/Delete
+        /// </summary>
+        /// <param name="id" />
+        /// <returns />
+        [HttpPost]
+        public ActionResult Delete(long id)
+        {
+            var course = _courseRepository.Delete(id);
+
+            const string title = "Materia Eliminada";
+            var content = course.Name + " ha sido eliminado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+
+            return RedirectToAction("Index");
+        }
+        
+        /// <summary>
+        /// GET: /Course/Edit
         /// </summary>
         /// <param name="id" />
         /// <returns />
@@ -86,9 +128,21 @@ namespace Mhotivo.Controllers
             var course = _courseRepository.GetCourseEditModelById(id);
             Mapper.CreateMap<CourseEditModel, Course>().ReverseMap();
 
-            var courseModel = Mapper.Map<Course, CourseEditModel>(course);
+            var editCourse = new CourseEditModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                Area = new Area
+                {
+                    Id = course.Area.Id,
+                    Name = course.Area.Name
+                }
+            };
 
-            return View("Edit", courseModel);
+            ViewBag.AreaId = new SelectList(_courseRepository.QueryAreaResults(x => x), "Id", "Name",
+               editCourse.Area.Id);
+
+            return View("Edit", editCourse);
         }
 
         /// <summary>
@@ -99,19 +153,20 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Edit(CourseEditModel modelCourse)
         {
-            var role = _courseRepository.GetById(modelCourse.Id);
-
+            var course = _courseRepository.GetById(modelCourse.Id);
             Mapper.CreateMap<Course, CourseEditModel>().ReverseMap();
-            var courseModel = Mapper.Map<CourseEditModel, Course>(modelCourse);
-            _courseRepository.UpdateCourseFromCourseEditModel(courseModel, role);
 
-            const string title = "Curso Actualizado";
-            var content = "El curso " + role.Name + " ha sido modificado exitosamente.";
+            var courseModel = Mapper.Map<CourseEditModel, Course>(modelCourse);
+            _courseRepository.UpdateCourseFromCourseEditModel(courseModel, course);
+
+            const string title = "Materia Actualizada";
+            var content = course.Name + " ha sido modificado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
 
             return RedirectToAction("Index");
         }
+
         #endregion
     }
 }
