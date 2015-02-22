@@ -58,6 +58,23 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Add()
         {
+            var addCourse = new CourseRegisterModel();
+            //var course = _courseRepository.GetCourseEditModelById(id);
+            //Mapper.CreateMap<CourseEditModel, Course>().ReverseMap();
+
+            //var editCourse = new CourseEditModel
+            //{
+            //    Id = course.Id,
+            //    Name = course.Name,
+            //    Area = new Area
+            //    {
+            //        Id = course.Area.Id,
+            //        Name = course.Area.Name
+            //    }
+            //};
+
+            ViewBag.AreaId = new SelectList(_courseRepository.QueryAreaResults(x => x), "Id", "Name",
+               addCourse.Area.Id);
             return View("Create");
         }
 
@@ -88,13 +105,9 @@ namespace Mhotivo.Controllers
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
                 return RedirectToAction("Index");
             }
-
-            var course = _courseRepository.Create(myCourse);
-            ViewBag.AreaId = new SelectList(_courseRepository.QueryAreaResults(x => x), "Id", "Name",
-               course.Area.Id);
-
+            
             title = "Materia Agregada";
-            content = "La materia " + course.Name + " ha sido agregada exitosamente.";
+            content = "La materia " + myCourse.Name + " ha sido agregada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             
             return RedirectToAction("Index");

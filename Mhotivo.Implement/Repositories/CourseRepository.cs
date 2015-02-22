@@ -25,7 +25,11 @@ namespace Mhotivo.Implement.Repositories
             {
                 Id = c.Id,
                 Name = c.Name,
-                Area = c.Area
+                Area = new Area
+                {
+                    Id = c.Area.Id,
+                    Name = c.Area.Name
+                }
             });
         }
 
