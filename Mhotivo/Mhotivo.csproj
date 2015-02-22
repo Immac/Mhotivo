@@ -197,6 +197,7 @@
     <Compile Include="Models\BenefactorModel.cs" />
     <Compile Include="Models\ClassActivityModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\DiaryEventModel.cs" />
     <Compile Include="Models\EnrollModel.cs" />
     <Compile Include="Models\EventCreateModel.cs" />
@@ -516,6 +517,7 @@
     <Content Include="Views\Area\Create.cshtml" />
     <Content Include="Views\Area\Edit.cshtml" />
     <Content Include="Views\Area\Index.cshtml" />
+    <Content Include="Views\Course\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

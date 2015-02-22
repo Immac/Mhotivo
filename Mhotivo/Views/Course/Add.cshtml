@@ -1,7 +1,7 @@
-﻿﻿@model Mhotivo.Models.GradeRegisterModel
+﻿﻿@model Mhotivo.Models.CourseRegisterModel
 
 @{
-    ViewBag.Title = "Nuevo Grado";
+    ViewBag.Title = "Nueva Materia";
     Layout = "";
 }
 
@@ -9,16 +9,16 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-    @using (Html.BeginForm("Add", "Grade", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    @using (Html.BeginForm("Add", "Course", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
         @Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Nuevo Grado</legend>
+            <legend>Agregar Materia</legend>
 
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.EducationLevel)
+                @Html.ValidationMessageFor(model => model.Area)
             </p>
 
             <div class="control-group">
@@ -30,18 +30,11 @@
                 </div>
             </div>
 
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.EducationLevel)
-                </div>
-                <div class="controls">
-                    <select id="EducationLevel" name="EducationLevel">
-                        <option selected="selected" value="Primaria">Primaria</option>
-                        <option value="Secundaria">Secundaria</option>
-                    </select>
-                </div>
+            <div style="float: left; width: 250px;">
+                @Html.DropDownListFor(model => model.Area, new SelectList(ViewBag.AreaId, "Value", "Text"), "  -- Area --")
+                <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Area)</span>
+                <p class="text-error">@Html.ValidationMessageFor(model => model.Area)</p>
             </div>
-
 
             <div class="space"></div>
 
