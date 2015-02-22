@@ -32,7 +32,7 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.TeacherStartDate)
+                    @Html.DisplayNameFor(model => model.TeacherStartDate)
                 </div>
                 <div class="controls">
                     <script type="text/javascript">
@@ -43,7 +43,7 @@
                         });
                     </script>
 
-                    @Html.TextBoxFor(model => model.TeacherStartDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = false })
+                    @Html.TextBoxFor(model => model.TeacherStartDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
                     <span class="add-on">
                         <i class="icon-calendar"></i>
                     </span>
@@ -52,7 +52,7 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.TeacherEndDate)
+                    @Html.DisplayNameFor(model => model.TeacherEndDate)
                 </div>
                 <div class="controls">
                     <script type="text/javascript">
@@ -63,7 +63,7 @@
                         });
                     </script>
 
-                    @Html.TextBoxFor(model => model.TeacherEndDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = false })
+                    @Html.TextBoxFor(model => model.TeacherEndDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
                     <span class="add-on">
                         <i class="icon-calendar"></i>
                     </span>
@@ -72,7 +72,7 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.Schedule)
+                    @Html.DisplayNameFor(model => model.Schedule)
                 </div>
                 <div class="controls">
                     <script type="text/javascript">
@@ -92,7 +92,7 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.Room)
+                    @Html.DisplayNameFor(model => model.Room)
                 </div>
                 <div class="controls">
                     @Html.EditorFor(model => model.Room)
@@ -101,7 +101,7 @@
             
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.Course)
+                    @Html.DisplayNameFor(model => model.Course)
                 </div>
                 <div class="controls">
                     @Html.DropDownListFor(model => model.Course.Id, new SelectList(ViewBag.CourseId, "Value", "Text"), "  -- Curso --")
@@ -110,7 +110,7 @@
             
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.Teacher)
+                    @Html.DisplayNameFor(model => model.Teacher)
                 </div>
                 <div class="controls">
                     @Html.DropDownListFor(model => model.Teacher.Id, new SelectList(ViewBag.MeisterId, "Value", "Text"), "  -- Maestro --")

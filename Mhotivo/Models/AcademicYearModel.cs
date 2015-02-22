@@ -25,6 +25,7 @@ namespace Mhotivo.Models
         [Display(Name = "Aprovado")]
         public bool Approved { get; set; }
 
+        [Display(Name = "Activo")]
         public bool IsActive { get; set; }
 
     }

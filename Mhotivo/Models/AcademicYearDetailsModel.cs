@@ -34,24 +34,28 @@ namespace Mhotivo.Models
 
     public class AcademicYearDetailsRegisterModel
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar una Fecha de Ingreso del Maestro")]
+        [Display(Name = "Fecha ingreso del maestro")]
+        public string TeacherStartDate { get; set; }
 
-        [Display(Name = "Debe ingresar la Fecha ingreso del maestro")]
-        public DateTime TeacherStartDate { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar una Fecha de Salida del Maestro")]
+        [Display(Name = "Fecha de salida del maestro")]
+        public string TeacherEndDate { get; set; }
 
-        [Display(Name = "Debe ingresra la Fecha de salida del maestro")]
-        public DateTime TeacherEndDate { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar un Horario")]
+        [Display(Name = "Horario")]
+        public string Schedule { get; set; }
 
-        [Display(Name = "Debe ingresar un Horario")]
-        public DateTime Schedule { get; set; }
-
-        [Display(Name = "Debe asignar un Aula")]
+        [Required(ErrorMessage = "Debe Ingresar un Aula")]
+        [Display(Name = "Aula")]
         public string Room { get; set; }
 
-        [Display(Name = "Debe asignar un Curso")]
+        [Required(ErrorMessage = "Debe Ingresar un Curso")]
+        [Display(Name = "Curso")]
         public Course Course { get; set; }
 
-        [Display(Name = "Debe asignar el Maestro")]
+        [Required(ErrorMessage = "Debe Ingresar una Maestro")]
+        [Display(Name = "Maestro")]
         public Meister Teacher { get; set; }
 
     }
@@ -61,22 +65,28 @@ namespace Mhotivo.Models
         public ICollection<AcademicYearDetail> AcademicYears { get; set; }
         public int Id { get; set; }
 
-        [Display(Name = "Debe ingresra la Fecha ingreso del maestro")]
-        public DateTime TeacherStartDate { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar una Fecha de Ingreso del Maestro")]
+        [Display(Name = "Fecha ingreso del maestro")]
+        public string TeacherStartDate { get; set; }
 
-        [Display(Name = "Debe ingresar la Fecha de salida del maestro")]
-        public DateTime TeacherEndDate { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar una Fecha de Salida del Maestro")]
+        [Display(Name = "Fecha de salida del maestro")]
+        public string TeacherEndDate { get; set; }
 
-        [Display(Name = "Debe ingresra un Horario")]
-        public DateTime Schedule { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar un Horario")]
+        [Display(Name = "Horario")]
+        public string Schedule { get; set; }
 
-        [Display(Name = "Debe asignar un Aula")]
+        [Required(ErrorMessage = "Debe Ingresar un Aula")]
+        [Display(Name = "Aula")]
         public string Room { get; set; }
 
-        [Display(Name = "Debe asignar un Curso")]
+        [Required(ErrorMessage = "Debe Ingresar un Curso")]
+        [Display(Name = "Curso")]
         public Course Course { get; set; }
 
-        [Display(Name = "Debe asignar un Maestro/a")]
+        [Required(ErrorMessage = "Debe Ingresar una Maestro")]
+        [Display(Name = "Maestro/a")]
         public Meister Teacher { get; set; }
     }
 }

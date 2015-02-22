@@ -36,9 +36,8 @@ namespace Mhotivo.Implement.Repositories
         public AcademicYearDetail Create(AcademicYearDetail academicYearToCreate)
         {
             var academicYearDetails = _context.AcademicYearsDetails.Add(academicYearToCreate);
-            _context.Entry(academicYearDetails.AcademicYear).State = EntityState.Modified;
-            _context.Entry(academicYearDetails.Course).State = EntityState.Modified;
-            _context.Entry(academicYearDetails.Teacher).State = EntityState.Modified;
+            _context.Entry(academicYearToCreate.Course).State = EntityState.Modified;
+            _context.Entry(academicYearToCreate.Teacher).State = EntityState.Modified;
             _context.SaveChanges();
             return academicYearDetails;
         }

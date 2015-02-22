@@ -9,7 +9,7 @@
 
 <h2>Detalles de Años Académicos Registrados  </h2>
 
-<a class="toAdd" data-toggle="modal" role="button" data-id="AcademicYearDetails/Add"><span class="btn btn-small btn-primary active">Agregar Detalles de Año Académico</span></a>
+<a class="toAdd" data-toggle="modal" role="button" href="~/AcademicYearDetails/Add"><span class="btn btn-small btn-primary active">Agregar Detalles de Año Académico</span></a>
 
 @if (!Model.Any())
 {
@@ -44,16 +44,12 @@ else
                     <td>@Html.DisplayFor(modelItem => item.Course)</td>
                     <td>@Html.DisplayFor(modelItem => item.Teacher)</td>
                     <td>
-                        <a data-id="AcademicYearDetails/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
-                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYearDetails/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicDetailsYear/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
-                        @*@using (Html.BeginForm("Delete", "AcademicYear", new {id = Html.DisplayFor(modelItem => item.Id)}, FormMethod.Post,
-                                new {id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none"}))
-                            {
-                                <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                                   value="¿Realmente desea eliminar año académico de @Html.DisplayFor(modelItem => item.Grade + " " + item.Section + " " + item.Year)?" />
-                            }*@
-
+                        @using (Html.BeginForm("Delete", "AcademicYearDetails", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
+                            new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
+                        <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
+                               value="¿Realmente desea eliminar los detalles del año académico?" />
                     </td>
                 </tr>
             }

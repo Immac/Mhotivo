@@ -59,7 +59,7 @@
         </div>
 
         <div id="mainAddress">
-            @Html.EditorFor(model => model.Section)
+           @Html.DropDownList("Section", new List<SelectListItem> { new SelectListItem { Value = "A", Text = "A" }, new SelectListItem { Value = "B", Text = "B" }, new SelectListItem { Value = "C", Text = "C" } })
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Section)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.Section)</p>
         </div>
@@ -67,7 +67,7 @@
         <br style="clear: left;" />
         <br style="clear: left;" />
         <div style="float: left; width: 250px;">
-            @Html.DropDownListFor(model => model.Approved, new SelectList(new[] { "Sí", "No" }, new[] { true, false }))
+            @Html.DropDownList("Approved", new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Sí" }, new SelectListItem { Value = "0", Text = "No" } })
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Approved)</span>
         </div>
     </div>

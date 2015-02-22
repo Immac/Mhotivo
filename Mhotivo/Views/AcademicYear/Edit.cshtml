@@ -53,7 +53,7 @@
                     @Html.LabelFor(model => model.Section)
                 </div>
                 <div class="controls">
-                    @Html.EditorFor(model => model.Section)
+                    @Html.DropDownList("Section", new List<SelectListItem> { new SelectListItem { Value = "A", Text = "A" }, new SelectListItem { Value = "B", Text = "B" }, new SelectListItem { Value = "C", Text = "C" } })
                 </div>
             </div>
 

@@ -111,7 +111,7 @@ namespace Mhotivo.Controllers
                 Year = year,
                 Grade = _gradeRepository.GetById(academicYearModel.Grade.Id),
                 Section = academicYearModel.Section,
-                Approved = academicYearModel.Approved
+                Approved = Boolean.Parse(academicYearModel.Approved.ToString())
             };
 
             var academicY = _academicYearRepository.Create(academicYear);

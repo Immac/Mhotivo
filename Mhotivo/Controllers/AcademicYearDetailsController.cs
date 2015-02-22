@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
+using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -39,7 +41,6 @@ namespace Mhotivo.Controllers
                 Room = academicYearD.Room,
                 Course = academicYearD.Course.Name,
                 Teacher = academicYearD.Teacher.FullName
-
             } : null) : null) : null).ToList();
 
             return View(academicYearsDetails);
@@ -58,9 +59,9 @@ namespace Mhotivo.Controllers
             var academicYearModel = new AcademicYearDetailsEditModel
             {
                 Id = academicYearDetails.Id,
-                TeacherStartDate = (DateTime)academicYearDetails.TeacherStartDate,
-                TeacherEndDate = (DateTime)academicYearDetails.TeacherEndDate,
-                Schedule = (DateTime)academicYearDetails.Schedule,
+                TeacherStartDate = academicYearDetails.TeacherStartDate.ToString(),
+                TeacherEndDate = academicYearDetails.TeacherEndDate.ToString(),
+                Schedule = academicYearDetails.Schedule.ToString(),
                 Room = academicYearDetails.Room,
                 Course = academicYearDetails.Course,
                 Teacher = academicYearDetails.Teacher
@@ -76,9 +77,9 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(AcademicYearDetailsEditModel academicYearDetailsModel)
         {
             var myAcademicYearDetails = _academicYearDetailsRepository.GetById(academicYearDetailsModel.Id);
-            myAcademicYearDetails.TeacherStartDate = academicYearDetailsModel.TeacherStartDate;
-            myAcademicYearDetails.TeacherEndDate = academicYearDetailsModel.TeacherEndDate;
-            myAcademicYearDetails.Schedule = academicYearDetailsModel.Schedule;
+            myAcademicYearDetails.TeacherStartDate = academicYearDetailsModel.TeacherStartDate.AsDateTime();
+            myAcademicYearDetails.TeacherEndDate = academicYearDetailsModel.TeacherEndDate.AsDateTime();
+            myAcademicYearDetails.Schedule = academicYearDetailsModel.Schedule.AsDateTime();
             myAcademicYearDetails.Room = academicYearDetailsModel.Room;
             myAcademicYearDetails.Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id);
             myAcademicYearDetails.Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id);
@@ -104,34 +105,34 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ActionResult Add()
+        {
+            ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name", 0);
+            ViewBag.MeisterId = new SelectList(_meisterRepository.Query(x => x), "Id", "FullName", 0);
+
+            return View("Create");
+        }
+
         [HttpPost]
         public ActionResult Add(AcademicYearDetailsRegisterModel academicYearDetailsModel)
         {
-            return null;
-        }
+            var academicYearDetails = new AcademicYearDetail
+            {
+                TeacherStartDate = Convert.ToDateTime(academicYearDetailsModel.TeacherStartDate),
+                TeacherEndDate = Convert.ToDateTime(academicYearDetailsModel.TeacherEndDate),
+                Schedule = Convert.ToDateTime(academicYearDetailsModel.Schedule),
+                Room = academicYearDetailsModel.Room,
+                Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id),
+                Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id)
+            };
 
-        [HttpGet]
-        public ActionResult Details(long id)
-        {
-            return null;
-        }
+            var academicY = _academicYearDetailsRepository.Create(academicYearDetails);
+            const string title = "Detalles de Año Académico Agregado";
+            const string content = "El detalle del año académico ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
-        [HttpPost]
-        public ActionResult Details(DisplayAcademicYearDetailsModel academicYearDetailsModel)
-        {
-            return null;
-        }
-
-        [HttpGet]
-        public ActionResult DetailsEdit(long id)
-        {
-            return null;
-        }
-
-        [HttpPost]
-        public ActionResult DetailsEdit(AcademicYearDetailsEditModel academicYearDetailsModel)
-        {
-            return null;
+            return RedirectToAction("Index");
         }
     }
 }
