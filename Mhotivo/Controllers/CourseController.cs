@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -7,7 +6,6 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using Area = Mhotivo.Models.Area;
 
 namespace Mhotivo.Controllers
 {
@@ -16,13 +14,17 @@ namespace Mhotivo.Controllers
         #region private members
 
         private readonly ICourseRepository _courseRepository;
+        private readonly IAreaRepository _areaRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public CourseController(ICourseRepository courseRepository)
+        public CourseController(ICourseRepository courseRepository, 
+                                IAreaRepository areaRepository)
         {
             if (courseRepository == null) throw new ArgumentNullException("courseRepository");
+            if (areaRepository == null) throw new ArgumentNullException("areaRepository");
 
             _courseRepository = courseRepository;
+            _areaRepository = areaRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -58,45 +60,30 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            var addCourse = new CourseRegisterModel();
-            //var course = _courseRepository.GetCourseEditModelById(id);
-            //Mapper.CreateMap<CourseEditModel, Course>().ReverseMap();
-
-            //var editCourse = new CourseEditModel
-            //{
-            //    Id = course.Id,
-            //    Name = course.Name,
-            //    Area = new Area
-            //    {
-            //        Id = course.Area.Id,
-            //        Name = course.Area.Name
-            //    }
-            //};
-
-            ViewBag.AreaId = new SelectList(_courseRepository.QueryAreaResults(x => x), "Id", "Name",
-               addCourse.Area.Id);
+            ViewBag.AreaId = new SelectList(_areaRepository.Query(a => a), "Id", "Name", 0);
             return View("Create");
         }
 
         /// <summary>
         /// POST: /Course/Create
         /// </summary>
-        /// <param name="group" />
+        /// <param name="modelCourse"></param>
         /// <returns />
         [HttpPost]
-        public ActionResult Add(CourseRegisterModel group)
+        public ActionResult Add(CourseRegisterModel modelCourse)
         {
             string title;
             string content;
 
             Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
-            var courseModel = Mapper.Map<CourseRegisterModel, Course>(group);
+            var courseModel = Mapper.Map<CourseRegisterModel, Course>(modelCourse);
+            courseModel.Area = _areaRepository.GetById(modelCourse.Area.Id);
 
             var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
 
             var existCourse =
                 _courseRepository.GetAllCourse()
-                    .FirstOrDefault(c => c.Name.Equals(group.Name) && c.Area.Equals(group.Area));
+                    .FirstOrDefault(c => c.Name.Equals(modelCourse.Name));
 
             if (existCourse != null)
             {
@@ -105,9 +92,10 @@ namespace Mhotivo.Controllers
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
                 return RedirectToAction("Index");
             }
+            var newCourse = _courseRepository.Create(myCourse);
             
             title = "Materia Agregada";
-            content = "La materia " + myCourse.Name + " ha sido agregada exitosamente.";
+            content = "La materia " + newCourse.Name + " ha sido agregada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             
             return RedirectToAction("Index");
@@ -152,7 +140,7 @@ namespace Mhotivo.Controllers
                 }
             };
 
-            ViewBag.AreaId = new SelectList(_courseRepository.QueryAreaResults(x => x), "Id", "Name",
+            ViewBag.AreaId = new SelectList(_areaRepository.Query(a => a), "Id", "Name",
                editCourse.Area.Id);
 
             return View("Edit", editCourse);

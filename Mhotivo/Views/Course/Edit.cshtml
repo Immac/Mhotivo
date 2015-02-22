@@ -21,7 +21,7 @@
 
         <p class="text-error">
             @Html.ValidationMessageFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Area)
+            @Html.ValidationMessageFor(model => model.Long)
         </p>
 
         <div class="control-group">
@@ -35,10 +35,10 @@
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Area)
+                @Html.LabelFor(model => model.Long)
             </div>
             <div class="controls">
-                @Html.DropDownList("AreaId", "--Area--")
+                @Html.DropDownList("longId", "--long--")
             </div>
         </div>
 

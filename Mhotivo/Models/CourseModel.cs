@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
@@ -37,11 +38,11 @@ namespace Mhotivo.Models
         public Area Area { get; set; }
     }
 
-    public class DisplayAreaModel
+    public class CourseAreaEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        [Display(Name = "Nombre")]
+        [Display(Name = "Area")]
         public string Name { get; set; }
     }
 }
