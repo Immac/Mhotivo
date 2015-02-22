@@ -94,6 +94,7 @@ namespace Mhotivo.App_Start
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
             //kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
-        }        
+            kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
+        }
     }
 }

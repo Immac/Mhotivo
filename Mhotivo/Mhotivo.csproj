@@ -157,6 +157,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BenefactorController.cs" />
     <Compile Include="Controllers\ClassActivityController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
@@ -185,13 +186,9 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201502170609516_carlos.cs" />
-    <Compile Include="Migrations\201502170609516_carlos.Designer.cs">
-      <DependentUpon>201502170609516_carlos.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502170643512_carlos2.cs" />
-    <Compile Include="Migrations\201502170643512_carlos2.Designer.cs">
-      <DependentUpon>201502170643512_carlos2.cs</DependentUpon>
+    <Compile Include="Migrations\201502220515438_Carlos3.cs" />
+    <Compile Include="Migrations\201502220515438_Carlos3.Designer.cs">
+      <DependentUpon>201502220515438_Carlos3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -516,6 +513,9 @@
     <Content Include="Views\Event\PrincipalIndex.cshtml" />
     <Content Include="Views\Event\Agenda.cshtml" />
     <Content Include="Views\ImportData\Index.cshtml" />
+    <Content Include="Views\Area\Create.cshtml" />
+    <Content Include="Views\Area\Edit.cshtml" />
+    <Content Include="Views\Area\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -538,11 +538,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201502170609516_carlos.resx">
-      <DependentUpon>201502170609516_carlos.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502170643512_carlos2.resx">
-      <DependentUpon>201502170643512_carlos2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201502220515438_Carlos3.resx">
+      <DependentUpon>201502220515438_Carlos3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
