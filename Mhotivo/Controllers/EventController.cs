@@ -14,6 +14,7 @@ using Mhotivo.Logic;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using Mhotivo.Implement.Context;
+using ISessionManagement = Mhotivo.Logic.ISessionManagement;
 
 namespace Mhotivo.Controllers
 {
