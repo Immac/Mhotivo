@@ -1,11 +1,10 @@
-﻿@model IEnumerable<Mhotivo.ParentSite.Models.HomeworkModel>
+﻿@using Microsoft.Ajax.Utilities
+@model IEnumerable<Mhotivo.ParentSite.Models.HomeworkModel>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{
-    object var;
-}
+
 
 
 <!--start section-->
@@ -32,11 +31,11 @@
                    
                     
                     
-                    <a href="#" class="nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10">Todas</a>
+                    @Html.ActionLink("Todas", "index",new {param=""}, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
-                    @foreach (var item in Model.GroupBy(lo=>lo.AcademicYearDetail.Course.Name).ToList())
+                    @foreach (var item in Model.GroupBy(lo=>lo.AcademicYearDetail.Course).ToList())
                     {
-                        <a href="#" class="nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10">@item.Key</a>
+                         @Html.ActionLink(@item.Key.Name, "index", new { param = @item.Key.Id },new{ @class="nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
                     }
 
                 </div>
@@ -47,7 +46,6 @@
            
             <div class="nicdark_space20"></div>
 
-            
 
             <div class="nicdark_space20"></div>
 
@@ -59,39 +57,81 @@
 
 
         <div class="grid grid_8">
-            
-            @foreach (var item in Model)
+
+
+            @{
+                int var = Convert.ToInt32(Request.Params["param"]);
+            }
+            @if (@var!=0)
             {
-                 <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
-                <div class="nicdark_size_big">
-                    <p class="white"><i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToShortDateString()</i> <span class="nicdark_margin010">·</span> 
-                    <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearDetail.Course.Name </i> <span class="nicdark_margin010">·</span>
+
+                foreach (var item in Model.Where(x => x.AcademicYearDetail.Course.Id == @var))
+                {
+                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+                        <div class="nicdark_size_big">
+                            <p class="white"><i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToShortDateString()</i> <span class="nicdark_margin010">·</span> 
+                            <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearDetail.Course.Name </i> <span class="nicdark_margin010">·</span>
                    
-                    <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
-                </div>
-                <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
-                </div>
-                
-                <div class="nicdark_archive1 nav-justified nicdark_bg_yellow nicdark_radius nicdark_shadow ">
-                    <div class="nicdark_margin20 nicdark_relative">
-
-                        <div class="nicdark_activity  nicdark_disable_marginleft_ipadpotr">
-                            <h4 class="white center">@item.Title</h4>
-                            <div class="nicdark_space10"></div>
-                            <p class="white infobox-text">@item.Description</p>
-
+                            <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
                         </div>
+                        <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
                     </div>
+
+                    <div class="nicdark_archive1 nav-justified nicdark_bg_yellow nicdark_radius nicdark_shadow ">
+                        <div class="nicdark_margin20 nicdark_relative">
+
+                            <div class="nicdark_activity  nicdark_disable_marginleft_ipadpotr">
+                                <h4 class="white center">@item.Title</h4>
+                                <div class="nicdark_space10"></div>
+                                <p class="white infobox-text">@item.Description</p>
+
+                            </div>
+                        </div>
+                        <div class="nicdark_space10"></div>
+
+
+
+                    </div>
+
                     <div class="nicdark_space10"></div>
 
-                   
-                   
-                </div>
-                
-                <div class="nicdark_space10"></div>
+                }
+            }
+            else
+            {
+                foreach (var item in Model)
+                 {
+                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+                         <div class="nicdark_size_big">
+                             <p class="white">
+                             <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToShortDateString()</i> <span class="nicdark_margin010">·</span>
+                             <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearDetail.Course.Name </i> <span class="nicdark_margin010">·</span>
 
-                    }
+                             <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
+                         </div>
+                         <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
+                     </div>
 
+                     <div class="nicdark_archive1 nav-justified nicdark_bg_yellow nicdark_radius nicdark_shadow ">
+                         <div class="nicdark_margin20 nicdark_relative">
+
+                             <div class="nicdark_activity  nicdark_disable_marginleft_ipadpotr">
+                                 <h4 class="white center">@item.Title</h4>
+                                 <div class="nicdark_space10"></div>
+                                 <p class="white infobox-text">@item.Description</p>
+
+                             </div>
+                         </div>
+                         <div class="nicdark_space10"></div>
+
+
+
+                     </div>
+
+                     <div class="nicdark_space10"></div>
+
+                 }
+            }
         </div>
 
         <div class="nicdark_space50"></div>
