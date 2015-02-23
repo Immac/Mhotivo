@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -70,7 +71,7 @@ namespace Mhotivo.Controllers
             {
                 Title = modelHomework.Title,
                 Description = modelHomework.Description,
-                DeliverDate = modelHomework.DeliverDate,
+                DeliverDate = DateTime.Parse(modelHomework.DeliverDate),
                 Points = modelHomework.Points,
                 AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.course).Id)
 
@@ -91,11 +92,10 @@ namespace Mhotivo.Controllers
         {
             Homework thisHomework = _homeworkRepository.GetById(id);
 
-            var user = Mapper.Map<UserEditModel>(thisHomework);
-            ViewBag.CourseId = new SelectList(_academicYearDetailRepository.Query(x => x), "Id", "Name",
-                thisHomework.AcademicYearDetail.Course.Id);
+            var homework = Mapper.Map<DisplayHomeworkModel>(thisHomework);
+            ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
 
-            return View("Edit", user);
+            return View("Edit", homework);
         }
 
         //
@@ -104,20 +104,15 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Edit(EditHomeworkModel modelHomework)
         {
-            /*      var myHomework = Mapper.Map<Homework>(modelHomework);
+            Homework myStudent = _homeworkRepository.GetById(modelHomework.Id);
 
-                  if (myHomework.AcademicYearDetail.Course == null || myHomework.AcademicYearDetail.Course.Id != modelHomework.AcademicYearDetail.Course)
-                  {
-                      myHomework.AcademicYearDetail.Course = _academicYearDetailRepository.GetById(modelHomework.CourseId);
-                  }
+            Mapper.CreateMap<Homework, EditHomeworkModel>().ReverseMap();
+            var homeworktModel = Mapper.Map<EditHomeworkModel, Homework>(modelHomework);
+            _homeworkRepository.UpdateHomeworkFromHomeworkEditModel(homeworktModel, myStudent);
 
-                  Homework homework = _homeworkRepository.Update(myHomework);
-
-                  const string title = "Tarea Actualizada";
-                  string content = "La tarea " + homework.Title +
-                                   " ha sido actualizado exitosamente.";
-
-                  _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);*/
+            const string title = "Tarea Actualizada";
+            var content = "La tarea " + modelHomework.Title + " ha sido actualizado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
             return RedirectToAction("Index");
         }
@@ -129,7 +124,7 @@ namespace Mhotivo.Controllers
         {
             Homework homework = _homeworkRepository.Delete(id);
 
-            const string title = "Usuario Eliminado";
+            const string title = "Tarea Eliminado";
             string content = "La tarea: " + homework.Title + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
@@ -142,16 +137,13 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var homework = _homeworkRepository.Delete(id);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            const string title = "Tarea Eliminada";
+            string content = "La tarea: " + homework.Title + " ha sido eliminado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+
+            return RedirectToAction("Index");
         }
     }
 }

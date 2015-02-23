@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201502170844417_gabriel_migration.Designer.cs">
       <DependentUpon>201502170844417_gabriel_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502171958394_migration.cs" />
+    <Compile Include="Migrations\201502171958394_migration.Designer.cs">
+      <DependentUpon>201502171958394_migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -541,6 +545,7 @@
     <Content Include="Views\NotificationType\Add.cshtml" />
     <Content Include="Views\Homework\Index.cshtml" />
     <Content Include="Views\Homework\Create.cshtml" />
+    <None Include="Views\Homework\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -580,6 +585,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502170844417_gabriel_migration.resx">
       <DependentUpon>201502170844417_gabriel_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502171958394_migration.resx">
+      <DependentUpon>201502171958394_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

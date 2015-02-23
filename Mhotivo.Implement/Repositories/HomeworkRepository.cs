@@ -58,7 +58,9 @@ namespace Mhotivo.Implement.Repositories
         {
             Homework itemToDelete = GetById(id);
 
+            _context.Homeworks.Remove(itemToDelete);
             _context.SaveChanges();
+            
             return itemToDelete;
         }
 

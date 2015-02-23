@@ -15,7 +15,7 @@ namespace Mhotivo.Models
         public string Description { get; set; }
 
         [Display(Name = "Día de entrega")]
-        public DateTime DeliverDate { get; set; }
+        public string DeliverDate { get; set; }
 
         [Display(Name = "Puntaje")]
         public float Points { get; set; }
@@ -23,6 +23,7 @@ namespace Mhotivo.Models
         [Display(Name = "Clase")]
         public int AcademicYearId { get; set; }
 
+        [Display(Name = "Materia")]
         public virtual AcademicYearDetail AcademicYearDetail { get; set; }
     }
 
@@ -35,7 +36,7 @@ namespace Mhotivo.Models
         public string Description { get; set; }
 
         [Display(Name = "Día de entrega")]
-        public DateTime DeliverDate { get; set; }
+        public string DeliverDate { get; set; }
 
         [Display(Name = "Puntaje")]
         public float Points { get; set; }
@@ -55,12 +56,12 @@ namespace Mhotivo.Models
         public string Description { get; set; }
 
         [Display(Name = "Dia de entrega")]
-        public DateTime DeliverDate { get; set; }
+        public string DeliverDate { get; set; }
 
         [Display(Name = "puntaje")]
         public float Points { get; set; }
 
         [Display(Name = "Materia")]
-        public int AcademicYearDetailId { get; set; }
+        public int course { get; set; }
     }
 }
