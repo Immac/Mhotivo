@@ -78,6 +78,7 @@ namespace Mhotivo.App_Start
             kernel.Bind<ISessionManagement>().To<SessionLayer>().InRequestScope();    
 
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
             kernel.Bind<IBenefactorRepository>().To<BenefactorRepository>().InRequestScope();
             kernel.Bind<IClassActivityRepository>().To<ClassActivityRepository>().InRequestScope();
             kernel.Bind<IContactInformationRepository>().To<ContactInformationRepository>().InRequestScope();
@@ -92,7 +93,9 @@ namespace Mhotivo.App_Start
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
-            kernel.Bind<AcademicYearLogic>().ToSelf().InRequestScope();
-        }        
+            //kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
+            kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
+            kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
+        }
     }
 }

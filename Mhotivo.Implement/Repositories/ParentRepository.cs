@@ -19,6 +19,11 @@ namespace Mhotivo.Implement.Repositories
         {
             _context = ctx;
         }
+
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
         
         public Parent First(Expression<Func<Parent, Parent>> query)
         {
@@ -29,6 +34,12 @@ namespace Mhotivo.Implement.Repositories
         public Parent GetById(long id)
         {
             var parent = _context.Parents.Where(x => x.Id == id && !x.Disable);
+            return parent.Count() != 0 ? parent.First() : null;
+        }
+
+        public Parent GetByIdNumber(string idNumber)
+        {
+            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable);
             return parent.Count() != 0 ? parent.First() : null;
         }
 

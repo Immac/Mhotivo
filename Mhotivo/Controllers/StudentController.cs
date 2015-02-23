@@ -32,6 +32,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             var allStudents = _studentRepository.GetAllStudents();
 
+
             Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
             var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
 
@@ -63,6 +64,10 @@ namespace Mhotivo.Controllers
 
             ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
                 studentModel.Tutor1.Id);
+
+            if(studentModel.Tutor2 == null)
+                studentModel.Tutor2 = new Parent();
+
             ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
                 studentModel.Tutor2.Id);
 

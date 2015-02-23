@@ -39,15 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAcademicYearDetailsRepository.cs" />
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
     <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
     <Compile Include="Interfaces\IAppointmentParticipants.cs" />
+    <Compile Include="Interfaces\IAreaRepository.cs" />
     <Compile Include="Interfaces\IBenefactorRepository.cs" />
     <Compile Include="Interfaces\IClassActivityRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />
     <Compile Include="Interfaces\ICourseRepository.cs" />
     <Compile Include="Interfaces\IEnrollRepository.cs" />
     <Compile Include="Interfaces\IGradeRepository.cs" />
+    <Compile Include="Interfaces\IImportDataRepository.cs" />
     <Compile Include="Interfaces\IMeisterRepository.cs" />
     <Compile Include="Interfaces\IParentRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />
