@@ -33,7 +33,7 @@ namespace Mhotivo.Implement.Repositories
 
         public AcademicYear GetById(long id)
         {
-            var academicYear = _context.AcademicYears.Where(x => x.Id == id && x.Approved);
+            var academicYear = _context.AcademicYears.Where(x => x.Id == id);
             return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade).First() : null;
         }
 
@@ -57,7 +57,7 @@ namespace Mhotivo.Implement.Repositories
             return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
         }
 
-        public AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse = true, bool updateGrade = true, 
+        public AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse = true, bool updateGrade = true,
             bool updateTeacher = true)
         {
             //if (updateCourse)
@@ -70,14 +70,14 @@ namespace Mhotivo.Implement.Repositories
             //    _context.Entry(itemToUpdate.Teacher).State = EntityState.Modified;
 
             _context.SaveChanges();
-            return itemToUpdate;   
+            return itemToUpdate;
         }
 
         public AcademicYear Update(AcademicYear itemToUpdate)
         {
-            var updateCourse = false;
+            const bool updateCourse = false;
             var updateGrade = false;
-            var updateTeacher = false;
+            const bool updateTeacher = false;
 
             var ayear = GetById(itemToUpdate.Id);
             ayear.Approved = itemToUpdate.Approved;
@@ -91,7 +91,7 @@ namespace Mhotivo.Implement.Repositories
                 updateGrade = true;
             }
 
-            return Update(ayear, updateCourse, updateGrade, updateTeacher);  
+            return Update(ayear, updateCourse, updateGrade, updateTeacher);
         }
 
         public AcademicYear Delete(long id)
@@ -123,19 +123,13 @@ namespace Mhotivo.Implement.Repositories
         public bool ExistAcademicYear(int year, int grade, string section)
         {
             var years = GetAllAcademicYears().Where(x => Equals(x.Year.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved);
-            if(years.Any())
-                return true;
-
-            return false;
+            return years.Any();
         }
 
         public AcademicYear GetByFields(int year, int grade, string section)
         {
             var academicYears = GetAllAcademicYears().Where(x => Equals(x.Year.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved).ToArray();
-            if (academicYears.Any())
-                return academicYears.First();
-
-            return null;
+            return academicYears.Any() ? academicYears.First() : null;
         }
 
         public void Dispose()

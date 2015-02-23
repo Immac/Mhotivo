@@ -156,6 +156,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
+    <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BenefactorController.cs" />
@@ -191,6 +192,7 @@
       <DependentUpon>201502220515438_Carlos3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
     <Compile Include="Models\AreaModel.cs" />
@@ -518,6 +520,12 @@
     <Content Include="Views\Area\Edit.cshtml" />
     <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\Course\Create.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Create.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Edit.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Index.cshtml" />
+    <Content Include="Views\AcademicYear\Create.cshtml" />
+    <Content Include="Views\AcademicYear\Edit.cshtml" />
+    <Content Include="Views\AcademicYear\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

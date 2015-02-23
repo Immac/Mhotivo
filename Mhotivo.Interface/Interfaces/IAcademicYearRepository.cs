@@ -10,17 +10,15 @@ namespace Mhotivo.Interface.Interfaces
     {
         AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query);
         AcademicYear GetById(long id);
-        AcademicYear Create(AcademicYear itemToCreate);
+        AcademicYear Create(AcademicYear academicYearToCreate);
         IQueryable<AcademicYear> Query(Expression<Func<AcademicYear, AcademicYear>> expression);
         IQueryable<AcademicYear> Filter(Expression<Func<AcademicYear, bool>> expression);
-        AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse, bool updateGrade, bool updateTeacher);
+        AcademicYear Update(AcademicYear itemToUpdate);
         AcademicYear Delete(long id);
         void SaveChanges();
 
         IEnumerable<AcademicYear> GetAllAcademicYears();
-
         bool ExistAcademicYear(int year, int grade, string section);
-
         AcademicYear GetByFields(int year, int grade, string section);
     }
 }
