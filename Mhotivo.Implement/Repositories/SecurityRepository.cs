@@ -12,10 +12,14 @@ namespace Mhotivo.Implement.Repositories
     public class SecurityRepository : ISecurityRepository
     {
         private readonly MhotivoContext _context;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IUserRepository _userRepository;
 
-        public SecurityRepository(MhotivoContext ctx)
+        public SecurityRepository(MhotivoContext ctx, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _context = ctx;
+            _roleRepository = roleRepository;
+            _userRepository = userRepository;
         }
 
         public ICollection<Role> GetUserLoggedRoles()
