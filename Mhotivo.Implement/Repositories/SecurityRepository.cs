@@ -22,22 +22,25 @@ namespace Mhotivo.Implement.Repositories
             _userRepository = userRepository;
         }
 
-        public ICollection<Role> GetUserLoggedRoles()
+        public ICollection<Role> GetUserLoggedRoles(int idUser)
+        {
+
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Group> GetUserLoggedGroups(int idUser)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<Group> GetUserLoggedGroups()
+        public string GetUserLoggedName(int idUser)
         {
+
+
             throw new NotImplementedException();
         }
 
-        public string GetUserLoggedName()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUserLoggedEmail()
+        public string GetUserLoggedEmail(int idUser)
         {
             throw new NotImplementedException();
         }

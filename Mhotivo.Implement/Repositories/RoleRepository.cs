@@ -76,5 +76,11 @@ namespace Mhotivo.Implement.Repositories
         {
             _context.Dispose();
         }
+
+
+        public IEnumerable<Role> GetByIdUser(long id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
