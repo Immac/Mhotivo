@@ -17,7 +17,7 @@ namespace Mhotivo.Controllers
             _sessionManagement = sessionManagement;
             _securityRepository = securityRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
-            Utilities.SetSecurityRepository(securityRepository);
+            Security.SetSecurityRepository(securityRepository);
         }
 
         public ActionResult Index()
@@ -25,8 +25,6 @@ namespace Mhotivo.Controllers
             ViewBag.Message = "Modifique esta plantilla para poner en marcha su aplicación ASP.NET MVC.";
 
             _viewMessageLogic.SetViewMessageIfExist();
-
-            ViewBag.Roles = Utilities.GetIdRole();
 
             return View();
         }

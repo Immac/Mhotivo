@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,25 +25,52 @@ namespace Mhotivo.Implement.Repositories
 
         public ICollection<Role> GetUserLoggedRoles(int idUser)
         {
+            var lstRole = new Collection<Role>();
+            var userTemp = _userRepository.GetById(idUser);
+            
+            if(userTemp == null)
+                return lstRole;
 
-            throw new NotImplementedException();
+            if (userTemp.Role == null)
+                return lstRole;
+
+            
+            lstRole.Add(userTemp.Role);
+            return lstRole;
         }
 
         public ICollection<Group> GetUserLoggedGroups(int idUser)
         {
-            throw new NotImplementedException();
+            var userTemp = _userRepository.GetById(idUser);
+
+            if (userTemp == null)
+                return new Collection<Group>();
+
+            if (userTemp.Groups == null)
+                return new Collection<Group>();
+
+
+            return userTemp.Groups;
         }
 
         public string GetUserLoggedName(int idUser)
         {
+            var userTemp = _userRepository.GetById(idUser);
 
+            if (userTemp == null)
+                return "";
 
-            throw new NotImplementedException();
+            return userTemp.DisplayName;
         }
 
         public string GetUserLoggedEmail(int idUser)
         {
-            throw new NotImplementedException();
+            var userTemp = _userRepository.GetById(idUser);
+
+            if (userTemp == null)
+                return "";
+
+            return userTemp.Email;
         }
     }
 }
