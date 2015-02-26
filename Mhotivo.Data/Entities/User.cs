@@ -9,12 +9,11 @@ namespace Mhotivo.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string Password { get; set; }
         public bool Status { get; set; }
-        public Role Role { get; set; }
+        public ICollection<Role> Role { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
     }
 }

@@ -15,12 +15,14 @@ namespace Mhotivo.Implement.Repositories
         private readonly MhotivoContext _context;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IPeopleRepository _peopleRepository;
 
-        public SecurityRepository(MhotivoContext ctx, IUserRepository userRepository, IRoleRepository roleRepository)
+        public SecurityRepository(MhotivoContext ctx, IUserRepository userRepository, IRoleRepository roleRepository, IPeopleRepository peopleRepository)
         {
             _context = ctx;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
+            _peopleRepository = peopleRepository;
         }
 
         public ICollection<Role> GetUserLoggedRoles(int idUser)
@@ -35,8 +37,8 @@ namespace Mhotivo.Implement.Repositories
                 return lstRole;
 
             
-            lstRole.Add(userTemp.Role);
-            return lstRole;
+            //lstRole.Add(userTemp.Role);
+            return userTemp.Role;
         }
 
         public ICollection<Group> GetUserLoggedGroups(int idUser)
@@ -51,6 +53,13 @@ namespace Mhotivo.Implement.Repositories
 
 
             return userTemp.Groups;
+        }
+
+        public ICollection<People> GetUserLoggedPeoples(int idUser)
+        {
+            var peopleTemp = _peopleRepository.GetAllPeople().Where(x => x.User.Id == idUser).ToList();
+
+            return peopleTemp;
         }
 
         public string GetUserLoggedName(int idUser)

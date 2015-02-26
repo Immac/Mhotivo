@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic;
 using Mhotivo.Models;
 
@@ -7,11 +8,13 @@ namespace Mhotivo.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly ISessionManagement _sessionManagement;
+        //private readonly ISessionManagement _sessionManagement;
+        private readonly ISessionManagementRepository _sessionManagementRepository;
 
-        public AccountController(ISessionManagement sessionManagement)
+        public AccountController(ISessionManagementRepository sessionManagementRepository /*ISessionManagement sessionManagement*/)
         {
-            _sessionManagement = sessionManagement;
+            //_sessionManagement = sessionManagement;
+            _sessionManagementRepository = sessionManagementRepository;
         }
 
         // GET: /Account/Login
@@ -29,7 +32,7 @@ namespace Mhotivo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (_sessionManagement.LogIn(model.UserEmail, model.Password, model.RememberMe))
+            if (_sessionManagementRepository.LogIn(model.UserEmail, model.Password, model.RememberMe))
             {
                 return RedirectToLocal(returnUrl);
             }
@@ -42,7 +45,7 @@ namespace Mhotivo.Controllers
         // GET: /Account/Logout
         public ActionResult Logout(string returnUrl)
         {
-            _sessionManagement.LogOut();
+            _sessionManagementRepository.LogOut();
 
             return RedirectToAction("Index", "Home");
         }
@@ -53,7 +56,7 @@ namespace Mhotivo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            _sessionManagement.LogOut();
+            _sessionManagementRepository.LogOut();
 
             return RedirectToAction("Index", "Home");
         }

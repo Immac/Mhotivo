@@ -8,13 +8,13 @@ namespace Mhotivo.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ISessionManagement _sessionManagement;
+        private readonly ISessionManagementRepository _sessionManagementRepository;
         private readonly ISecurityRepository _securityRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public HomeController(ISessionManagement sessionManagement, ISecurityRepository securityRepository)
+        public HomeController(ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository)
         {
-            _sessionManagement = sessionManagement;
+            _sessionManagementRepository = sessionManagementRepository;
             _securityRepository = securityRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
             Security.SetSecurityRepository(securityRepository);
@@ -52,7 +52,7 @@ namespace Mhotivo.Controllers
         [ChildActionOnly]
         public ActionResult GetUserLoggedName()
         {
-            var userName = _sessionManagement.GetUserLoggedName();
+            var userName = _sessionManagementRepository.GetUserLoggedName();
 
             return Content(userName);
         }

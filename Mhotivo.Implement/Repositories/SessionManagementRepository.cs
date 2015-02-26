@@ -1,19 +1,14 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Models;
-using AutoMapper;
-using Mhotivo.Encryption;
 
-namespace Mhotivo.Logic
+namespace Mhotivo.Implement.Repositories
 {
-    public class SessionLayer: Interface.Interfaces.ISessionManagementRepository
+    public class SessionManagementRepository : ISessionManagementRepository
     {
         private readonly IUserRepository _userRepository;
         private readonly string _userNameIdentifier;
@@ -21,13 +16,14 @@ namespace Mhotivo.Logic
         private readonly string _userEmailIdentifier;
         private readonly string _userIdIdentifier;
 
-        public SessionLayer(IUserRepository userRepository)
+        public SessionManagementRepository(IUserRepository userRepository)
         {
             _userRepository = userRepository;
             _userNameIdentifier = "loggedUserName";
             _userEmailIdentifier = "loggedUserEmail";
             _userRoleIdentifier = "loggedUserRole";
             _userIdIdentifier = "loggedUserId";
+            _userRepository = userRepository;
         }
 
         public bool LogIn(string userEmail, string password, bool remember = false)
@@ -58,7 +54,7 @@ namespace Mhotivo.Logic
             HttpContext.Current.Session.Remove(_userIdIdentifier);
 
             FormsAuthentication.SignOut();
-            if(redirect) FormsAuthentication.RedirectToLoginPage();
+            if (redirect) FormsAuthentication.RedirectToLoginPage();
         }
 
         public string GetUserLoggedName()
@@ -84,14 +80,9 @@ namespace Mhotivo.Logic
 
         private User ValidateUser(string userName, string password)
         {
-            //Con Encriptacion
-
-            //string pass = Md5CryptoService.EncryptData(password);
-            //var myUsers = _userRepository.Filter(x => x.Email.Equals(userName) && x.Password.Equals(pass) && x.Status);
-
             var myUsers = _userRepository.Filter(x => x.Email.Equals(userName) && x.Password.Equals(password) && x.Status);
 
-            return (myUsers != null && myUsers.Any() ? myUsers.First() : null); 
+            return (myUsers != null && myUsers.Any() ? myUsers.First() : null);
         }
 
         public void CheckSession()
@@ -107,5 +98,6 @@ namespace Mhotivo.Logic
             var user = _userRepository.GetById(id);
             UpdateSessionFromUser(user);
         }
+
     }
 }

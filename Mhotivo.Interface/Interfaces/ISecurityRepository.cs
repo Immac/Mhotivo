@@ -13,6 +13,8 @@ namespace Mhotivo.Interface.Interfaces
 
         ICollection<Group> GetUserLoggedGroups(int idUser);
 
+        ICollection<People> GetUserLoggedPeoples(int idUser);
+
         string GetUserLoggedName(int idUser);
 
         string GetUserLoggedEmail(int idUser);

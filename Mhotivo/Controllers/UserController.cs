@@ -43,7 +43,7 @@ namespace Mhotivo.Controllers
             User thisUser = _userRepository.GetById(id);
             
             var user = Mapper.Map<UserEditModel>(thisUser);
-            ViewBag.RoleId = new SelectList(_roleRepository.Query(x => x), "Id", "Name", thisUser.Role.Id);
+            ViewBag.RoleId = new SelectList(_roleRepository.Query(x => x), "Id", "Name", thisUser.Role.First().Id);
 
             return View("Edit", user);
         }
@@ -55,11 +55,11 @@ namespace Mhotivo.Controllers
 
             var myUser = Mapper.Map<User>(modelUser);
 
-            if( myUser.Role==null || myUser.Role.Id != modelUser.RoleId)
-            {
-                myUser.Role = _roleRepository.GetById(modelUser.RoleId);
-                updateRole = true;
-            }
+            //if( myUser.Role==null || myUser.Role.Id != modelUser.RoleId)
+            //{
+            //    myUser.Role = _roleRepository.GetById(modelUser.RoleId);
+            //    updateRole = true;
+            //}
 
             User user = _userRepository.Update(myUser, updateRole);
 
@@ -101,7 +101,7 @@ namespace Mhotivo.Controllers
                              Email = modelUser.UserName,
                              Password =modelUser.Password,
                              //Password = Md5CryptoService.EncryptData(modelUser.Password),
-                             Role = _roleRepository.GetById(modelUser.Id),
+                             //Role = _roleRepository.GetById(modelUser.Id),
                              Status = modelUser.Status
                          };
 

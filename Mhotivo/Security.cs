@@ -49,6 +49,22 @@ namespace Mhotivo
             return _securityRepository.GetUserLoggedGroups(id);
         }
 
+        public static ICollection<People> GetLoggedUserPeoples()
+        {
+            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                return new List<People>();
+
+            var val = HttpContext.Current.Session["loggedUserId"];
+            if (val != null)
+                if ((int)val == 0)
+                    return new Collection<People>();
+
+            var id = int.Parse(HttpContext.Current.User.Identity.Name);
+
+
+            return _securityRepository.GetUserLoggedPeoples(id);
+        }
+
         public static string GetUserLoggedName()
         {
             if (!HttpContext.Current.User.Identity.IsAuthenticated)

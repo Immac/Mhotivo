@@ -191,6 +191,10 @@
     <Compile Include="Migrations\201502251841219_test1.Designer.cs">
       <DependentUpon>201502251841219_test1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502262105069_PeopleUser.cs" />
+    <Compile Include="Migrations\201502262105069_PeopleUser.Designer.cs">
+      <DependentUpon>201502262105069_PeopleUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -551,6 +555,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201502251841219_test1.resx">
       <DependentUpon>201502251841219_test1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502262105069_PeopleUser.resx">
+      <DependentUpon>201502262105069_PeopleUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

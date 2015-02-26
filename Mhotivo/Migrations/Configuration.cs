@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using Mhotivo.Models;
 using Mhotivo.Data.Entities;
+using System.Data.Entity.Migrations;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
@@ -38,9 +39,19 @@ namespace Mhotivo.Migrations
             context.Roles.AddOrUpdate(new Role{Id = 1,Description = "Admin", Name = "Admin"});
             context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Principal", Name = "Principal" });
             context.SaveChanges();
-            context.Users.AddOrUpdate(new User {Id = 1,DisplayName = "Alex Fernandez", Email = "olorenzo@outlook.com", Password = "123", Role = context.Roles.First(), Status = true });
-            context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Franklin Castellanos", Email = "castellarfrank@hotmail.com", Password = "siniestro", Role = context.Roles.First(), Status = true });
-            context.Users.AddOrUpdate(new User { Id = 3, DisplayName = "La directora", Email = "holis@holis.com", Password = "holis", Role = context.Roles.Find(2), Status = true });
+
+            var rol1 = context.Roles.First();
+            var rol2 = context.Roles.Find(2);
+
+            var lstRole1 = new Collection<Role>();
+            var lstRole2 = new Collection<Role>();
+
+            lstRole1.Add(rol1);
+            lstRole2.Add(rol2);
+
+            context.Users.AddOrUpdate(new User { Id = 1, DisplayName = "Alex Fernandez", Email = "olorenzo@outlook.com", Password = "123", Role = lstRole1, Status = true });
+            context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Franklin Castellanos", Email = "castellarfrank@hotmail.com", Password = "siniestro", Role = lstRole1, Status = true });
+            context.Users.AddOrUpdate(new User { Id = 3, DisplayName = "La directora", Email = "holis@holis.com", Password = "holis", Role = lstRole2, Status = true });
             
         }
     }
