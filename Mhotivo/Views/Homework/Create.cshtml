@@ -38,36 +38,17 @@
                         @Html.EditorFor(model => model.Title)
                     </div>
                 </div>
-
-<<<<<<< HEAD
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.Description)
-                </div>
-                <div class="controls">
-                    @Html.TextAreaFor(model => model.Description)
-                </div>
-            </div>
+            
            
-            <div class="control-group">
-                <div class="control-label" >
-                    @Html.LabelFor(model => model.Points)
-                </div>
-                <div class="controls">
-                    @Html.EditorFor(model => model.Points)
-=======
-
                 <div class="control-group">
                     <div class="control-label">
                         @Html.LabelFor(model => model.Points)
                     </div>
                     <div class="controls">
                         @Html.EditorFor(model => model.Points)
+
                     </div>
->>>>>>> d88288951c3109037ffee04dccab0afb231e8791
-                </div>
-
-
+                </div> 
 
                 <div class="control-group">
                     <div class="control-label">
@@ -83,46 +64,32 @@
                 </div>
                 <div class="control-group">
                     <div class="control-group" style="float: left; margin-left: 20px">
-
                         <div class="row-fluid input-append">
-                            @Html.TextBoxFor(model => model.DeliverDate , new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = false })
+                            @Html.TextBoxFor(model => model.DeliverDate, new {@class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = false})
                             <span class="add-on">
                                 <i class="icon-calendar"></i>
                             </span>
-                            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.DeliverDate)</span>
+                            <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.DeliverDate)</span>
                             <p class="text-error">@Html.ValidationMessageFor(model => model.DeliverDate)</p>
                         </div>
                     </div>
 
                 </div>
-<<<<<<< HEAD
-            </div>
-            <div class="space"></div>
-            <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-small">
-                    <i class="icon-remove"></i>
-                    Cancelar
-                </button>
-                <button type="submit" class="btn btn-small btn-primary">
-                    <i class="icon-ok"></i>
-                    Crear
-                </button>
-            </div>
 
-            <div id="htmlMessage">Write Your message Here! <br />You can use tags to make your template more dynamic<br />Tags Example: ${name}</div>
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.LabelFor(model => model.Description)
+                    </div>
+                    <div class="controls">
+                        <div id="htmlMessage"></div>
+                            @Html.HiddenFor(model => model.Description)
+                        <div class="space"></div>
+                    </div>
+                </div>
 
-            @Html.HiddenFor(model => model.Description)
+            
 
             <div class="space"></div>
-
-        </fieldset>
-=======
-
-                <div id="htmlMessage"></div>
-                @Html.HiddenFor(model => model.Description)
-                <div class="space"></div>
-
-
                 <div class="modal-footer">
                     <button data-dismiss="modal" class="btn btn-small">
                         <i class="icon-remove"></i>
@@ -134,7 +101,8 @@
                     </button>
                 </div>
             </fieldset>
->>>>>>> d88288951c3109037ffee04dccab0afb231e8791
+
+
     }
     </div>
 
