@@ -1,12 +1,16 @@
 ﻿@model Mhotivo.Models.DisplayHomeworkModel
 
 @{
-    ViewBag.Title = "Editar Tarea";
+    ViewBag.Title = "Nueva Tarea";
     Layout = "";
+
 }
+
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
 
 <div id="body" class="modal-body" style="max-height: 500px;">
     @using (Html.BeginForm("Edit", "Homework", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
@@ -31,14 +35,7 @@
                 </div>
             </div>
 
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.Description)
-                </div>
-                <div class="controls">
-                    @Html.EditorFor(model => model.Description)
-                </div>
-            </div>
+       
 
             <div class="control-group">
                 <div class="control-label">
@@ -66,7 +63,7 @@
                     @Html.DropDownList("CourseId")
                 </div>
             </div>
-
+      
 
             <div class="space"></div>
 
@@ -85,3 +82,4 @@
     }
 
 </div>
+

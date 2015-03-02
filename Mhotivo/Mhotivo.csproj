@@ -545,6 +545,7 @@
     <Content Include="Views\NotificationType\Add.cshtml" />
     <Content Include="Views\Homework\Index.cshtml" />
     <Content Include="Views\Homework\Create.cshtml" />
+    <Content Include="Views\Homework\Details.cshtml" />
     <None Include="Views\Homework\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
