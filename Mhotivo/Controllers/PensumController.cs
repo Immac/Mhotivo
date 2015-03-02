@@ -38,7 +38,7 @@ namespace Mhotivo.Controllers
             {
                 Id = item.Id,
                 Course = item.Course.Name,
-                Grade = item.Course.Name
+                Grade = item.Grade.Name
             } : null).ToList();
             return View(list);
         }
