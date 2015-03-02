@@ -172,6 +172,7 @@
     <Compile Include="Controllers\MeisterController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
+    <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SendNotifications.cs" />
