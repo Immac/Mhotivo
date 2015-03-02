@@ -191,6 +191,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HomeworkDateModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -433,6 +434,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Homework\Index.cshtml" />
+    <None Include="Views\Homework\IndexByTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

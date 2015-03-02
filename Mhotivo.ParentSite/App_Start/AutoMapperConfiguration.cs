@@ -17,6 +17,8 @@ namespace Mhotivo.ParentSite
             Mapper.CreateMap<NotificationModel, Notification>();
             Mapper.CreateMap<Homework, HomeworkModel>();
             Mapper.CreateMap<HomeworkModel, Homework>();
+            Mapper.CreateMap<Homework, HomeworkDateModel>();
+            Mapper.CreateMap<HomeworkDateModel, Homework>();
         }
     }
 }

@@ -20,7 +20,7 @@
         <!--sidebar-->
         <div class="grid grid_4">
 
-      
+
             <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
                 <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
                     <h4 class="white nicdark_margin20">TAREAS</h4>
@@ -28,18 +28,36 @@
                 </div>
                 <div class="nicdark_margin10">
 
-                   
-                    
-                    
-                    @Html.ActionLink("Todas", "index",new {param=""}, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
-                    @foreach (var item in Model.GroupBy(lo=>lo.AcademicYearDetail.Course).ToList())
+
+
+                    @Html.ActionLink("Todas", "index", new {param = ""}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+
+                    @foreach (var item in Model.GroupBy(lo => lo.AcademicYearDetail.Course).ToList())
                     {
-                         @Html.ActionLink(@item.Key.Name, "index", new { param = @item.Key.Id },new{ @class="nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+                        @Html.ActionLink(@item.Key.Name, "index", new {param = @item.Key.Id}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
                     }
 
                 </div>
+
+                <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
+                    <h4 class="white nicdark_margin20">Siguientes tareas</h4>
+                    <i class="icon-doc-1 nicdark_iconbg right medium violet"></i>
+
+                </div>
+
+                <br/>
+                <div class="nicdark_margin10">
+                    @Html.ActionLink("Dia", "IndexByTime", new { date = "Dia" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                    @Html.ActionLink("Semana", "IndexByTime", new { date = "Semana" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                    @Html.ActionLink("Mes", "IndexByTime", new { date = "Mes" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+
+                </div>
             </div>
+
+            
+
+            
 
             <div class="nicdark_space20"></div>
 
@@ -65,7 +83,7 @@
             @if (@var!=0)
             {
 
-                foreach (var item in Model.Where(x => x.AcademicYearDetail.Course.Id == @var))
+                foreach (var item in Model.Where(x => x.AcademicYearDetail.Course.Id == @var && x.DeliverDate.Date>=DateTime.Now))
                 {
                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
                         <div class="nicdark_size_big">
@@ -141,3 +159,5 @@
 
 </section>
 <!--end section-->
+
+

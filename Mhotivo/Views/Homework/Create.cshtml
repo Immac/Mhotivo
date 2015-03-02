@@ -40,7 +40,7 @@
                     @Html.TextAreaFor(model => model.Description)
                 </div>
             </div>
-            
+           
             <div class="control-group">
                 <div class="control-label" >
                     @Html.LabelFor(model => model.Points)
@@ -88,6 +88,13 @@
                     Crear
                 </button>
             </div>
+
+            <div id="htmlMessage">Write Your message Here! <br />You can use tags to make your template more dynamic<br />Tags Example: ${name}</div>
+
+            @Html.HiddenFor(model => model.Description)
+
+            <div class="space"></div>
+
         </fieldset>
     }
 </div>
