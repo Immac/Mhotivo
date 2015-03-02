@@ -35,7 +35,7 @@ namespace Mhotivo.Controllers
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var allAcademicYears = _academicYearDetailsRepository.GetAllAcademicYearsDetails(id);
-            var academicYearsDetails = allAcademicYears.Select(academicYearD => academicYearD.Schedule != null ? (academicYearD.TeacherEndDate != null ? (academicYearD.TeacherStartDate != null ? new DisplayAcademicYearDetailsModel
+            var academicYearsDetails = allAcademicYears.Select(academicYearD =>  academicYearD.Schedule != null ? (academicYearD.TeacherEndDate != null ? (academicYearD.TeacherStartDate != null ? new DisplayAcademicYearDetailsModel
             {
                 Id = academicYearD.Id,
                 TeacherStartDate = academicYearD.TeacherStartDate.Value,
@@ -49,12 +49,6 @@ namespace Mhotivo.Controllers
             ViewBag.IdAcademicYear = id;
 
             return View(academicYearsDetails);
-        }
-
-        [HttpGet]
-        public ActionResult AcademicYearDetailsEdit(int id)
-        {
-            return null;
         }
 
         [HttpGet]
@@ -95,7 +89,6 @@ namespace Mhotivo.Controllers
             var content = "El detalle " + myAcademicYearDetails.Course.Name + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
-            //return RedirectToAction("Index");
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", myAcademicYearDetails.AcademicYear.Id));
         }
 
@@ -105,11 +98,10 @@ namespace Mhotivo.Controllers
             var academicYearDetail = _academicYearDetailsRepository.Delete(id);
 
             const string title = "Detalle Académico Eliminado";
-            var content = "El detalle de año académico " + academicYearDetail.Course.Name + " ha sido eliminado exitosamente.";
+             var content = "El detalle de año académico " + academicYearDetail.Course.Name + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", academicYearDetail.AcademicYear.Id));
-            //return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -141,9 +133,6 @@ namespace Mhotivo.Controllers
             const string title = "Detalles de Año Académico Agregado";
             const string content = "El detalle del año académico ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-
-            //return RedirectToAction("Index", "AcademicYearDetails", academicYearDetailsModel.AcademicYearId);
-
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", academicYearDetailsModel.AcademicYearId));
         }
     }

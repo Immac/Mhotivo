@@ -112,13 +112,19 @@ namespace Mhotivo.Controllers
         public ActionResult Add(AcademicYearRegisterModel academicYearModel)
         {
             var year = new DateTime(academicYearModel.Year, 01, 01);
+            var approved = false;
+            var isActive = false;
+            if (academicYearModel.Approved == "1")
+                approved = true;
+            if (academicYearModel.IsActive == "1")
+                isActive = true;
             var academicYear = new AcademicYear
             {
                 Year = year,
                 Grade = _gradeRepository.GetById(academicYearModel.Grade.Id),
                 Section = academicYearModel.Section,
-                Approved = Boolean.Parse(academicYearModel.Approved.ToString()),
-                IsActive = Boolean.Parse(academicYearModel.IsActive.ToString())
+                Approved = approved,
+                IsActive = isActive
             };
 
             var academicY = _academicYearRepository.Create(academicYear);

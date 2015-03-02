@@ -42,6 +42,7 @@ namespace Mhotivo.Implement.Repositories
             var academicYear = _context.AcademicYears.Add(itemToCreate);
             _context.Entry(academicYear.Grade).State = EntityState.Modified;
             _context.SaveChanges();
+            CreateDefaultPensum(itemToCreate);
             return academicYear;
         }
 
@@ -60,14 +61,8 @@ namespace Mhotivo.Implement.Repositories
         public AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse = true, bool updateGrade = true,
             bool updateTeacher = true)
         {
-            //if (updateCourse)
-            //    _context.Entry(itemToUpdate.Course).State = EntityState.Modified;
-
             if (updateGrade)
                 _context.Entry(itemToUpdate.Grade).State = EntityState.Modified;
-
-            //if (updateTeacher)
-            //    _context.Entry(itemToUpdate.Teacher).State = EntityState.Modified;
 
             _context.SaveChanges();
             return itemToUpdate;
@@ -105,6 +100,32 @@ namespace Mhotivo.Implement.Repositories
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public void CreateDefaultPensum(AcademicYear academicYear)
+        {
+            var pensums = GetDefaultPensum(academicYear.Grade.Id);
+            var teacher = _context.Meisters.First(x => x.FirstName.Equals("Default"));
+            foreach (var pensum in pensums)
+            {
+                var academicYearDetails = new AcademicYearDetail
+                {
+                    TeacherStartDate = DateTime.Now,
+                    TeacherEndDate = DateTime.Now,
+                    Schedule = DateTime.Now,
+                    AcademicYear = academicYear,
+                    Course = pensum.Course,
+                    Teacher = teacher
+                };
+                _context.AcademicYearDetails.Add(academicYearDetails);
+            }
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Pensum> GetDefaultPensum(int grade)
+        {
+            var pensum = _context.Pensums.Where(x => (x.Grade.Id == grade));
+            return pensum.Count() != 0 ? pensum.Include(x => x.Course).Include(x => x.Grade) : null;
         }
 
         public IEnumerable<AcademicYear> GetAllAcademicYears()

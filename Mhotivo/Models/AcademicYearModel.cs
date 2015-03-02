@@ -22,7 +22,7 @@ namespace Mhotivo.Models
         [Display(Name = "Nivel")]
         public string EducationLevel { get; set; }
 
-        [Display(Name = "Aprovado")]
+        [Display(Name = "Aprobado")]
         public bool Approved { get; set; }
 
         [Display(Name = "Activo")]
@@ -48,11 +48,11 @@ namespace Mhotivo.Models
         [Display(Name = "Sección")]
         public string EducationLevel { get; set; }
 
-        [Display(Name = "Aprovado")]
-        public bool Approved { get; set; }
+        [Display(Name = "Aprobado")]
+        public string Approved { get; set; }
 
         [Display(Name = "Activo")]
-        public bool IsActive { get; set; }
+        public string IsActive { get; set; }
 
     }
 
@@ -78,11 +78,11 @@ namespace Mhotivo.Models
         [Display(Name = "Nivel")]
         public string EducationLevel { get; set; }
 
-        [Display(Name = "Aprovado")]
+        [Display(Name = "Aprobado")]
         public string Approved { get; set; }
 
         [Display(Name = "Activo")]
-        public bool IsActive { get; set; }
+        public string IsActive { get; set; }
     }
 
     public class AcademicYearViewManagement

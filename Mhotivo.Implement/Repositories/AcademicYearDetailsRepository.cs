@@ -44,7 +44,6 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<AcademicYearDetail> Query(Expression<Func<AcademicYearDetail, AcademicYearDetail>> expression)
         {
-            int id = 0;
             var academicYearDetails = _context.AcademicYearDetails.Select(expression);
             var result = academicYearDetails.Count() != 0 ? academicYearDetails.Include(x => x.AcademicYear)
                                                                          .Include(x => x.Course)
@@ -110,7 +109,7 @@ namespace Mhotivo.Implement.Repositories
         }
         public IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetails(int academicYearId)
         {
-            return Query(x => x).ToList().Select(x => new AcademicYearDetail
+            var query = Query(x => x).ToList().Select(x => new AcademicYearDetail
             {
                 Id = x.Id,
                 TeacherStartDate = x.TeacherStartDate,
@@ -121,6 +120,7 @@ namespace Mhotivo.Implement.Repositories
                 Course = x.Course,
                 Teacher = x.Teacher
             }).Where(x => x.AcademicYear.Id == academicYearId);
+            return query;
         }
 
         public AcademicYearDetail Delete(int id)
