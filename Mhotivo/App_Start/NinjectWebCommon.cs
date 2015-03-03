@@ -75,7 +75,8 @@ namespace Mhotivo.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<MhotivoContext>().ToSelf().InRequestScope();
-            kernel.Bind<ISessionManagement>().To<SessionLayer>().InRequestScope();    
+            //kernel.Bind<ISessionManagement>().To<SessionLayer>().InRequestScope();
+            kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InRequestScope();
 
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
@@ -96,6 +97,8 @@ namespace Mhotivo.App_Start
             //kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
             kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
+
+            kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InRequestScope();
         }
     }
 }

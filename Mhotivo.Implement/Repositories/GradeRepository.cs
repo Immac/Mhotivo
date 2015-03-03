@@ -57,13 +57,7 @@ namespace Mhotivo.Implement.Repositories
         public Grade GetGradeEditModelById(long id)
         {
             var grade = GetById(id);
-
-            return new Grade
-            {
-                Id = grade.Id,
-                Name = grade.Name,
-                EducationLevel = grade.EducationLevel
-            };
+            return grade;
         }
 
         public Grade UpdateGradeFromGradeEditModel(Grade gradeEditModel, Grade grade)

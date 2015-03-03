@@ -30,6 +30,7 @@ namespace Mhotivo.Implement.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRol> UserRoles { get; set; }
         public DbSet<AppointmentParticipants> AppointmentParticipant { get; set; }
     }
 }

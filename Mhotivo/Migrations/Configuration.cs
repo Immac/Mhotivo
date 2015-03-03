@@ -16,7 +16,7 @@ namespace Mhotivo.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             ContextKey = "Mhotivo.Implement.Context.MhotivoContext";
         }
 
@@ -34,14 +34,34 @@ namespace Mhotivo.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            
-            context.Roles.AddOrUpdate(new Role{Id = 1,Description = "Admin", Name = "Admin"});
+
+            context.Roles.AddOrUpdate(new Role { Id = 1, Description = "Admin", Name = "Admin" });
             context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Principal", Name = "Principal" });
             context.SaveChanges();
-            context.Users.AddOrUpdate(new User {Id = 1,DisplayName = "Alex Fernandez", Email = "olorenzo@outlook.com", Password = "123", Role = context.Roles.First(), Status = true });
-            context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Franklin Castellanos", Email = "castellarfrank@hotmail.com", Password = "siniestro", Role = context.Roles.First(), Status = true });
-            context.Users.AddOrUpdate(new User { Id = 3, DisplayName = "La directora", Email = "holis@holis.com", Password = "holis", Role = context.Roles.Find(2), Status = true });
-            
+
+            context.Users.AddOrUpdate(new User { Id = 1, DisplayName = "Alex Fernandez", Email = "olorenzo@outlook.com", Password = "123", Status = true });
+            context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Franklin Castellanos", Email = "castellarfrank@hotmail.com", Password = "siniestro", Status = true });
+            context.Users.AddOrUpdate(new User { Id = 3, DisplayName = "La directora", Email = "holis@holis.com", Password = "holis", Status = true });
+            context.SaveChanges();
+
+            context.UserRoles.AddOrUpdate(new UserRol { Id = 1, Role = context.Roles.First(), User = context.Users.First() });
+            context.UserRoles.AddOrUpdate(new UserRol { Id = 2, Role = context.Roles.First(), User = context.Users.Find(2) });
+            context.UserRoles.AddOrUpdate(new UserRol { Id = 3, Role = context.Roles.Find(2), User = context.Users.Find(3) });
+            context.SaveChanges();
+
+            context.Grades.AddOrUpdate(new Grade { Id = 1, EducationLevel = "Primaria", Name = "Primero" });
+            context.SaveChanges();
+
+            context.AcademicYears.AddOrUpdate(new AcademicYear
+            {
+                Id = 1,
+                Section = "A",
+                Approved = true,
+                Grade = context.Grades.First(),
+                IsActive = true,
+                Year = DateTime.Now
+            });
+            context.SaveChanges();
         }
     }
 }

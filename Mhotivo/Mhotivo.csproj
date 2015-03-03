@@ -184,10 +184,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\AcademicYearLogic.cs" />
-    <Compile Include="Logic\ISessionManagement.cs" />
-    <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
+    <Compile Include="Migrations\201503030723028_Initial.cs" />
+    <Compile Include="Migrations\201503030723028_Initial.Designer.cs">
+      <DependentUpon>201503030723028_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -543,6 +545,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201503030723028_Initial.resx">
+      <DependentUpon>201503030723028_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

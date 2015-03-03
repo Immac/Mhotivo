@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mhotivo;
+using Mhotivo.Implement;
 using Mhotivo.Controllers;
 
 namespace Mhotivo.Tests.Controllers
@@ -16,10 +17,10 @@ namespace Mhotivo.Tests.Controllers
         public void Index()
         {
             // Disponer
-            HomeController controller = new HomeController(null);
+            var controller = new HomeController(null, null);
 
             // Actuar
-            ViewResult result = controller.Index() as ViewResult;
+            var result = controller.Index() as ViewResult;
 
             // Declarar
             Assert.AreEqual("Modifique esta plantilla para poner en marcha su aplicación ASP.NET MVC.", result.ViewBag.Message);
@@ -29,10 +30,10 @@ namespace Mhotivo.Tests.Controllers
         public void About()
         {
             // Disponer
-            HomeController controller = new HomeController(null);
+            var controller = new HomeController(null, null);
 
             // Actuar
-            ViewResult result = controller.About() as ViewResult;
+            var result = controller.About() as ViewResult;
 
             // Declarar
             Assert.IsNotNull(result);
@@ -42,10 +43,10 @@ namespace Mhotivo.Tests.Controllers
         public void Contact()
         {
             // Disponer
-            HomeController controller = new HomeController(null);
+            var controller = new HomeController(null, null);
 
             // Actuar
-            ViewResult result = controller.Contact() as ViewResult;
+            var result = controller.Contact() as ViewResult;
 
             // Declarar
             Assert.IsNotNull(result);

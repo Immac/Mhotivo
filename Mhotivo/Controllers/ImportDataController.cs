@@ -119,8 +119,6 @@ namespace Mhotivo.Controllers
             {
                 return View(importModel);
             }
-
-            return RedirectToAction("Index");
         }
 
     }

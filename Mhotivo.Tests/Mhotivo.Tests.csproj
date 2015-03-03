@@ -119,6 +119,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mhotivo.Implement\Mhotivo.Implement.csproj">
+      <Project>{60f95856-177f-4d03-a555-eb23e73bfcd7}</Project>
+      <Name>Mhotivo.Implement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mhotivo.Interface\Mhotivo.Interface.csproj">
+      <Project>{aec3ffc7-bca3-4b90-8e44-dea10e8f89e8}</Project>
+      <Name>Mhotivo.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mhotivo\Mhotivo.csproj">
       <Project>{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}</Project>
       <Name>Mhotivo</Name>
