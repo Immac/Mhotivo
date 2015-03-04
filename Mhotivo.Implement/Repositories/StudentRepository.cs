@@ -112,7 +112,7 @@ namespace Mhotivo.Implement.Repositories
                 Disable = x.Disable
             });
         }
-
+        
         public Student GetStudentDisplayModelById(long id)
         {
             var student = GetById(id);

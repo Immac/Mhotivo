@@ -21,9 +21,10 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
+        public static IStudentRepository StudentRepository;
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
-            IGradeRepository gradeRepository, ICourseRepository courseRepository
+            IGradeRepository gradeRepository, ICourseRepository courseRepository,IStudentRepository studentRepository
             )
         {
             _homeworkRepository = homeworkRepository;
@@ -31,6 +32,7 @@ namespace Mhotivo.ParentSite.Controllers
             _gradeRepository = gradeRepository;
             _courseRepository = courseRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
+            StudentRepository = studentRepository;
         }
 
         public ActionResult Index(string param)
@@ -46,8 +48,12 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult IndexByTime(string date)
         {
             DateTime compareDate = DateTime.Now.AddDays(1);
+
+            
             IEnumerable<Homework> allHomeworks =
                 _homeworkRepository.GetAllHomeworks().Where(x => x.DeliverDate.Date >= DateTime.Now);
+            
+            
             if (date != null)
             {
                 if (date.Equals("Dia"))
@@ -66,16 +72,20 @@ namespace Mhotivo.ParentSite.Controllers
             }
 
             Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
-            IEnumerable<HomeworkDateModel> allHomeworksModel =
-                allHomeworks.Select(Mapper.Map<Homework, HomeworkDateModel>).ToList();
-
-
-
+            IEnumerable<HomeworkModel> allHomeworksModel =
+                allHomeworks.Select(Mapper.Map<Homework, HomeworkModel>).ToList();
+            
 
 
             return View(allHomeworksModel);
         }
 
-      
+        public static IEnumerable<Student> GetAllStudents(int parentId)
+        {
+            IEnumerable<Student> allStudents =
+                StudentRepository.GetAllStudents().Where(x => x.Tutor1.Id.Equals(parentId));
+            return allStudents;
+        }
+
     }
 }
