@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.ParentSite.Models;
 using Microsoft.Ajax.Utilities;
@@ -22,9 +23,12 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
         public static IStudentRepository StudentRepository;
+        public static IEnrollRepository EnrollsRepository;
+
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
-            IGradeRepository gradeRepository, ICourseRepository courseRepository,IStudentRepository studentRepository
+            IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
+            IEnrollRepository enrollsRepository
             )
         {
             _homeworkRepository = homeworkRepository;
@@ -33,14 +37,22 @@ namespace Mhotivo.ParentSite.Controllers
             _courseRepository = courseRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
             StudentRepository = studentRepository;
+            EnrollsRepository = enrollsRepository;
         }
 
         public ActionResult Index(string param)
         {
+            //var enrolls = GetAllEnrolls(31).ToList();
             IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => x.DeliverDate.Date >= DateTime.Now);
             Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
             IEnumerable<HomeworkModel> allHomeworksModel =
-                allHomeworks.Select(Mapper.Map<Homework, HomeworkModel>).ToList();
+                allHomeworks
+                    /*.Where(
+                        homework =>
+                            enrolls.Any(enroll => enroll.AcademicYear.Id == homework.AcademicYearDetail.AcademicYear.Id))*/
+                    .Select(Mapper.Map<Homework, HomeworkModel>)
+                    .ToList();
+//                .Where(x => enrolls.Any(enroll => enroll.AcademicYear.Id == x.AcademicYearDetail.AcademicYear.Id));
 
             return View(allHomeworksModel);
         }
@@ -87,5 +99,12 @@ namespace Mhotivo.ParentSite.Controllers
             return allStudents;
         }
 
+
+        public static IEnumerable<Enroll> GetAllEnrolls(int studentId)
+        {
+            IEnumerable<Enroll> allEnrolls =
+                EnrollsRepository.GetAllsEnrolls().Where(x => x.Student.Id.Equals(studentId));
+            return allEnrolls;
+        }
     }
 }

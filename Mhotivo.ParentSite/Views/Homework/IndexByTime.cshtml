@@ -37,7 +37,7 @@
                 </div>
 
                 @{
-                    IEnumerable<Student> allstudents = HomeworkController.GetAllStudents(3);
+                    IEnumerable<Student> allstudents = HomeworkController.GetAllStudents(8);
                 }
                 <div class="nicdark_margin10">
                     @if (@allstudents != null)
@@ -45,9 +45,7 @@
                         foreach (var student in @allstudents.ToList())
                         {
                             @Html.ActionLink(student.FullName, "index", new {param = "", date = Request.Params["date"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
-                            
                         }
-                        
                     }
                 </div>
 
