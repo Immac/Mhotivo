@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,23 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
+
+﻿using AutoMapper;
+using Mhotivo.Data;
+using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Repositories;
+
+//using Mhotivo.App_Data.Repositories;
+//using Mhotivo.App_Data.Repositories.Interfaces;
+
+using Mhotivo.Interface.Interfaces;
+using Mhotivo.Logic;
+using Mhotivo.Models;
+using System;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.WebPages;
+
 
 namespace Mhotivo.Controllers
 {
@@ -25,6 +43,7 @@ namespace Mhotivo.Controllers
 
         public ActionResult Index()
         {
+
             _viewMessageLogic.SetViewMessageIfExist();
             var allAcademicYears = _academicYearRepository.GetAllAcademicYears();
             var academicYears = allAcademicYears.Select(academicYear => new DisplayAcademicYearModel
@@ -39,6 +58,43 @@ namespace Mhotivo.Controllers
             }).ToList();
             
             return View(academicYears);
+
+            //var elements = new AcademicYearViewManagement
+            //               {
+            //                   Elements =
+            //                       _academicYearRepository.Filter(x => x.IsActive)
+            //                       .ToList()
+            //                       .Select(x => new AcademicYearViewData
+            //                                    {
+            //                                        Approved = x.Approved ? "Active" : "Inactive",
+            //                                        Course = x.Course.Name,
+            //                                        Grade = x.Grade.Name,
+            //                                        Id = x.Id,
+            //                                        EndDate =
+            //                                            (x.TeacherEndDate == null
+            //                                                ? "Sin Maestro Asignado"
+            //                                                : x.TeacherEndDate.Value.ToShortDateString()),
+            //                                        Limit = x.StudentsLimit,
+            //                                        Meister =
+            //                                            x.Teacher == null ? "Sin Maestro Asignado" : x.Teacher.FullName,
+            //                                        Room = x.Room.IsEmpty() ? "Sin Aula Asignada" : x.Room,
+            //                                        Schedule =
+            //                                            x.Schedule == null
+            //                                                ? "Sin Maestro Asignado"
+            //                                                : x.Schedule.Value.ToShortTimeString(),
+            //                                        Section = x.Section,
+            //                                        StartDate =
+            //                                            x.TeacherStartDate == null
+            //                                                ? "Sin Maestro Asignado"
+            //                                                : x.TeacherStartDate.Value.ToShortDateString(),
+            //                                        Year = x.Year.Year
+            //                                    }),
+            //                   CurrentYear = DateTime.Now.Year,
+            //                   CanGenerate = true
+            //               };
+
+            //return View(elements);
+            return ViewBag();//TODO: Esto no va.
         }
 
         [HttpGet]
@@ -103,6 +159,7 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Add()
         {
+
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
 
             return View("Create");

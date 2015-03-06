@@ -9,7 +9,8 @@ namespace Mhotivo.Implement.Context
         public MhotivoContext() : base("DefaultConnection")
         {
         }
-
+        public DbSet<Homework> Homeworks { get; set; }
+       // public DbSet<AcademicYearDetail> AcademicYearDetails { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<AcademicYearDetail> AcademicYearDetails { get; set; }
         public DbSet<AppointmentDiary> AppointmentDiary { get; set; }
@@ -32,5 +33,20 @@ namespace Mhotivo.Implement.Context
         public DbSet<User> Users { get; set; }
         public DbSet<UserRol> UserRoles { get; set; }
         public DbSet<AppointmentParticipants> AppointmentParticipant { get; set; }
+        public DbSet<NotificationType> NotificationTypes { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Notification>().
+              HasMany(c => c.Users).
+              WithMany(p => p.Notifications).
+              Map(
+               m =>
+               {
+                   m.MapLeftKey("NotificationId"); //Campo asociado con Notifications
+                   m.MapRightKey("UserId"); //Campo asociado con Users
+                   m.ToTable("UserNotifications");
+               });
+        }
     }
 }

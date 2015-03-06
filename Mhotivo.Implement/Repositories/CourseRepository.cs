@@ -34,6 +34,7 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
+
         public IEnumerable<Area> GetAllAreas()
         {
             return _context.Areas.Select(a => a).ToList().Select(a => new Area
@@ -41,6 +42,11 @@ namespace Mhotivo.Implement.Repositories
                 Id = a.Id,
                 Name = a.Name
             });
+        }
+        public Course First(Expression<Func<Course, Course>> query)
+        {
+            var courses = _context.Courses.Select(query);
+            return courses.Count() != 0 ? courses.First() : null;
         }
 
         public Course GenerateCourseFromRegisterModel(Course courseRegisterModel)

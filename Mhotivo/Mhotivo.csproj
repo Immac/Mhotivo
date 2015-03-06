@@ -48,11 +48,11 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -169,8 +169,10 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
+    <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\MeisterController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
@@ -186,9 +188,9 @@
     <Compile Include="Logic\AcademicYearLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201503030723028_Initial.cs" />
-    <Compile Include="Migrations\201503030723028_Initial.Designer.cs">
-      <DependentUpon>201503030723028_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201503060230358_initial.cs" />
+    <Compile Include="Migrations\201503060230358_initial.Designer.cs">
+      <DependentUpon>201503060230358_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -205,9 +207,11 @@
     <Compile Include="Models\GradeModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\ImportDataModel.cs" />
+    <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\MeisterModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
+    <Compile Include="Models\NotificationTypeModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
     <Compile Include="Models\PensumModel.cs" />
     <Compile Include="Models\PeopleModel.cs" />
@@ -525,6 +529,13 @@
     <Content Include="Views\AcademicYear\Create.cshtml" />
     <Content Include="Views\AcademicYear\Edit.cshtml" />
     <Content Include="Views\AcademicYear\Index.cshtml" />
+    <Content Include="Views\NotificationType\Index.cshtml" />
+    <Content Include="Views\NotificationType\Edit.cshtml" />
+    <Content Include="Views\NotificationType\Add.cshtml" />
+    <Content Include="Views\Homework\Index.cshtml" />
+    <Content Include="Views\Homework\Create.cshtml" />
+    <Content Include="Views\Homework\Details.cshtml" />
+    <None Include="Views\Homework\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -547,8 +558,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201503030723028_Initial.resx">
-      <DependentUpon>201503030723028_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503060230358_initial.resx">
+      <DependentUpon>201503060230358_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

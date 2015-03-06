@@ -1,17 +1,12 @@
-using System.Collections.ObjectModel;
-using Mhotivo.Models;
+using System;
+using AutoMapper.Mappers;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
-using Mhotivo.Implement.Repositories;
-using Mhotivo.Interface.Interfaces;
+using System.Data.Entity.Migrations;
+using System.Linq;
 
 namespace Mhotivo.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
     internal sealed class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
         public Configuration()
