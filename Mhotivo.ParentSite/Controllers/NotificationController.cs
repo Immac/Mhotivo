@@ -26,7 +26,7 @@ namespace Mhotivo.ParentSite.Controllers
             public ActionResult Index()
             {
                 var currentAcademicYear = _academicYearRepository.GetCurrentAcademicYear();
-                var notifications = _notificationRepository.GetGeneralNotifications(currentAcademicYear);
+                var notifications = _notificationRepository.GetGradeNotifications(currentAcademicYear, 2);
 
                 var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
                 notificationsModel=notificationsModel.OrderByDescending(x => x.Created);
