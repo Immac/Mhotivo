@@ -43,10 +43,12 @@
                 <div class="nicdark_margin10">
                    
                         @if (@allstudents != null)
-                        {
+                        {   
+                            @Html.ActionLink("Todos", "index", new { param = Request.Params["param"], date = Request.Params["date"], student = "" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+
                             foreach (var student in @allstudents.ToList())
                             {
-                                @Html.ActionLink(student.FullName, "index", new {param = "", date = Request.Params["date"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+                                @Html.ActionLink(student.FullName, "index", new { param = Request.Params["param"], date = Request.Params["date"], student = student.Id }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
                             }
                         }
@@ -65,7 +67,7 @@
 
                     @foreach (var item in Model.GroupBy(lo => lo.AcademicYearDetail.Course).ToList())
                     {
-                        @Html.ActionLink(@item.Key.Name, "index", new {param = @item.Key.Id, date = Request.Params["date"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+                        @Html.ActionLink(@item.Key.Name, "index", new {param = @item.Key.Id, date = Request.Params["date"], student=Request.Params["student"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
                     }
 
                 </div>
@@ -78,10 +80,10 @@
 
                 <br/>
                 <div class="nicdark_margin10">
-                    @Html.ActionLink("Dia", "IndexByTime", new {param = Request.Params["param"], date = "Dia"}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
-                    @Html.ActionLink("Semana", "IndexByTime", new {param = Request.Params["param"], date = "Semana"}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
-                    @Html.ActionLink("Mes", "IndexByTime", new {param = Request.Params["param"], date = "Mes"}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
-                    @Html.ActionLink("Todas", "index", new {param = Request.Params["param"], date = ""}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+                    @Html.ActionLink("Dia", "IndexByTime", new {param = Request.Params["param"], date = "Dia", student=Request.Params["student"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+                    @Html.ActionLink("Semana", "IndexByTime", new {param = Request.Params["param"], date = "Semana", student=Request.Params["student"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+                    @Html.ActionLink("Mes", "IndexByTime", new {param = Request.Params["param"], date = "Mes", student=Request.Params["student"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
+                    @Html.ActionLink("Todas", "index", new {param = Request.Params["param"], date = "", student=Request.Params["student"]}, new {@class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10"})
                 </div>
 
 

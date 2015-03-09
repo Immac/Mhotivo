@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Repositories;
@@ -40,16 +41,27 @@ namespace Mhotivo.ParentSite.Controllers
             EnrollsRepository = enrollsRepository;
         }
 
-        public ActionResult Index(string param)
+        public ActionResult Index(string param,string student)
         {
-            //var enrolls = GetAllEnrolls(31).ToList();
+            var students = GetAllStudents(8);
+            List<long> studentsId = new List<long>();
+            for (int i = 0; i < students.Count(); i++)
+            {
+                studentsId.Add(students.ElementAt(i).Id);
+            }
+
+            var enrolls = GetAllEnrolls(studentsId).ToList();
+
+            if (!student.IsEmpty())
+                enrolls=enrolls.Where(x => x.Student.Id == Convert.ToInt32(student)).ToList();
+            
             IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => x.DeliverDate.Date >= DateTime.Now);
             Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
             IEnumerable<HomeworkModel> allHomeworksModel =
                 allHomeworks
-                    /*.Where(
+                    .Where(
                         homework =>
-                            enrolls.Any(enroll => enroll.AcademicYear.Id == homework.AcademicYearDetail.AcademicYear.Id))*/
+                            enrolls.Any(enroll => enroll.AcademicYear.Id == homework.AcademicYearDetail.AcademicYear.Id))
                     .Select(Mapper.Map<Homework, HomeworkModel>)
                     .ToList();
 //                .Where(x => enrolls.Any(enroll => enroll.AcademicYear.Id == x.AcademicYearDetail.AcademicYear.Id));
@@ -57,14 +69,26 @@ namespace Mhotivo.ParentSite.Controllers
             return View(allHomeworksModel);
         }
 
-        public ActionResult IndexByTime(string date)
+        public ActionResult IndexByTime(string date, string student)
         {
+            var students = GetAllStudents(8);
+            List<long> studentsId = new List<long>();
+            for (int i = 0; i < students.Count(); i++)
+            {
+                studentsId.Add(students.ElementAt(i).Id);
+            }
+
+            var enrolls = GetAllEnrolls(studentsId).ToList();
+
+            if (!student.IsEmpty())
+                enrolls = enrolls.Where(x => x.Student.Id == Convert.ToInt32(student)).ToList();
             DateTime compareDate = DateTime.Now.AddDays(1);
 
             
             IEnumerable<Homework> allHomeworks =
                 _homeworkRepository.GetAllHomeworks().Where(x => x.DeliverDate.Date >= DateTime.Now);
-            
+
+            allHomeworks = allHomeworks.Where(homework =>enrolls.Any(enroll => enroll.AcademicYear.Id == homework.AcademicYearDetail.AcademicYear.Id));
             
             if (date != null)
             {
@@ -100,10 +124,10 @@ namespace Mhotivo.ParentSite.Controllers
         }
 
 
-        public static IEnumerable<Enroll> GetAllEnrolls(int studentId)
+        public static IEnumerable<Enroll> GetAllEnrolls(List<long> studentId)
         {
             IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.Student.Id.Equals(studentId));
+                EnrollsRepository.GetAllsEnrolls().Where(x=>studentId.Contains(x.Student.Id));
             return allEnrolls;
         }
     }

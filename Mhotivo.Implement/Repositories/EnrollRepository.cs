@@ -105,13 +105,11 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<Enroll> GetAllsEnrolls()
         {
-           
             return Query(x => x).ToList().Select(x => new Enroll
             {
                 Id = x.Id,
                AcademicYear = x.AcademicYear,
                Student = x.Student
-
             });
         
         }
