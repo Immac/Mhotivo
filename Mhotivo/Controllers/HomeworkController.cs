@@ -13,6 +13,7 @@ namespace Mhotivo.Controllers
     public class HomeworkController : Controller
     {
         private readonly IAcademicYearDetailRepository _academicYearDetailRepository;
+        private readonly ISessionManagementRepository _sessionManagementRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly IGradeRepository _gradeRepository;
@@ -21,7 +22,7 @@ namespace Mhotivo.Controllers
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
-            IGradeRepository gradeRepository,ICourseRepository courseRepository
+            IGradeRepository gradeRepository, ICourseRepository courseRepository, ISessionManagementRepository sessionManagementRepository
             )
         {
             _homeworkRepository = homeworkRepository;
@@ -30,6 +31,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
             _courseRepository = courseRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
+            _sessionManagementRepository = sessionManagementRepository;
         }
 
         public ActionResult Index()
@@ -58,10 +60,23 @@ namespace Mhotivo.Controllers
 
         public ActionResult Create()
         {
-            var query = _courseRepository.Query(x => x);
+            var allAcademicYearsByMeister = GetAllAcademicYearsDetail(48);
+            var courseIds = new List<long>();
+            for (int a = 0; a <allAcademicYearsByMeister.Count(); a++)
+            {
+                courseIds.Add(allAcademicYearsByMeister.ElementAt(a).Course.Id);
+            }
+            var query = _courseRepository.Query(x => x).Where(x=>courseIds.Contains(x.Id));
             ViewBag.course = new SelectList(query, "Id", "Name");
             var modelRegister = new CreateHomeworkModel();
             return View(modelRegister);
+        }
+
+        private IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetail(long id)
+        {
+            IEnumerable<AcademicYearDetail> allAcademicYearsDetail =
+                _academicYearDetailRepository.GetAllAcademicYearDetails().Where(x => x.Teacher.Id.Equals(id));
+            return allAcademicYearsDetail;
         }
 
         [HttpPost]
