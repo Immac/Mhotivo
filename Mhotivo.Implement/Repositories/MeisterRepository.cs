@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Interface;
@@ -37,7 +38,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
             return meister;
         }
-
+        
         public IQueryable<Meister> Query(Expression<Func<Meister, Meister>> expression)
         {
             return _context.Meisters.Select(expression);
@@ -85,7 +86,6 @@ namespace Mhotivo.Implement.Repositories
                     StartDate = x.StartDate,
                     EndDate = x.EndDate,
                     Biography = x.Biography
-
                 });
         }
 

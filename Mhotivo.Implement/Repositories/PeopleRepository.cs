@@ -19,7 +19,7 @@ namespace Mhotivo.Implement.Repositories
         {
             _context = ctx;
         }
-        
+
         public People First(Expression<Func<People, People>> query)
         {
             var peoples = _context.Peoples.Select(query);
@@ -36,7 +36,7 @@ namespace Mhotivo.Implement.Repositories
         {
             var people = _context.Peoples.Add(itemToCreate);
             _context.SaveChanges();
-                return people;
+            return people;
         }
 
         public IQueryable<People> Query(Expression<Func<People, People>> expression)
@@ -47,15 +47,15 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<People> Filter(Expression<Func<People, bool>> expression)
         {
             return _context.Peoples.Where(expression);
-            
+
         }
 
         public People Update(People itemToUpdate)
         {
             _context.SaveChanges();
-            return itemToUpdate;   
+            return itemToUpdate;
         }
-        
+
         public void Detach(People people)
         {
             _context.Entry(people).State = EntityState.Detached;
@@ -132,7 +132,7 @@ namespace Mhotivo.Implement.Repositories
                 IdNumber = people.IdNumber,
                 BirthDate = people.BirthDate,
                 //Sexo = Utilities.GenderToString(people.Gender),
-                Gender = people.Gender, 
+                Gender = people.Gender,
                 Nationality = people.Nationality,
                 Country = people.Country,
                 State = people.State,
@@ -149,21 +149,12 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<People> GetAllPeople()
         {
-            return Query(x => x).ToList().Select(x => new People
-            {
-                Address = x.Address,
-                //BirthDay = x.BirthDate,
-                BirthDate = x.BirthDate,
-                Id = x.Id,
-                //Sexo = Utilities.GenderToString(x.Gender),
-                Gender = x.Gender,
-                City = x.City,
-                Nationality = x.Nationality,
-                State = x.State,
-                UrlPicture = x.UrlPicture,
-                FullName = x.FullName,
-                User=x.User
-            });
+            return Query(x => x).ToList();
+        }
+
+        public IEnumerable<People> GetAllPeopleByUserId(long userId)
+        {
+            return Filter(x => x.User.Id == userId).ToList();
         }
 
         public void Dispose()

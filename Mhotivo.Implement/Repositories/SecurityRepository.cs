@@ -29,8 +29,8 @@ namespace Mhotivo.Implement.Repositories
         {
             var lstRole = new Collection<Role>();
             var userTemp = _userRepository.GetById(idUser);
-            
-            if(userTemp == null)
+
+            if (userTemp == null)
                 return lstRole;
 
             var userroles =
@@ -59,8 +59,7 @@ namespace Mhotivo.Implement.Repositories
 
         public ICollection<People> GetUserLoggedPeoples(int idUser)
         {
-            var peopleTemp = _peopleRepository.GetAllPeople().Where(x =>x.User !=null && x.User.Id == idUser).ToList();
-
+            var peopleTemp = _peopleRepository.GetAllPeopleByUserId(idUser).ToList();
             return peopleTemp;
         }
 

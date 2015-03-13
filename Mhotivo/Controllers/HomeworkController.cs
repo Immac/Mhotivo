@@ -43,16 +43,14 @@ namespace Mhotivo.Controllers
 
         public ActionResult Index()
         {
-            /*Security.SetSecurityRepository(_securityRepository);
+            /*var email = _sessionManagementRepository.GetUserLoggedEmail();
+            var IdUser = _userRepository.First(x => x.Email.Equals(email));
+            var IdPeople = _meisterRepository.First(x =>IdUser);*/
+
+            Security.SetSecurityRepository(_securityRepository);
             _viewMessageLogic.SetViewMessageIfExist();
-            var people = Security.GetLoggedUserPeoples();
-            long id;
-            foreach (var p in people)
-            {
-                if (p is Meister)
-                    id = p.Id;
-            }*/
-            var allAcademicYearsDetails = GetAllAcademicYearsDetail(47);
+            var id = GetMeisterId();
+            var allAcademicYearsDetails = GetAllAcademicYearsDetail(id);
             var academicY = new List<long>();
             for (int a = 0; a < allAcademicYearsDetails.Count(); a++)
             {
@@ -65,6 +63,18 @@ namespace Mhotivo.Controllers
                 allHomeworks.Select(Mapper.Map<Homework, DisplayHomeworkModel>).ToList();
 
             return View(allHomeworkDisplaysModel);
+        }
+
+        private long GetMeisterId()
+        {
+            var people = Security.GetLoggedUserPeoples();
+            long id = 0;
+            foreach (var p in people)
+            {
+                if (p is Meister)
+                    id = p.Id;
+            }
+            return id;
         }
 
         //
