@@ -161,7 +161,8 @@ namespace Mhotivo.Implement.Repositories
                 Nationality = x.Nationality,
                 State = x.State,
                 UrlPicture = x.UrlPicture,
-                FullName = x.FullName
+                FullName = x.FullName,
+                User=x.User
             });
         }
 

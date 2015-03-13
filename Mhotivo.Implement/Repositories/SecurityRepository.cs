@@ -59,7 +59,7 @@ namespace Mhotivo.Implement.Repositories
 
         public ICollection<People> GetUserLoggedPeoples(int idUser)
         {
-            var peopleTemp = _peopleRepository.GetAllPeople().Where(x => x.User.Id == idUser).ToList();
+            var peopleTemp = _peopleRepository.GetAllPeople().Where(x =>x.User !=null && x.User.Id == idUser).ToList();
 
             return peopleTemp;
         }

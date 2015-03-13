@@ -5,8 +5,10 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Web.Mvc;
+using Mhotivo.Implement;
 
 namespace Mhotivo.Controllers
 {
@@ -18,11 +20,14 @@ namespace Mhotivo.Controllers
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly ISecurityRepository _securityRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
-            IGradeRepository gradeRepository, ICourseRepository courseRepository, ISessionManagementRepository sessionManagementRepository
+            IGradeRepository gradeRepository, ICourseRepository courseRepository, ISessionManagementRepository sessionManagementRepository,
+            ISecurityRepository securityRepository, IUserRepository userRepository
             )
         {
             _homeworkRepository = homeworkRepository;
@@ -32,13 +37,28 @@ namespace Mhotivo.Controllers
             _courseRepository = courseRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
             _sessionManagementRepository = sessionManagementRepository;
+            _securityRepository = securityRepository;
+            _userRepository = userRepository;
         }
 
         public ActionResult Index()
         {
+            /*Security.SetSecurityRepository(_securityRepository);
             _viewMessageLogic.SetViewMessageIfExist();
-
-            IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks();
+            var people = Security.GetLoggedUserPeoples();
+            long id;
+            foreach (var p in people)
+            {
+                if (p is Meister)
+                    id = p.Id;
+            }*/
+            var allAcademicYearsDetails = GetAllAcademicYearsDetail(47);
+            var academicY = new List<long>();
+            for (int a = 0; a < allAcademicYearsDetails.Count(); a++)
+            {
+                academicY.Add(allAcademicYearsDetails.ElementAt(a).Id);
+            }
+            IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x=>academicY.Contains(x.AcademicYearDetail.Id));
 
             Mapper.CreateMap<DisplayHomeworkModel, Homework>().ReverseMap();
             IEnumerable<DisplayHomeworkModel> allHomeworkDisplaysModel =

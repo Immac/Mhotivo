@@ -3,7 +3,7 @@ namespace Mhotivo.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class t : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -103,20 +103,20 @@ namespace Mhotivo.Migrations
                         AccountNumber = c.String(),
                         Biography1 = c.String(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
-                        UserId_Id = c.Int(),
                         User_Id = c.Int(),
+                        User_Id1 = c.Int(),
                         Benefactor_Id = c.Long(),
                         Tutor1_Id = c.Long(),
                         Tutor2_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.UserId_Id)
                 .ForeignKey("dbo.Users", t => t.User_Id)
+                .ForeignKey("dbo.Users", t => t.User_Id1)
                 .ForeignKey("dbo.People", t => t.Benefactor_Id)
                 .ForeignKey("dbo.People", t => t.Tutor1_Id)
                 .ForeignKey("dbo.People", t => t.Tutor2_Id)
-                .Index(t => t.UserId_Id)
                 .Index(t => t.User_Id)
+                .Index(t => t.User_Id1)
                 .Index(t => t.Benefactor_Id)
                 .Index(t => t.Tutor1_Id)
                 .Index(t => t.Tutor2_Id);
@@ -357,8 +357,8 @@ namespace Mhotivo.Migrations
             DropForeignKey("dbo.People", "Tutor2_Id", "dbo.People");
             DropForeignKey("dbo.People", "Tutor1_Id", "dbo.People");
             DropForeignKey("dbo.People", "Benefactor_Id", "dbo.People");
+            DropForeignKey("dbo.People", "User_Id1", "dbo.Users");
             DropForeignKey("dbo.People", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.People", "UserId_Id", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "NotificationId", "dbo.Notifications");
             DropForeignKey("dbo.Notifications", "NotificationType_NotificationTypeId", "dbo.NotificationTypes");
@@ -392,8 +392,8 @@ namespace Mhotivo.Migrations
             DropIndex("dbo.People", new[] { "Tutor2_Id" });
             DropIndex("dbo.People", new[] { "Tutor1_Id" });
             DropIndex("dbo.People", new[] { "Benefactor_Id" });
+            DropIndex("dbo.People", new[] { "User_Id1" });
             DropIndex("dbo.People", new[] { "User_Id" });
-            DropIndex("dbo.People", new[] { "UserId_Id" });
             DropIndex("dbo.Courses", new[] { "Area_Id" });
             DropIndex("dbo.AcademicYears", new[] { "Grade_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "Teacher_Id" });

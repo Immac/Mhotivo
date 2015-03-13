@@ -8,7 +8,5 @@ namespace Mhotivo.Data.Entities
 
         public string JustARandomColumn { get; set; }
 
-        public virtual User UserId { get; set; }
-
     }
 }
