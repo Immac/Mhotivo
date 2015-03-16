@@ -20,6 +20,9 @@ namespace Mhotivo
 
             Mapper.CreateMap<Notification, NotificationModel>();
             Mapper.CreateMap<NotificationModel, Notification>();
+
+            Mapper.CreateMap<DisplayRolModel, Role>();
+            Mapper.CreateMap<Role, DisplayRolModel>();
         }
     }
 }
