@@ -426,7 +426,7 @@ namespace Mhotivo.Controllers
                     var listGrade = new List<Grade>();
                     if (user != null)
                     {
-                        var people = _peopleRepository.GetAllPeopleByUserId(user.Id).Where(x => x.Discriminator == "Meister").FirstOrDefault();
+                        var people = _peopleRepository.GetPeopleUser(user.Id);
                         if (people != null)
                         {
                             var meiser = _meisterRepository.GetById(people.Id);

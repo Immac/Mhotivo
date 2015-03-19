@@ -28,8 +28,6 @@ namespace Mhotivo.Interface.Interfaces
 
         IEnumerable<AcademicYearDetail> GetAllAcademicYearDetails();
 
-        IEnumerable<AcademicYear> GetAllAcademicYear(long academicYearId);
-
         AcademicYearDetail GetAcademicYearDetailEditModelById(long id);
 
         AcademicYearDetail GetAcademicYearDetailDisplayModelById(long id);
