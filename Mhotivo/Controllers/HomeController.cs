@@ -23,9 +23,9 @@ namespace Mhotivo.Controllers
 
         public ActionResult Index()
         {
-            Security.SetSecurityRepository(_securityRepository);
+            //Security.SetSecurityRepository(_securityRepository);
             ViewBag.Message = "Modifique esta plantilla para poner en marcha su aplicación ASP.NET MVC.";
-
+            var temp = _securityRepository.GetUserLoggedPeoples();
             _viewMessageLogic.SetViewMessageIfExist();
             return View();
         }
@@ -53,7 +53,7 @@ namespace Mhotivo.Controllers
         [ChildActionOnly]
         public ActionResult GetUserLoggedName()
         {
-            var userName = _sessionManagement.GetUserLoggedName();
+            var userName = _securityRepository.GetUserLoggedName();
 
             return Content(userName);
         }

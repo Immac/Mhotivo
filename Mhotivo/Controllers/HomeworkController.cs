@@ -23,6 +23,7 @@ namespace Mhotivo.Controllers
         private readonly ISecurityRepository _securityRepository;
         private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        public long MeisterId = -1; 
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
@@ -43,14 +44,14 @@ namespace Mhotivo.Controllers
 
         public ActionResult Index()
         {
+            
             /*var email = _sessionManagementRepository.GetUserLoggedEmail();
             var IdUser = _userRepository.First(x => x.Email.Equals(email));
             var IdPeople = _meisterRepository.First(x =>IdUser);*/
-
-            Security.SetSecurityRepository(_securityRepository);
+      
             _viewMessageLogic.SetViewMessageIfExist();
-            var id = GetMeisterId();
-            var allAcademicYearsDetails = GetAllAcademicYearsDetail(id);
+            MeisterId = GetMeisterId();
+            var allAcademicYearsDetails = GetAllAcademicYearsDetail(MeisterId);
             var academicY = new List<long>();
             for (int a = 0; a < allAcademicYearsDetails.Count(); a++)
             {
@@ -67,7 +68,7 @@ namespace Mhotivo.Controllers
 
         private long GetMeisterId()
         {
-            var people = Security.GetLoggedUserPeoples();
+            var people =_securityRepository.GetUserLoggedPeoples();
             long id = 0;
             foreach (var p in people)
             {
@@ -90,7 +91,8 @@ namespace Mhotivo.Controllers
 
         public ActionResult Create()
         {
-            var allAcademicYearsByMeister = GetAllAcademicYearsDetail(48);
+            MeisterId = GetMeisterId();
+            var allAcademicYearsByMeister = GetAllAcademicYearsDetail(MeisterId);
             var courseIds = new List<long>();
             for (int a = 0; a <allAcademicYearsByMeister.Count(); a++)
             {

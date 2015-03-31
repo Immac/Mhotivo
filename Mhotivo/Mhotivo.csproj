@@ -188,9 +188,9 @@
     <Compile Include="Logic\AcademicYearLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201503120250527_initial.cs" />
-    <Compile Include="Migrations\201503120250527_initial.Designer.cs">
-      <DependentUpon>201503120250527_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201503190148305_inicializa.cs" />
+    <Compile Include="Migrations\201503190148305_inicializa.Designer.cs">
+      <DependentUpon>201503190148305_inicializa.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -558,8 +558,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201503120250527_initial.resx">
-      <DependentUpon>201503120250527_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503190148305_inicializa.resx">
+      <DependentUpon>201503190148305_inicializa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

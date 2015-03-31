@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -49,7 +50,7 @@ namespace Mhotivo.Implement.Repositories
             var myUsers = _context.Users.Select(expression);
             return myUsers;
             //return myUsers.Count() != 0 ? myUsers : myUsers;
-            
+
         }
 
         public IQueryable<User> Filter(Expression<Func<User, bool>> expression)
@@ -70,7 +71,7 @@ namespace Mhotivo.Implement.Repositories
                 }
             }
             _context.SaveChanges();
-            return itemToUpdate;   
+            return itemToUpdate;
         }
 
         public User Delete(long id)
@@ -100,9 +101,25 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
+        public ICollection<Role> GetUserRoles(int idUser)
+        {
+            var lstRole = new Collection<Role>();
+            var userTemp = GetById(idUser);
+
+            if (userTemp == null)
+                return lstRole;
+
+            var userroles =
+                _context.UserRoles.Where(x => x.User != null && x.Role != null && x.User.Id == idUser)
+                    .Select(x => x.Role)
+                    .ToList();
+
+            return userroles;
+        }
+
         public void Dispose()
         {
-            _context.Dispose();
+            //_context.Dispose();
         }
     }
 }

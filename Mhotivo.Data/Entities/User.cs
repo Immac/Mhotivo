@@ -18,6 +18,5 @@ namespace Mhotivo.Data.Entities
 
         public virtual ICollection<Notification> Notifications { get; set; }
 
-        public virtual ICollection<Parent> Parents { get; set; }
     }
 }

@@ -154,7 +154,7 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<People> GetAllPeopleByUserId(long userId)
         {
-            return Filter(x => x.User.Id == userId).ToList();
+            return Filter(x => x.User.Id == userId);
         }
 
         public void Dispose()

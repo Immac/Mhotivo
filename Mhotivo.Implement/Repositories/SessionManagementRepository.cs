@@ -29,14 +29,14 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        public bool LogIn(string userEmail, string password, bool remember = false)
+        public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
             var user = ValidateUser(userEmail, password);
             if (user == null) return false;
 
             UpdateSessionFromUser(user);
 
-            FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
+            if (redirect) FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
 
             return true;
         }
