@@ -9,89 +9,98 @@ namespace Mhotivo.Implement
     public class Security
     {
         private static ISecurityRepository _securityRepository;
+        private static string _userNameIdentifier;
+        private static string _userRoleIdentifier;
+        private static string _userEmailIdentifier;
+        private static string _userIdIdentifier;
 
         public static void SetSecurityRepository(ISecurityRepository securityRepository)
         {
-            _securityRepository = securityRepository;
+            if (_securityRepository == null)
+                _securityRepository = securityRepository;
+            
+            _userNameIdentifier = "loggedUserName";
+            _userEmailIdentifier = "loggedUserEmail";
+            _userRoleIdentifier = "loggedUserRole";
+            _userIdIdentifier = "loggedUserId";
         }
 
         public static ICollection<Role> GetLoggedUserRoles()
         {
-            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!IsAuthenticated())
                 return new List<Role>();
 
-            var val = HttpContext.Current.Session["loggedUserId"];
-            if (val != null)
-                if ((int)val == 0)
-                    return new Collection<Role>();
+            var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
 
-            var id = int.Parse(HttpContext.Current.User.Identity.Name);
-
-
-            return _securityRepository.GetUserLoggedRoles(id);
+            return _securityRepository.GetUserLoggedRoles(idUser);
         }
 
         public static ICollection<Group> GetLoggedUserGroups()
         {
-            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!IsAuthenticated())
                 return new List<Group>();
 
-            var val = HttpContext.Current.Session["loggedUserId"];
-            if (val != null)
-                if ((int)val == 0)
-                    return new Collection<Group>();
+            var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
 
-            var id = int.Parse(HttpContext.Current.User.Identity.Name);
-
-
-            return _securityRepository.GetUserLoggedGroups(id);
+            
+            return _securityRepository.GetUserLoggedGroups(idUser);
         }
 
         public static ICollection<People> GetLoggedUserPeoples()
         {
-            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!IsAuthenticated())
                 return new List<People>();
 
-            var val = HttpContext.Current.Session["loggedUserId"];
-            if (val != null)
-                if ((int)val == 0)
-                    return new Collection<People>();
+            var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
 
-            var id = int.Parse(HttpContext.Current.User.Identity.Name);
+            return _securityRepository.GetUserLoggedPeoples(idUser);
+        }
 
-            return _securityRepository.GetUserLoggedPeoples(id);
+        public static User GetLoggedUser()
+        {
+            if (!IsAuthenticated())
+                return null;
+
+            var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
+
+            return _securityRepository.GetUserLogged(idUser);
         }
 
         public static string GetUserLoggedName()
         {
-            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!IsAuthenticated())
                 return "";
 
-            var val = HttpContext.Current.Session["loggedUserId"];
-            if (val != null)
-                if ((int)val == 0)
-                    return "";
-
-            var id = int.Parse(HttpContext.Current.User.Identity.Name);
-
-
-            return _securityRepository.GetUserLoggedName(id);
+            return HttpContext.Current.Session[_userNameIdentifier].ToString();
         }
 
         public static string GetUserLoggedEmail()
         {
-            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!IsAuthenticated())
                 return "";
 
-            var val = HttpContext.Current.Session["loggedUserId"];
-            if (val != null)
-                if ((int)val == 0)
-                    return "";
-
-            var id = int.Parse(HttpContext.Current.User.Identity.Name);
-
-
-            return _securityRepository.GetUserLoggedEmail(id);
+            return HttpContext.Current.Session[_userEmailIdentifier].ToString();
         }
+
+        private static bool IsAuthenticated()
+        {
+            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                return false;
+
+            var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
+
+            var val = HttpContext.Current.Session[_userIdIdentifier];
+            
+            if (val != null) return true;
+
+            var myUser = _securityRepository.GetUserLogged(idUser);
+            HttpContext.Current.Session[_userIdIdentifier] = myUser.Id;
+            HttpContext.Current.Session[_userNameIdentifier] = myUser.DisplayName;
+            HttpContext.Current.Session[_userEmailIdentifier] = myUser.Email;
+            //HttpContext.Current.Session[_userRoleIdentifier] = user.Role.First().Name;
+            //HttpContext.Current.Session[_userRoleIdentifier] = user.Role.Name;
+            return true;
+        }
+
     }
 }

@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IUserRepository : IDisposable
+    public interface IUserRepository
     {
         User First(Expression<Func<User, bool>> query);
         User GetById(long id);
@@ -17,5 +17,8 @@ namespace Mhotivo.Interface.Interfaces
         User Delete(long id);
         void SaveChanges();
         IEnumerable<User> GetAllUsers();
+
+        ICollection<Role> GetUserRoles(int idUser);
+
     }
 }

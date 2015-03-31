@@ -11,6 +11,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
