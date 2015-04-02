@@ -1,13 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Data.Entities;
-
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
@@ -30,11 +29,28 @@ namespace Mhotivo.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
 
             var allParents = _parentRepository.GetAllParents();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.IdNumberSortParm = sortOrder == "IdNumber" ? "idNumber_desc" : "IdNumber";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allParents = _parentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+            }
 
             Mapper.CreateMap<DisplayParentModel, Parent>().ReverseMap();
             var allParentDisplaysModel = allParents.Select(Mapper.Map<Parent, DisplayParentModel>).ToList();
@@ -43,7 +59,27 @@ namespace Mhotivo.Controllers
                 displayParentModel.StrGender = Implement.Utilities.GenderToString(displayParentModel.Gender);
             }
 
-            return View(allParentDisplaysModel);
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    allParentDisplaysModel = allParentDisplaysModel.OrderByDescending(s => s.FullName).ToList();
+                    break;
+                case "IdNumber":
+                    allParentDisplaysModel = allParentDisplaysModel.OrderBy(s => s.IdNumber).ToList();
+                    break;
+                case "idNumber_desc":
+                    allParentDisplaysModel = allParentDisplaysModel.OrderByDescending(s => s.IdNumber).ToList();
+                    break;
+                default:  // Name ascending 
+                    allParentDisplaysModel = allParentDisplaysModel.OrderBy(s => s.FullName).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+            return View(allParentDisplaysModel.ToPagedList(pageNumber, pageSize));
         }
 
         

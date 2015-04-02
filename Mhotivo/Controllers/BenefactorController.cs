@@ -1,16 +1,14 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
-
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement.Repositories;
-
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -31,10 +29,55 @@ namespace Mhotivo.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(_benefactorRepository.GettAllBenefactors());
+            var allBenefactors = _benefactorRepository.GettAllBenefactors();
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.IdNumberSortParm = sortOrder == "IdNumber" ? "idNumber_desc" : "IdNumber";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allBenefactors = _benefactorRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+            }
+
+            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
+            var allBenefactorsDisplaysModel = allBenefactors.Select(Mapper.Map<Benefactor, DisplayBenefactorModel>).ToList();
+
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    allBenefactorsDisplaysModel = allBenefactorsDisplaysModel.OrderByDescending(s => s.FullName).ToList();
+                    break;
+                case "IdNumber":
+                    allBenefactorsDisplaysModel = allBenefactorsDisplaysModel.OrderBy(s => s.IdNumber).ToList();
+                    break;
+                case "idNumber_desc":
+                    allBenefactorsDisplaysModel = allBenefactorsDisplaysModel.OrderByDescending(s => s.IdNumber).ToList();
+                    break;
+                default:  // Name ascending 
+                    allBenefactorsDisplaysModel = allBenefactorsDisplaysModel.OrderBy(s => s.FullName).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+
+
+            return View(allBenefactorsDisplaysModel.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
@@ -56,7 +99,12 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Edit(long id)
         {
-            return View("Edit", _benefactorRepository.GetBenefactorEditModelById(id));
+
+            var benefactor = _benefactorRepository.GetBenefactorEditModelById(id);
+            Mapper.CreateMap<BenefactorEditModel, Benefactor>().ReverseMap();
+            var benefactorModel = Mapper.Map<Benefactor, BenefactorEditModel>(benefactor);
+            //benefactorModel.StrGender = Implement.Utilities.GenderToString(benefactor.Gender);
+            return View("Edit", benefactorModel);
         }
 
         [HttpPost]
@@ -140,7 +188,7 @@ namespace Mhotivo.Controllers
             Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
             var modelBenefactor = Mapper.Map<Benefactor, DisplayBenefactorModel>(benefactor);
 
-            return View("Details", benefactor);
+            return View("Details", modelBenefactor);
         }
 
         [HttpGet]

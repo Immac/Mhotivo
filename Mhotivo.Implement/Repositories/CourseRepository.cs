@@ -43,6 +43,12 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
+        public IQueryable<Course> Filter(Expression<Func<Course, bool>> expression)
+        {
+            var myCourses = _context.Courses.Where(expression);
+            return myCourses;
+        }
+
         public Course GenerateCourseFromRegisterModel(Course courseRegisterModel)
         {
             return new Course

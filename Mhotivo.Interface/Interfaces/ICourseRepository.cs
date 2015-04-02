@@ -16,6 +16,8 @@ namespace Mhotivo.Interface.Interfaces
 
         IEnumerable<Area> GetAllAreas();
 
+        IQueryable<Course> Filter(Expression<Func<Course, bool>> expression);
+
         Course GetById(long id);
 
         Course GetCourseEditModelById(long id);

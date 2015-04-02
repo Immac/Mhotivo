@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Interface.Interfaces;
@@ -7,6 +9,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -25,10 +28,52 @@ namespace Mhotivo.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(_meisterRepository.GetAllMeisters());
+
+            var allTeachers = _meisterRepository.GetAllMeisters();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.IdNumberSortParm = sortOrder == "IdNumber" ? "idNumber_desc" : "IdNumber";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allTeachers = _meisterRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+            }
+
+            Mapper.CreateMap<DisplayMeisterModel, Meister>().ReverseMap();
+            var allTeachersDisplaysModel = allTeachers.Select(Mapper.Map<Meister, DisplayMeisterModel>).ToList();
+
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    allTeachersDisplaysModel = allTeachersDisplaysModel.OrderByDescending(s => s.FullName).ToList();
+                    break;
+                case "IdNumber":
+                    allTeachersDisplaysModel = allTeachersDisplaysModel.OrderBy(s => s.IdNumber).ToList();
+                    break;
+                case "idNumber_desc":
+                    allTeachersDisplaysModel = allTeachersDisplaysModel.OrderByDescending(s => s.IdNumber).ToList();
+                    break;
+                default:  // Name ascending 
+                    allTeachersDisplaysModel = allTeachersDisplaysModel.OrderBy(s => s.FullName).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(allTeachersDisplaysModel.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]

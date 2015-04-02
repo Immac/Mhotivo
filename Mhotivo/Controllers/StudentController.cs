@@ -34,8 +34,7 @@ namespace Mhotivo.Controllers
             var allStudents = _studentRepository.GetAllStudents();
 
 
-            Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
-            var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
+           
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -53,8 +52,11 @@ namespace Mhotivo.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                allStudentDisplaysModel = allStudentDisplaysModel.Where(s => s.FullName.Contains(searchString)).ToList();
+                allStudents = _studentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
+
+            Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
+            var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
 
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
