@@ -35,7 +35,7 @@ namespace Mhotivo.Controllers
 
         public MhotivoContext db = new MhotivoContext();
         private readonly ViewMessageLogic _viewMessageLogic;
-        private readonly ISessionManagement _sessionManagement;
+        private readonly ISessionManagementRepository _sessionManagement;
         private readonly IUserRepository _userRepository;
         private readonly IMeisterRepository _meisterRepository;
         private readonly IPeopleRepository _peopleRepository;
@@ -125,7 +125,7 @@ namespace Mhotivo.Controllers
         }
 
 
-        public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository,IPeopleRepository peopleRepository,IMeisterRepository meisterRepository,IAcademicYearDetailRepository academicYearDetailRepository)
+        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository,IPeopleRepository peopleRepository,IMeisterRepository meisterRepository,IAcademicYearDetailRepository academicYearDetailRepository)
         {
             _sessionManagement = sessionManagement;
             _userRepository = userRepository;
@@ -430,7 +430,8 @@ namespace Mhotivo.Controllers
                     var listGrade = new List<Grade>();
                     if (user != null)
                     {
-                        var people = _peopleRepository.GetAllPeopleByUserId(user.Id).Where(x => x.Discriminator == "Meister").FirstOrDefault();
+              
+                        var people = _peopleRepository.GetAllPeopleByUserId(user.Id).Where(x => x is Meister).FirstOrDefault();
                         if (people != null)
                         {
                             var meiser = _meisterRepository.GetById(people.Id);
