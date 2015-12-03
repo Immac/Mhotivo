@@ -1,15 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace Mhotivo.Models
 {
-    public class Course /* TODO: This should have a separate model */
+    public class CourseDisplayModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
+        [Display(Name = "Nombre")]
         public string Name { get; set; }
-        public virtual Area Area { get; set; }
+    }
+
+    public class CourseEditModel
+    {
+        public long Id { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Nombre")]
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+    }
+
+    public class CourseRegisterModel
+    {
+        [Required(ErrorMessage = "Debe Ingresar Nombre")]
+        [Display(Name = "Nombre:")]
+        public string Name { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public long Pensum { get; set; }
     }
 }

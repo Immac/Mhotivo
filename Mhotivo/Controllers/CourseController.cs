@@ -1,14 +1,12 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
+using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -23,97 +21,92 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        //
-        // GET: /Course/
-
-        public ActionResult Index()
+        [AuthorizeAdminDirector]
+        public ActionResult Index(long pensumId, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            IQueryable<Course> v = _courseRepository.Query(x => x).Include("Area");
-
-            return View(v);
+            ViewBag.PensumId = pensumId;
+            var list =
+                _courseRepository.Filter(x => x.Pensum.Id == pensumId).ToList().Select(Mapper.Map<CourseDisplayModel>);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
 
-        //
-        // GET: /Course/Create
-
-        public ActionResult Add()
+        [AuthorizeAdminDirector]
+        public ActionResult Add(long pensumId)
         {
-            return View();
+            return View("Create", new CourseRegisterModel{Pensum = pensumId});
         }
 
-        //
-        // POST: /Course/Create
 
         [HttpPost]
-        public ActionResult Add(Course group)
+        [AuthorizeAdminDirector]
+        public ActionResult Add(CourseRegisterModel model)
         {
-            try
+            string title;
+            string content;
+            var toCreate = Mapper.Map<Course>(model);
+            var toCheck = _courseRepository.Filter(x => x.Name == model.Name && x.Pensum.Id == model.Pensum);
+            if (toCheck.Any())
             {
-                if (ModelState.IsValid)
-                {
-                    _courseRepository.Create(group);
-                    _courseRepository.SaveChanges();
-                    _viewMessageLogic.SetNewMessage("Agregado", "El grupo fue agregado exitosamente.", ViewMessageType.SuccessMessage);
-                }
-                else
-                {
-                    _viewMessageLogic.SetNewMessage("Validación de Información", "La información no es válida.", ViewMessageType.InformationMessage);
-                }
+                title = "Error!";
+                content = "El Curso ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index", new { pensumId = model.Pensum });
             }
-            catch
-            {
-                _viewMessageLogic.SetNewMessage("Error", "Algo salió mal, por favor intente de nuevo.", ViewMessageType.ErrorMessage);
-            }
-            IQueryable<Course> groups = _courseRepository.Query(x => x);
-            return RedirectToAction("Index", groups);
-        }
-
-        //
-        // GET: /Course/Edit/5
-
-        public ActionResult Edit(int id)
-        {
-            Course c = _courseRepository.GetById(id);
-
-            return View(c);
-        }
-
-        //
-        // POST: /Course/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Course course)
-        {
-            Course role = _courseRepository.Update(course);
-            const string title = "Curso Actualizado";
-            var content = "El curso " + role.Name + " ha sido modificado exitosamente.";
+            toCreate = _courseRepository.Create(toCreate);
+            title = "Curso Agregado";
+            content = "El pensum " + toCreate.Name + " ha sido guardado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-
-
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new{pensumId = model.Pensum});
         }
 
-        //
-        // POST: /Course/Delete/5
+        [AuthorizeAdminDirector]
+        public ActionResult Edit(long id)
+        {
+            var item = _courseRepository.GetById(id);
+            var toReturn = Mapper.Map<CourseEditModel>(item);
+            return View(toReturn);
+        }
 
         [HttpPost]
-        public ActionResult Delete(int id)
+        [AuthorizeAdminDirector]
+        public ActionResult Edit(CourseEditModel model)
         {
-            try
+            var item = _courseRepository.GetById(model.Id);
+            var list = _courseRepository.Filter(x => x.Name == model.Name && x.Id == model.Id);
+            var list2 = _courseRepository.Filter(x => x.Name == model.Name && x.Id != model.Id);
+            string title;
+            string content;
+            if (list2.Any())
             {
-                Course group = _courseRepository.GetById(id);
-                _courseRepository.Delete(group);
-                _courseRepository.SaveChanges();
-                _viewMessageLogic.SetNewMessage("Eliminado", "Eliminado exitosamente.", ViewMessageType.SuccessMessage);
+                title = "Error!";
+                content = "El Curso ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+            }
+            else if (!list.Any())
+            {
+                item = Mapper.Map(model, item);
+                item = _courseRepository.Update(item);
+                title = "Curso Actualizado!";
+                content = "El Curso " + item.Name + " fue actualizado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            }
+            return RedirectToAction("Index", new { pensumId = item.Pensum.Id });
+        }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                _viewMessageLogic.SetNewMessage("Error en eliminación", "El grupo no pudo ser eliminado correctamente, por favor intente nuevamente.", ViewMessageType.ErrorMessage);
-                return View("Index");
-            }
+        [HttpPost]
+        [AuthorizeAdminDirector]
+        public ActionResult Delete(long id)
+        {
+            var item = _courseRepository.GetById(id);
+            var pensumId = item.Pensum.Id;
+            item = _courseRepository.Delete(item);
+            const string title = "Curso Eliminado!";
+            var content = "El Curso " + item.Name + " fue eliminado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index", new { pensumId });
         }
     }
 }

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using System.Data.Entity;
@@ -19,24 +17,17 @@ namespace Mhotivo.Implement.Repositories
         {
             _context = ctx;
         }
-        
-        public People First(Expression<Func<People, People>> query)
-        {
-            var peoples = _context.Peoples.Select(query);
-            return peoples.Count() != 0 ? peoples.First() : null;
-        }
 
         public People GetById(long id)
         {
-            var peoples = _context.Peoples.Where(x => x.Id == id);
-            return peoples.Count() != 0 ? peoples.First() : null;
+            return _context.Peoples.FirstOrDefault(x => x.Id == id);
         }
 
         public People Create(People itemToCreate)
         {
             var people = _context.Peoples.Add(itemToCreate);
             _context.SaveChanges();
-                return people;
+            return people;
         }
 
         public IQueryable<People> Query(Expression<Func<People, People>> expression)
@@ -47,18 +38,13 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<People> Filter(Expression<Func<People, bool>> expression)
         {
             return _context.Peoples.Where(expression);
-            
         }
-
+            
         public People Update(People itemToUpdate)
         {
+            _context.Entry(itemToUpdate).State = EntityState.Modified;
             _context.SaveChanges();
             return itemToUpdate;   
-        }
-        
-        public void Detach(People people)
-        {
-            _context.Entry(people).State = EntityState.Detached;
         }
 
         public People Delete(long id)
@@ -69,105 +55,16 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public People GetPeopleDisplayModelById(long id)
+        public People Delete(People itemToDelete)
         {
-            var people = GetById(id);
-            return new People
-            {
-                Id = people.Id,
-                IdNumber = people.IdNumber,
-                UrlPicture = people.UrlPicture,
-                FullName = people.FullName,
-                BirthDate = people.BirthDate,
-                Nationality = people.Nationality,
-                Address = people.Address,
-                City = people.City,
-                State = people.State,
-                Gender = people.Gender, //Utilities.GenderToString(people.Gender),
-            };
-        }
-
-        public People UpdatePeopleFromPeopleEditModel(People peopleEditModel, People people)
-        {
-            people.FirstName = peopleEditModel.FirstName;
-            people.LastName = peopleEditModel.LastName;
-            people.FullName = (peopleEditModel.FirstName + " " + peopleEditModel.LastName).Trim();
-            people.Country = peopleEditModel.Country;
-            people.IdNumber = peopleEditModel.IdNumber;
-            people.BirthDate = peopleEditModel.BirthDate;
-            people.Gender = peopleEditModel.Gender; //Utilities.IsMasculino(peopleEditModel.Sexo);
-            people.Nationality = peopleEditModel.Nationality;
-            people.State = peopleEditModel.State;
-            people.City = peopleEditModel.City;
-            people.Address = peopleEditModel.Address;
-            return Update(people);
-        }
-
-        public People GeneratePeopleFromRegisterModel(People peopleRegisterModel)
-        {
-            return new People
-            {
-                FirstName = peopleRegisterModel.FirstName,
-                LastName = peopleRegisterModel.LastName,
-                FullName = (peopleRegisterModel.FirstName + " " + peopleRegisterModel.LastName).Trim(),
-                IdNumber = peopleRegisterModel.IdNumber,
-                BirthDate = peopleRegisterModel.BirthDate,
-                Gender = peopleRegisterModel.Gender, //Utilities.IsMasculino(peopleRegisterModel.Sexo),
-                Nationality = peopleRegisterModel.Nationality,
-                State = peopleRegisterModel.State,
-                Country = peopleRegisterModel.Country,
-                City = peopleRegisterModel.City,
-                Address = peopleRegisterModel.Address,
-            };
-        }
-
-        public People GetPeopleEditModelById(long id)
-        {
-            var people = GetById(id);
-            return new People
-            {
-                FirstName = people.FirstName,
-                LastName = people.LastName,
-                FullName = (people.FirstName + " " + people.LastName).Trim(),
-                IdNumber = people.IdNumber,
-                BirthDate = people.BirthDate,
-                //Sexo = Utilities.GenderToString(people.Gender),
-                Gender = people.Gender, 
-                Nationality = people.Nationality,
-                Country = people.Country,
-                State = people.State,
-                City = people.City,
-                Address = people.Address,
-                Id = people.Id,
-            };
-        }
-
-        public void SaveChanges()
-        {
+            _context.Peoples.Remove(itemToDelete);
             _context.SaveChanges();
+            return itemToDelete;
         }
 
         public IEnumerable<People> GetAllPeople()
         {
-            return Query(x => x).ToList().Select(x => new People
-            {
-                Address = x.Address,
-                //BirthDay = x.BirthDate,
-                BirthDate = x.BirthDate,
-                Id = x.Id,
-                //Sexo = Utilities.GenderToString(x.Gender),
-                Gender = x.Gender,
-                City = x.City,
-                Nationality = x.Nationality,
-                State = x.State,
-                UrlPicture = x.UrlPicture,
-                FullName = x.FullName
-            });
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
+            return Query(x => x).ToList();
         }
     }
 }

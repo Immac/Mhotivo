@@ -6,16 +6,16 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IUserRepository : IDisposable
+    public interface IUserRepository
     {
-        User First(Expression<Func<User, bool>> query);
         User GetById(long id);
         User Create(User itemToCreate);
         IQueryable<User> Query(Expression<Func<User, User>> expression);
         IQueryable<User> Filter(Expression<Func<User, bool>> expression);
-        User Update(User itemToUpdate, bool updateRole);
+        User Update(User itemToUpdate);
         User Delete(long id);
-        void SaveChanges();
+        User Delete(User itemToDelete);
         IEnumerable<User> GetAllUsers();
+        Role GetUserRole(long idUser);
     }
 }

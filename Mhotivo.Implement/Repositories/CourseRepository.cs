@@ -1,11 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.ComponentModel;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -18,24 +16,36 @@ namespace Mhotivo.Implement.Repositories
         public CourseRepository(MhotivoContext ctx)
         {
             _context = ctx;
-           
         }
 
-        public void SaveChanges()
+        public Course Delete(Course itemToDelete)
         {
+            _context.Courses.Remove(itemToDelete);
             _context.SaveChanges();
+            return itemToDelete;
         }
 
-        public Course First(Expression<Func<Course, Course>> query)
+        public IEnumerable<Course> GetAllCourse()
         {
-            var courses = _context.Courses.Select(query);
-            return courses.Count() != 0 ? courses.First() : null;
+            return Query(c => c).ToList();
+        }
+
+        public IQueryable<Course> Filter(Expression<Func<Course, bool>> expression)
+        {
+            return _context.Courses.Where(expression);
+        }
+
+        public Course Delete(long id)
+        {
+            var itemToDelete = GetById(id);
+            _context.Courses.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
 
         public Course GetById(long id)
         {
-            var courses = _context.Courses.Where(x => x.Id == id);
-            return courses.Count() != 0 ? courses.First() : null;
+            return _context.Courses.FirstOrDefault(x => x.Id == id);
         }
 
         public Course Create(Course itemToCreate)
@@ -45,32 +55,17 @@ namespace Mhotivo.Implement.Repositories
             return role;
         }
 
-        public IQueryable<TResult> Query<TResult>(Expression<Func<Course, TResult>> expression)
+        public IQueryable<Course> Query(Expression<Func<Course, Course>> expression)
         {
             return _context.Courses.Select(expression);
 
         }
 
-        public IQueryable<Course> Filter(Expression<Func<Course, bool>> expression)
-        {
-            return _context.Courses.Where(expression);
-        }
-
         public Course Update(Course itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
-            SaveChanges();
+            _context.SaveChanges();
             return itemToUpdate;
-        }
-
-        public void Delete(Course itemToDelete)
-        {
-            _context.Courses.Remove(itemToDelete);
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

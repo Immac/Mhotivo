@@ -13,15 +13,12 @@
 {@Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Editar Usuaaario</legend>
+        <legend>Editar Usuario</legend>
 
         @Html.HiddenFor(model => model.Id)
         <p class="text-error">
             @Html.ValidationMessageFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.DisplayName)
-            @Html.ValidationMessageFor(model => model.Password)
-            @Html.ValidationMessageFor(model => model.ConfirmPassword)
-            @Html.ValidationMessageFor(model => model.RoleId)
+            @Html.ValidationMessageFor(model => model.Role)
         </p>
 
         <div class="control-group">
@@ -32,49 +29,20 @@
                 @Html.EditorFor(model => model.Email)
             </div>
         </div>
-        
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.DisplayName)
+                @Html.LabelFor(model => model.Role)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.DisplayName)
+                @Html.DropDownList("Role", (SelectList)ViewBag.RoleId)
             </div>
         </div>
-           
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Password)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Password)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.ConfirmPassword)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.ConfirmPassword)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.RoleId)
-            </div>
-            <div class="controls">
-                @Html.DropDownList("RoleId")
-            </div>
-        </div>
-
         <div class="control-group">
             <div class="controls">
                 <div class="control-label" style=" width: 60px;  padding-top: 0;">
-                    @Html.LabelFor(model => model.Status, new {@style="text-align: left; margin-left: 0;"})
+                    @Html.LabelFor(model => model.IsActive, new {@style="text-align: left; margin-left: 0;"})
                 </div>
-                @Html.CheckBoxFor(model => model.Status,new { @style="-ms-opacity: 1; opacity: 1; margin-top: 1px;"})
+                @Html.CheckBoxFor(model => model.IsActive,new { @style="-ms-opacity: 1; opacity: 1; margin-top: 1px;"})
             </div>
         </div>
 
@@ -83,7 +51,7 @@
         <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
-                Cancel
+                Cancelar
             </button>
 
             <button type="submit" class="btn btn-small btn-primary">

@@ -1,11 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mhotivo.Data.Entities
 {
+    public enum Gender
+    {
+        Femenino = 0,
+        Masculino = 1
+    }
     public class People
     {
+        public People()
+        {
+            ContactInformation = new HashSet<ContactInformation>();
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -13,17 +24,13 @@ namespace Mhotivo.Data.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName { get; set; }
-        public string BirthDate { get; set; }
-        public string Nationality { get; set; }
+        public DateTime BirthDate { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string Country { get; set; }
         public string Address { get; set; }
-        public string UrlPicture { get; set; }
-        public byte[] Photo { get; set; }
-        public bool Gender { get; set; }
-        public bool Disable { get; set; }
-
-        public virtual ICollection<ContactInformation> Contacts { get; set; }
+        public Byte[] Photo { get; set; }
+        public Gender MyGender { get; set; }
+        public bool IsActive { get; set; }
+        public virtual ICollection<ContactInformation> ContactInformation { get; set; }
     }
 }

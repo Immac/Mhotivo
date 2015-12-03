@@ -1,4 +1,6 @@
 ﻿@using System.Activities.Statements
+@using Mhotivo
+@using Mhotivo.Implement
 @using Mhotivo.Logic
 @using Microsoft.Ajax.Utilities
 <!DOCTYPE html>
@@ -6,7 +8,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>@ViewBag.Title - Mhotivo</title>
-
+        <link rel="shortcut icon" type="image/ico" href="~/favicon.ico">
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -49,9 +51,9 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container-fluid">
-					<a href="#" class="brand">
+					<a href="~/Home/Index" class="brand">
 						<small>
-							Mhotivo
+							Panel de Administración - MHOTIVO
 						</small>
 					</a><!--/.brand-->
 
@@ -60,7 +62,7 @@
                         <li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								<span class="user-info">
-								    <small>Welcome,</small>
+								    <small>Bienvenido(a),</small>
                                     @Html.Action("GetUserLoggedName", "Home")
 								</span>
 
@@ -68,21 +70,14 @@
 							</a>
 
 							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
-								<li>
-									<a href="#">
-										<i class="icon-cog"></i>
-										Settings
-									</a>
-								</li>
-
-								<li>
+								<!--/<li>
 									<a href="#">
 										<i class="icon-user"></i>
-										Profile
+										Perfil
 									</a>
 								</li>
 
-								<li class="divider"></li>
+								<li class="divider"></li>-->
 
 								<li>
 									<a href="/Account/Logout">
@@ -141,36 +136,7 @@
 			</div>
 
 			<div class="main-content">
-				<div class="breadcrumbs" id="breadcrumbs">
-					<ul class="breadcrumb">
-						<li>
-							<i class="icon-home home-icon"></i>
-							<a href="#">Home</a>
-
-							<span class="divider">
-								<i class="icon-angle-right arrow-icon"></i>
-							</span>
-						</li>
-
-						<li>
-							<a href="#">Other Pages</a>
-
-							<span class="divider">
-								<i class="icon-angle-right arrow-icon"></i>
-							</span>
-						</li>
-						<li class="active">Blank Page</li>
-					</ul><!--.breadcrumb-->
-
-					<div class="nav-search" id="nav-search">
-						<form class="form-search" >
-							<span class="input-icon">
-								<input type="text" placeholder="Search ..." class="input-small nav-search-input" id="nav-search-input" autocomplete="off" />
-								<i class="icon-search nav-search-icon"></i>
-							</span>
-						</form>
-					</div><!--#nav-search-->
-				</div>
+				
 
 				@RenderSection("featured", required: false)
 				<div class="page-content">
@@ -251,6 +217,30 @@
     	            );
     	        }); //End of delete
 
+    	        //start Delete
+    	        $("a.toAutorizar").on("click", function () {
+    	            var uri = $(this).attr("id");
+    	            var idMessage = "input[id*='" + uri + "_Message']";
+    	            var idForm = "#Form_" + uri;
+    	            var message = $(idMessage).val();
+    	            bootbox.dialog(message,
+    	                [
+    	                    {
+    	                        "label": "Cancelar",
+    	                        "class": "btn-small"
+    	                    },
+    	                    {
+    	                        "label": "Autorizar",
+    	                        "class": "btn-small btn-danger",
+    	                        "callback": function () {
+    	                            $(idForm).submit();
+    	                        }
+    	                    }
+    	                ]
+    	            );
+    	        }); //End of delete
+
+
     	        //start Question
     	        $("a.toQuestion").on("click", function () {
     	            var uri = $(this).attr("id");
@@ -285,12 +275,14 @@
     	                var id = appPath + $(this).attr('data-id');
     	                id = id.replace("Student/Student/", "Student/");
     	                id = id.replace("student/Student/", "Student/");
-    	                id = id.replace("Parent/Parent/", "Parent/");
-    	                id = id.replace("parent/Parent/", "Parent/");
+    	                id = id.replace("Tutor/Tutor/", "Tutor/");
+    	                id = id.replace("tutor/Tutor/", "Tutor/");
     	                id = id.replace("Benefactor/Benefactor/", "Benefactor/");
     	                id = id.replace("benefactor/Benefactor/", "Benefactor/");
-    	                id = id.replace("Meister/Meister/", "Meister/");
-    	                id = id.replace("meister/Meister/", "Meister/");
+    	                id = id.replace("Teacher/Teacher/", "Teacher/");
+    	                id = id.replace("teacher/Teacher/", "Teacher/");
+    	                id = id.replace("AcademicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
+    	                id = id.replace("academicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
     	                window.location = id;
     	            })
     	        });
@@ -307,12 +299,14 @@
     	                var id = appPath + $(this).attr('data-id');
     	                id = id.replace("Student/Student/", "Student/");
     	                id = id.replace("student/Student/", "Student/");
-    	                id = id.replace("Parent/Parent/", "Parent/");
-    	                id = id.replace("parent/Parent/", "Parent/");
+    	                id = id.replace("Tutor/Tutor/", "Tutor/");
+    	                id = id.replace("tutor/Tutor/", "Tutor/");
     	                id = id.replace("Benefactor/Benefactor/", "Benefactor/");
     	                id = id.replace("benefactor/Benefactor/", "Benefactor/");
-    	                id = id.replace("Meister/Meister/", "Meister/");
-    	                id = id.replace("meister/Meister/", "Meister/");
+    	                id = id.replace("Teacher/Teacher/", "Teacher/");
+    	                id = id.replace("teacher/Teacher/", "Teacher/");
+    	                id = id.replace("AcademicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
+    	                id = id.replace("academicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
     	                window.location = id;
     	            })
     	        });
