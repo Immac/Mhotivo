@@ -1,0 +1,109 @@
+﻿@model Mhotivo.Models.TeacherRegisterModel
+@{
+    ViewBag.Title = "Agregar Maestro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@section AddToHead{
+    <style type="text/css">
+        span.InputLabel {
+            width: 567px;
+            height: 15px;
+            font-size: 10px;
+            margin: 0 0 10px 0;
+            vertical-align: text-top;
+            font-weight: bold;
+        }
+    </style>
+}
+@Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+@using (Html.BeginForm("Add", "Teacher", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+{
+    @Html.ValidationSummary(true)
+    <h2>Agregar Maestro</h2>
+    <div id="address" style="width: 500px;">
+        <h3>Dirección</h3>
+        <div id="mainAddress">
+            @Html.EditorFor(model => model.Address)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Address)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.Address)</p>
+        </div>
+        <br style="clear: left;" />
+        <div style="float: left; width: 250px;">
+            @Html.EditorFor(model => model.City)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.City)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.City)</p>
+        </div>
+        <div style="float: left; width: 250px;">
+            @Html.EditorFor(model => model.State)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.State)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.State)</p>
+        </div>
+        <br style="clear: left;" />
+    </div>
+
+    <div id="information" style="width: 500px;">
+        <h3>Información Personal</h3>
+        <div id="FirstName" style="float: left; width: 250px;">
+            @Html.EditorFor(model => model.FirstName)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.FirstName)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.FirstName)</p>
+        </div>
+        <div style="float: left; width: 250px;">
+            @Html.EditorFor(model => model.LastName)
+            <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.LastName)</p>
+        </div>
+
+        <div id="Email" style="float: left; width: 250px;">
+            @Html.EditorFor(model => model.Email)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Email)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.Email)</p>
+        </div>
+
+        <br style="clear: left;" />
+        <br style="clear: left;" />
+        <div style="float: left; width: 250px;">
+
+            <div class="control-group" style="float: left; width: 250px;">
+                <div class="row-fluid input-append">
+                    @Html.TextBoxFor(model => model.IdNumber, new { @class = "input-large input-mask-idNumber" })
+                    <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.IdNumber)</span>
+                    <p class="text-error">@Html.ValidationMessageFor(model => model.IdNumber)</p>
+                </div>
+            </div>
+            @*@Html.EditorFor(model => model.IDNumber)*@
+        </div>
+        <div style="float: left; width: 250px;">
+            @Html.TextBoxFor(model => model.BirthDate, new { @class = "date-picker", @data_date_format = "mm/dd/yyyy", @readonly = true })
+            <span class="add-on">
+                <i class="icon-calendar"></i>
+            </span>
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.BirthDate)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.BirthDate)</p>
+        </div>
+        <br style="clear: left;" />
+        <br style="clear: left;" />
+
+        <div style="float: left; width: 250px;">
+            @Html.DropDownListFor(model => model.MyGender, (List<SelectListItem>)ViewBag.Genders)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.MyGender)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.MyGender)</p>
+        </div>
+
+        <br style="clear: left;" />
+    </div>
+
+    <p>
+        <a href="~/Teacher/Index" data-dismiss="modal" class="btn btn-small">
+            <i class="icon-remove"></i>
+            Cancelar
+        </a>
+        <button type="submit" class="btn btn-small btn-primary">
+            <i class="icon-ok"></i>
+            Agregar
+        </button>
+    </p>
+}

@@ -1,21 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo", "Mhotivo\Mhotivo.csproj", "{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Tests", "Mhotivo.Tests\Mhotivo.Tests.csproj", "{BA54C688-A29C-4C8D-AD9F-8BBC53639734}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Data", "Mhotivo.Data\Mhotivo.Data.csproj", "{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.DBDeployer", "Mhotivo.DBDeployer\Mhotivo.DBDeployer.csproj", "{58046F23-8B19-41FA-88E2-D5BD2E506446}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Interface", "Mhotivo.Interface\Mhotivo.Interface.csproj", "{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Implement", "Mhotivo.Implement\Mhotivo.Implement.csproj", "{60F95856-177F-4D03-A555-EB23E73BFCD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.ParentSite", "Mhotivo.ParentSite\Mhotivo.ParentSite.csproj", "{70EA44D9-84FE-42D1-915F-1CDB25271929}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AFF6CE53-6BC6-4255-88AE-DAE8A17FFB45}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,18 +30,10 @@ Global
 		{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA54C688-A29C-4C8D-AD9F-8BBC53639734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA54C688-A29C-4C8D-AD9F-8BBC53639734}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA54C688-A29C-4C8D-AD9F-8BBC53639734}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA54C688-A29C-4C8D-AD9F-8BBC53639734}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}.Release|Any CPU.ActiveCfg = Release|Any CPU

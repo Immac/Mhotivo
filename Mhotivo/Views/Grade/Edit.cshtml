@@ -10,10 +10,11 @@
 
 <div id="body" class="modal-body" style="max-height: 500px;">
 @using (Html.BeginForm("Edit", "Grade", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"}))
-{@Html.ValidationSummary(true)
+{
+    @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Editar Usuario</legend>
+        <legend>Editar Grado</legend>
 
         @Html.HiddenFor(model => model.Id)
         <p class="text-error">
@@ -36,9 +37,7 @@
             </div>
 
             <div class="controls">
-                <select id="EducationLevel" name="EducationLevel"><option selected="selected" value="Primaria">Primaria</option>
-                <option value="Secundaria">Secundaria</option>
-                </select>
+                @Html.DropDownListFor(model => model.EducationLevel, (SelectList)ViewBag.EducationLevels)
             </div>
         </div>
            

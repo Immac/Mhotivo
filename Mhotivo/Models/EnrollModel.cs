@@ -2,18 +2,19 @@
 
 namespace Mhotivo.Models
 {
-    public class DisplayEnrollStudents
+    public class EnrollDisplayModel
     {
-        public int Id { get; set; }
+        public long AcademicGradeId { get; set; }
+        public long StudentId { get; set; }
 
-        [Display(Name = "Nombre Completo")]
+        [Display(Name = "Nombre")]
         public string FullName { get; set; }
 
         [Display(Name = "Foto Perfil")]
-        public string UrlPicture { get; set; }
+        public byte[] Photo { get; set; }
 
-        [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        [Display(Name = "Genero")]
+        public string MyGender { get; set; }
 
         [Display(Name = "Numero de Cuenta")]
         public string AccountNumber { get; set; }
@@ -22,15 +23,33 @@ namespace Mhotivo.Models
         public string Grade { get; set; }
 
         [Display(Name = "Seccion")]
-        public char Section { get; set; }
+        public string Section { get; set; }
     }
 
     public class EnrollRegisterModel
     {
+        public long Id { get; set; }
+        [Required(ErrorMessage = "Debe elegir un grado.")]
         [Display(Name = "Grado")]
-        public int GradeId { get; set; }
+        public long Grade { get; set; }
 
+        [Required(ErrorMessage = "Debe elegir una seccion.")]
+        [Display(Name = "Seccion")]
+        public long AcademicGrade { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir un estudiante.")]
         [Display(Name = "Estudiante")]
-        public int Id { get; set; }
+        public long Student { get; set; }
+    }
+
+    public class EnrollDeleteModel
+    {
+        [Required(ErrorMessage = "Debe elegir un grado.")]
+        [Display(Name = "Grado")]
+        public long Grade { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir una seccion.")]
+        [Display(Name = "Seccion")]
+        public long AcademicGrade { get; set; }
     }
 }
