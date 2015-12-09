@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Editar Estudiante";
-    Layout = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -13,7 +13,14 @@
 <script src="~/Scripts/jquery.maskedinput.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-@using (Html.BeginForm("Edit", "student", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"}))
+@using (Html.BeginForm("Edit", "student", FormMethod.Post, new
+{
+    id = "Form"
+    ,@class = "form-horizontal"
+    ,@Style = "margin:0;"
+    ,enctype = "multipart/form-data"
+    ,method = "post"
+}))
 {@Html.ValidationSummary(true)
 
     <fieldset>
@@ -28,26 +35,28 @@
             @Html.ValidationMessageFor(model => model.FilePicture)
             @Html.ValidationMessageFor(model => model.FirstName)
             @Html.ValidationMessageFor(model => model.LastName)
-            @Html.ValidationMessageFor(model => model.Gender)
-            @Html.ValidationMessageFor(model => model.Nationality)
-            @Html.ValidationMessageFor(model => model.Country)
+            @Html.ValidationMessageFor(model => model.MyGender)
             @Html.ValidationMessageFor(model => model.State)
-            @Html.ValidationMessageFor(model => model.StartDate)
             @Html.ValidationMessageFor(model => model.BloodType)
             @Html.ValidationMessageFor(model => model.AccountNumber)
-            @Html.ValidationMessageFor(model => model.Biography)
             @Html.ValidationMessageFor(model => model.Tutor1)
             @Html.ValidationMessageFor(model => model.Tutor2)
         </p>
 
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.FilePicture)
-            </div>
-            <div class="controls">
-                <input type="file" name="FilePicture" id="FilePicture"/>
-            </div>
+        <div id="Photo">
+            @{
+                var imgSrc = "";
+                if (Model.Photo != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.Photo);
+                    imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                }
+            }
+            @Html.HiddenFor(x => x.Photo)
+            <img height="150" width="150" src="@imgSrc" />
         </div>
+
+
 
         <div class="control-group">
             <div class="control-label">
@@ -100,7 +109,7 @@
                     });
                 </script>
                 
-                @Html.TextBoxFor(model => model.BirthDate, new {@class="date-picker",@data_date_format="dd-mm-yyyy", @readonly=true})
+                @Html.TextBoxFor(model => model.BirthDate, new {@class="date-picker",@data_date_format="mm/dd/yyyy", @readonly=true})
                 <span class="add-on">
                     <i class="icon-calendar"></i>
                 </span>
@@ -110,19 +119,10 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Gender)
+                @Html.LabelFor(model => model.MyGender)
             </div>
             <div class="controls">
-                @Html.DropDownList("Gender", new List<SelectListItem> { new SelectListItem {Value="Masculino", Text="Masculino" }, new SelectListItem{Value="Femenino", Text="Femenino"}})
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Nationality)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Nationality)
+                @Html.DropDownListFor(x => x.MyGender, (List<SelectListItem>)ViewBag.Genders)
             </div>
         </div>
 
@@ -152,45 +152,14 @@
                 @Html.EditorFor(model => model.State)
             </div>
         </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Country)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Country)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.StartDate)
-            </div>
-            <div class="controls">
-                @*@Html.EditorFor(model => model.StartDate)*@
-
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $('.date-picker').datepicker().on('changeDate', function () {
-                            $(this).datepicker('hide');
-                        });
-                    });
-                </script>
-                
-                @Html.TextBoxFor(model => model.StartDate, new { @class="date-picker",@data_date_format="dd-mm-yyyy", @readonly=true})
-                <span class="add-on">
-                    <i class="icon-calendar"></i>
-                </span>
-
-            </div>
-        </div>
         
         <div class="control-group">
             <div class="control-label">
                 @Html.LabelFor(model => model.BloodType)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.BloodType)
+                @Html.DropDownListFor(model => model.BloodType, new SelectList(new[] { "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+" }), "-- Tipo de Sangre --")
+                <p class="text-error">@Html.ValidationMessageFor(model => model.BloodType)</p>
             </div>
         </div>
            
@@ -205,19 +174,10 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Biography)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Biography)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
                 @Html.LabelFor(model => model.Tutor1)
             </div>
             <div class="controls">
-                @Html.DropDownList("Tutor1Id", "--Padre o Tutor--")
+                @Html.DropDownList("Tutor1Id", "--Tutor o Tutor--")
             </div>
         </div>
 
@@ -226,18 +186,27 @@
                 @Html.LabelFor(model => model.Tutor2)
             </div>
             <div class="controls">
-                @Html.DropDownList("Tutor2Id", "--Padre o Tutor--")
+                @Html.DropDownList("Tutor2Id", "--Tutor o Tutor--")
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="control-label">
+                @Html.LabelFor(model => model.Photo)
+            </div>
+            <div class="controls">
+                @Html.TextBoxFor(m => m.FilePicture, new { type = "file" })<br />
+                @Html.ValidationMessageFor(model => model.FilePicture)
             </div>
         </div>
 
         <div class="space"></div>
 
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-small">
+            <a href="~/Student/Index" data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
-                Cancel
-            </button>
-
+                Cancelar
+            </a>
             <button type="submit" class="btn btn-small btn-primary">
                 <i class="icon-ok"></i>
                 Actualizar

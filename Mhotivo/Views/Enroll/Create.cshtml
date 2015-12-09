@@ -5,7 +5,10 @@
     Layout = "";
 }
 
+<script src="~/Scripts/jquery-2.1.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
@@ -17,28 +20,47 @@
         <legend>Matricula</legend>
         
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.GradeId)
-            @Html.ValidationMessageFor(model => model.Id)
+            @Html.ValidationMessageFor(model => model.Grade)
+            @Html.ValidationMessageFor(model => model.Student)
+            @Html.ValidationMessageFor(model => model.AcademicGrade)
         </p>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Id)
+                @Html.LabelFor(model => model.Student)
             </div>
             <div class="controls">
-                @Html.DropDownList("Id")
+                @Html.DropDownListFor(model => model.Student, (SelectList)ViewBag.Id)
             </div>
         </div>
-        
-         <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.GradeId)
-            </div>
-            <div class="controls">
-                @Html.DropDownList("GradeId")
-            </div>
-        </div>
+        @{
+            if (Model.Id == -1)
+            {
+                <div class="control-group" id="gradeList">
+                    <div class="control-label">
+                        @Html.DisplayNameFor(model => model.Grade)
+                    </div>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.Grade, (SelectList) ViewBag.Grades, " -- Grado --")
+                    </div>
+                </div>
 
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.DisplayNameFor(model => model.AcademicGrade)
+                    </div>
+                    <div class="controls">
+                        @Html.DropDownList("AcademicGrade", (List<SelectListItem>) ViewBag.Sections, "  -- Seccion --")
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.Grade)
+                @Html.HiddenFor(model => model.AcademicGrade)
+            }
+        }
+        @Html.HiddenFor(model => model.Id)
         <div class="space"></div>
 
         <div class="modal-footer">
@@ -49,10 +71,27 @@
 
             <button type="submit" class="btn btn-small btn-primary">
                 <i class="icon-ok"></i>
-                Crear
+                Matricular
             </button>
         </div>
     </fieldset>
 }
-
 </div>
+<script type="text/javascript">
+    $('#gradeList').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("LoadByGrade")',
+            cache: false,
+            type: 'POST',
+            data: 'gradeId='+$('#gradeList option:selected').val(),
+            datatype: "json",
+            success: function (data) {
+                $('#AcademicGrade').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#AcademicGrade').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
+</script>

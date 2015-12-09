@@ -1,0 +1,58 @@
+﻿@model Mhotivo.ParentSite.Models.TutorLoginModel
+
+@{
+    ViewBag.Title = "Iniciar Sesión";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Mhotivo Tutores</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link href="../../Content/font-awesome.css" rel="stylesheet" />
+    <link href="../../Content/Login/login.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+</head>
+
+<body>
+    <div class="pen-title">
+        <h1>MHOTIVO | Sitio de Tutores</h1>
+    </div>
+    <div class="container">
+        <div class="card"></div>
+        <div class="card">
+            <h1 class="title">Ingresar</h1>
+            @using (@Html.BeginForm("LogIn", "Account", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true)
+                <div class="input-container">
+                    <input id="email" name="Email"  required />
+                    <label>Correo</label>
+                    <div class="bar"></div>
+                </div>
+                <div class="input-container">
+                    <input type="password" id="pass" name="Password" required />
+                    <label>Contraseña</label>
+                    <div class="bar"></div>
+                </div>
+
+                <div class="button-container">
+                    <button><span>Ingresar</span></button>
+                </div>
+            }
+        </div>
+
+        <div class="card alt">
+            <div class="toggle"></div>
+        </div>
+
+    </div>
+</body>
+
+</html>

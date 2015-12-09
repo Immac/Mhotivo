@@ -2,9 +2,9 @@
 
 namespace Mhotivo.Models
 {
-    public class DisplayGradeModel
+    public class GradeDisplayModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Nombre")]
         public string Name { get; set; }
@@ -15,7 +15,7 @@ namespace Mhotivo.Models
 
     public class GradeEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]
@@ -23,7 +23,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Nivel Educativo")]
         [Display(Name = "Nivel Educativo")]
-        public string EducationLevel { get; set; }
+        public long EducationLevel { get; set; }
     }
 
     public class GradeRegisterModel
@@ -34,6 +34,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Nivel Educativo")]
         [Display(Name = "Nivel Educativo")]
-        public string EducationLevel { get; set; }
+        public long EducationLevel { get; set; }
     }
 }

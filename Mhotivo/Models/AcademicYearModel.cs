@@ -1,53 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Mhotivo.Models
 {
-    public class AcademicYearViewData
+    public class AcademicYearDisplayModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        [Display(Name = "Grade")]
-        public string Grade { get; set; }
-
-        [Display(Name = "Course")]
-        public string Course { get; set; }
-
-        [Display(Name = "Year")]
+        [Display(Name = "Año")]
         public int Year { get; set; }
 
-        [Display(Name = "Section")]
-        public char Section { get; set; }
+        [Display(Name = "Activo?")]
+        public bool IsActive { get; set; }
 
-        [Display(Name = "Teacher")]
-        public string Meister { get; set; }
-
-        [Display(Name = "Teacher Start Date")]
-        public string StartDate { get; set; }
-
-        [Display(Name = "Teacher End Date")]
-        public string EndDate { get; set; }
-
-        [Display(Name = "Schedule")]
-        public string Schedule { get; set; }
-
-        [Display(Name = "Classroom")]
-        public string Room { get; set; }
-
-        [Display(Name = "Approved")]
-        public String Approved { get; set; }
-
-        [Display(Name = "Students Limit")]
-        public int Limit { get; set; }
+        [Display(Name = "Matricula Abierta?")]
+        public bool EnrollsOpen { get; set; }
     }
 
-    public class AcademicYearViewManagement
+    public class AcademicYearRegisterModel
     {
-        public IEnumerable<AcademicYearViewData> Elements { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar Año")]
+        [Display(Name = "Año")]
+        public int Year { get; set; }
+    }
 
-        public bool CanGenerate { get; set; }
+    public class AcademicYearEditModel
+    {
+        public long Id { get; set; }
 
-        public int CurrentYear { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar Año")]
+        [Display(Name = "Año")]
+        public int Year { get; set; }
+
+        [Display(Name = "Activo")]
+        public bool IsActive { get; set; }
+
+        [Display(Name = "Matricula Abierta")]
+        public bool EnrollsOpen { get; set; }
     }
 }

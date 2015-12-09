@@ -15,28 +15,17 @@
 
     <fieldset>
         <legend>Nuevo Pensum</legend>
-        
+        @Html.HiddenFor(model => model.Grade)
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.IdCourse)
-            @Html.ValidationMessageFor(model => model.IdGrade)
+            @Html.ValidationMessageFor(model => model.Name)
         </p>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.IdCourse)
+                @Html.LabelFor(model => model.Name)
             </div>
             <div class="controls">
-                @Html.DropDownList("IdCourse")
-            </div>
-        </div>
-        
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.IdGrade)
-            </div>
-            <div class="controls">
-                @Html.DropDownList("IdGrade")
+                @Html.EditorFor(model => model.Name)
             </div>
         </div>
 

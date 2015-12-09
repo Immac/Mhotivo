@@ -1,0 +1,93 @@
+﻿@model Mhotivo.Models.DataImportModel
+@{
+    ViewBag.Title = "Importar Datos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/jquery.maskedinput.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@section AddToHead{
+    <style type="text/css">
+        span.InputLabel {
+            width: 567px;
+            height: 15px;
+            font-size: 10px;
+            margin: 0 0 10px 0;
+            vertical-align: text-top;
+            font-weight: bold;
+        }
+    </style>
+}
+
+@Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+
+@using (Html.BeginForm("Index", "DataImport", FormMethod.Post, new {id = "Form", @class = "form-horizontal", @Style = "margin:0;", enctype = "multipart/form-data", method = "post"}))
+{
+    @Html.ValidationSummary(true)
+    <h2>Importar Datos</h2>
+    
+    <div style="float: left; width: 250px;">
+        <input type="file" name="UploadFile" id="UploadFile" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.UploadFile)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.UploadFile)</p>
+    </div>
+    <br style="clear: left;" />
+    <div id="Year" style="float: left; width: 250px;">
+        @Html.DropDownListFor(model => model.Year, (SelectList)ViewBag.Year, "  -- Año --")
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Year)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Year)</p>
+    </div>
+    <br style="clear: left;" />
+    <div style="float: left; width: 250px;" id="gradeList">
+        @Html.DropDownList("Grade", (SelectList)ViewBag.GradeId, "  -- Grado --")
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Grade)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Grade)</p>
+    </div>
+    <br style="clear: left;" />
+    <div style="float: left; width: 250px;">
+        <div id="sectionList">
+            @Html.DropDownList("Section", (List<SelectListItem>)ViewBag.Section, "  -- Seccion --")
+        </div>
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Section)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Section)</p>
+    </div>
+    <br style="clear: left;" />
+    <br style="clear: left;" />
+<p>
+    <a href="../" data-dismiss="modal" class="btn btn-small">
+        <i class="icon-remove"></i>
+        Cancel
+    </a>
+
+    <button type="submit" class="btn btn-small btn-primary">
+        <i class="icon-ok"></i>
+        Import
+    </button>
+</p>
+    
+}
+
+<script type ="text/javascript">
+    $('#gradeList').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("LoadByGrade")',
+            cache: false,
+            type: 'POST',
+            data: $('form').serialize(),
+            datatype: "json",
+            success: function (data) {
+                $('#Section').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#Section').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
+</script>

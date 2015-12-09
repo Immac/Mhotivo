@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.ComponentModel;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
-using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
+using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
@@ -21,21 +17,9 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
-
-        public ContactInformation First(Expression<Func<ContactInformation, ContactInformation>> query)
-        {
-            var contactInformations = _context.ContactInformations.Select(query);
-            return contactInformations.Count() != 0 ? contactInformations.First() : null;
-        }
-
         public ContactInformation GetById(long id)
         {
-            var contactInformations = _context.ContactInformations.Where(x => x.Id == id);
-            return contactInformations.Count() != 0 ? contactInformations.Include(x => x.People).First() : null;
+            return _context.ContactInformations.FirstOrDefault(x => x.Id == id);
         }
 
         public ContactInformation Create(ContactInformation itemToCreate)
@@ -46,10 +30,9 @@ namespace Mhotivo.Implement.Repositories
             return contactInformation;
         }
 
-        public IQueryable<TResult> Query<TResult>(Expression<Func<ContactInformation, TResult>> expression)
+        public IQueryable<ContactInformation> Query(Expression<Func<ContactInformation, ContactInformation>> expression)
         {
             return _context.ContactInformations.Select(expression);
-
         }
 
         public IQueryable<ContactInformation> Filter(Expression<Func<ContactInformation, bool>> expression)
@@ -60,7 +43,7 @@ namespace Mhotivo.Implement.Repositories
         public ContactInformation Update(ContactInformation itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
-            SaveChanges();
+            _context.SaveChanges();
             return itemToUpdate;
         }
 
@@ -72,9 +55,11 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public void Dispose()
+        public ContactInformation Delete(ContactInformation itemToDelete)
         {
-            _context.Dispose();
+            _context.ContactInformations.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
     }
 }

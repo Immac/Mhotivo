@@ -48,7 +48,6 @@ body.nicdark_boxed_img{ background-image: url(../img/img4.jpg) !important; backg
 
 /* 4 - START NICDARKSECTION*/
 .nicdark_section{ width: 100%; float: left; }
-/*.nicdark_section.nicdark_imgparallax{ background: url(../img/img3.jpg) 50% 0 fixed; background-size: cover;}*/
 /*END NICDARKSECTION*/
 
 
@@ -101,7 +100,7 @@ body.nicdark_boxed_img{ background-image: url(../img/img4.jpg) !important; backg
 p,h1,h2,h3,h4,h5,h6{ margin:0px; padding:0px; font-weight: normal; }
 /*font*/
 h1,h2,h3,h4,h5,h6,input[type="text"],textarea,select{ font-family: 'Montserrat', sans-serif; color: #868585; }
-h1.subtitle,h2.subtitle,h3.subtitle,h4.subtitle,h5.subtitle,h6.subtitle,input[type="text"].subtitle,textarea.subtitle,select.subtitle, span.subtitle{ font-family: 'Raleway', sans-serif; color:#a4a4a4; }
+h1.subtitle,h2.subtitle,h3.subtitle,h4.subtitle,h5.subtitle,h6.subtitle,input[type="text"].subtitle,textarea.subtitle,select.subtitle, span.subtitle{ font-family: sans-serif; }
 h1.signature,h2.signature,h3.signature,h4.signature,h5.signature,h6.signature, span.signature{ font-family: 'Montez', cursive; }
 /*color*/
 p.white,h1.white,h2.white,h3.white,h4.white,h5.white,h6.white,a.white,i.white,span.white, input[type="text"].white, textarea.white, input[type="submit"].white, select.white{ color:#ffffff; }
@@ -158,25 +157,10 @@ select.big { font-size: 17px; padding: 15px 10%; }
 .nicdark_parallax_img3 { background:url(../img/slide/img3.jpg) 50% 0 fixed; background-size:cover; }
 .nicdark_parallax_img1 { background:url(../img/slide/img1.jpg) 50% 0 fixed; background-size:cover; }
 
-.nicdark_parallaxx_img1 { background: url(../img/parallax/img1.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img2 { background: url(../img/parallax/img2.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img3 { background: url(../img/parallax/img3.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img5 { background: url(../img/parallax/img5.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img6 { background: url(../img/parallax/img6.jpg) 50% 0 fixed; background-size:cover; }
 .nicdark_parallaxx_img7 { background: url(../img/parallax/img7.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img8 { background: url(../img/parallax/img8.jpg) 50% 0 fixed; background-size:cover; }
 
 .nicdark_parallaxx_img-teachers-1 { background: url(../img/parallax/img-teachers-1.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img-single-teacher-1 { background: url(../img/parallax/img-single-teacher-1.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img-single-teacher-2 { background: url(../img/parallax/img-single-teacher-2.jpg) 50% 0 fixed; background-size:cover; }
 
-.nicdark_parallaxx_img-excursions { background: url(../img/parallax/img-excursions.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img-single-excursion { background: url(../img/parallax/img-single-excursion.jpg) 50% 0 fixed; background-size:cover; }
-
-.nicdark_parallaxx_img-courses { background: url(../img/parallax/img-courses.jpg) 50% 0 fixed; background-size:cover; }
-
-.nicdark_parallaxx_img-events { background: url(../img/parallax/img-events.jpg) 50% 0 fixed; background-size:cover; }
-.nicdark_parallaxx_img-single-event { background: url(../img/parallax/img-single-event.jpg) 50% 0 fixed; background-size:cover; }
 /*END CLASS FOR PARALLAX SECTION*/
 
 

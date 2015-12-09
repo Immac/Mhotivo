@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
-using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
+using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
@@ -20,26 +18,9 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
-
-        public IEnumerable<Role> GetAllRoles()
-        {
-            return Query(x => x);
-        }
-
-        public Role First(Expression<Func<Role, Role>> query)
-        {
-            var roles = _context.Roles.Select(query);
-            return roles.Count() != 0 ? roles.First() : null;
-        }
-
         public Role GetById(long id)
         {
-            var roles = _context.Roles.Where(x => x.Id == id);
-            return roles.Count() != 0 ? roles.First() : null;
+            return _context.Roles.FirstOrDefault(x => x.Id == id);
         }
 
         public Role Create(Role itemToCreate)
@@ -49,10 +30,9 @@ namespace Mhotivo.Implement.Repositories
             return role;
         }
 
-        public IQueryable<TResult> Query<TResult>(Expression<Func<Role, TResult>> expression)
+        public IQueryable<Role> Query(Expression<Func<Role, Role>> expression)
         {
             return _context.Roles.Select(expression);
-
         }
 
         public IQueryable<Role> Filter(Expression<Func<Role, bool>> expression)
@@ -63,18 +43,28 @@ namespace Mhotivo.Implement.Repositories
         public Role Update(Role itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
-            SaveChanges();
-            return itemToUpdate;
+            _context.SaveChanges();
+            return itemToUpdate;   
         }
 
-        public void Delete(Role itemToDelete)
+        public Role Delete(Role itemToDelete)
         {
             _context.Roles.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
 
-        public void Dispose()
+        public Role Delete(long id)
         {
-            _context.Dispose();
+            var itemToDelete = GetById(id);
+            _context.Roles.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
+        }
+
+        public IEnumerable<Role> GetAll()
+        {
+            return Query(x => x).ToList();
         }
     }
 }

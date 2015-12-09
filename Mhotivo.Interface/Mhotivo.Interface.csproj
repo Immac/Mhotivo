@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,25 +40,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAcademicCourseRepository.cs" />
+    <Compile Include="Interfaces\IAcademicGradeRepository.cs" />
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
-    <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
-    <Compile Include="Interfaces\IAppointmentParticipants.cs" />
-    <Compile Include="Interfaces\IBenefactorRepository.cs" />
-    <Compile Include="Interfaces\IClassActivityRepository.cs" />
+    <Compile Include="Interfaces\IEducationLevelRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />
     <Compile Include="Interfaces\ICourseRepository.cs" />
-    <Compile Include="Interfaces\IEnrollRepository.cs" />
     <Compile Include="Interfaces\IGradeRepository.cs" />
-    <Compile Include="Interfaces\IMeisterRepository.cs" />
-    <Compile Include="Interfaces\IParentRepository.cs" />
+    <Compile Include="Interfaces\IHomeworkRepository.cs" />
+    <Compile Include="Interfaces\IDataImportService.cs" />
+    <Compile Include="Interfaces\INotificationCommentRepository.cs" />
+    <Compile Include="Interfaces\INotificationHandlerService.cs" />
+    <Compile Include="Interfaces\IPasswordGenerationService.cs" />
+    <Compile Include="Interfaces\IPeopleWithUserRepository.cs" />
+    <Compile Include="Interfaces\IPrivilegeRepository.cs" />
+    <Compile Include="Interfaces\IRoleRepository.cs" />
+    <Compile Include="Interfaces\ITeacherRepository.cs" />
+    <Compile Include="Interfaces\INotificationRepository.cs" />
+    <Compile Include="Interfaces\ITutorRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />
     <Compile Include="Interfaces\IPeopleRepository.cs" />
-    <Compile Include="Interfaces\IRoleRepository.cs" />
+    <Compile Include="Interfaces\ISecurityService.cs" />
+    <Compile Include="Interfaces\ISessionManagementService.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
       <Project>{1ee5faf4-d47a-4655-950f-8d8e1eaadfe0}</Project>

@@ -1,20 +1,13 @@
-//using Mhotivo.App_Data;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
-
-using Mhotivo.Interface;
+using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Services;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Implement.Context;
 
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Mhotivo.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Mhotivo.NinjectWebCommon), "Stop")]
 
-using Mhotivo.Logic;
-
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Mhotivo.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Mhotivo.App_Start.NinjectWebCommon), "Stop")]
-
-namespace Mhotivo.App_Start
+namespace Mhotivo
 {
     using System;
     using System.Web;
@@ -26,24 +19,18 @@ namespace Mhotivo.App_Start
 
     public static class NinjectWebCommon 
     {
-        private static readonly Bootstrapper bootstrapper = new Bootstrapper();
+        private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
-        /// <summary>
-        /// Starts the application
-        /// </summary>
         public static void Start() 
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
-            bootstrapper.Initialize(CreateKernel);
+            Bootstrapper.Initialize(CreateKernel);
         }
         
-        /// <summary>
-        /// Stops the application.
-        /// </summary>
         public static void Stop()
         {
-            bootstrapper.ShutDown();
+            Bootstrapper.ShutDown();
         }
         
         /// <summary>
@@ -57,7 +44,6 @@ namespace Mhotivo.App_Start
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-
                 RegisterServices(kernel);
                 return kernel;
             }
@@ -75,24 +61,30 @@ namespace Mhotivo.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<MhotivoContext>().ToSelf().InRequestScope();
-            kernel.Bind<ISessionManagement>().To<SessionLayer>().InRequestScope();    
-
+            kernel.Bind<ISessionManagementService>().To<SessionManagementService>().InRequestScope();
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
-            kernel.Bind<IBenefactorRepository>().To<BenefactorRepository>().InRequestScope();
-            kernel.Bind<IClassActivityRepository>().To<ClassActivityRepository>().InRequestScope();
+            kernel.Bind<IAcademicCourseRepository>().To<AcademicCourseRepository>().InRequestScope();
             kernel.Bind<IContactInformationRepository>().To<ContactInformationRepository>().InRequestScope();
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
-            kernel.Bind<IAppointmentDiaryRepository>().To<AppointmentDiaryRepository>().InRequestScope();
-            kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
+            kernel.Bind<INotificationRepository>().To<NotificationRepository>().InRequestScope();
             kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
-            kernel.Bind<IMeisterRepository>().To<MeisterRepository>().InRequestScope();
-            kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
+            kernel.Bind<ITeacherRepository>().To<TeacherRepository>().InRequestScope();
+            kernel.Bind<ITutorRepository>().To<TutorRepository>().InRequestScope();
             kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
-            kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
+            kernel.Bind<IPeopleWithUserRepository>().To<PeopleWithUserRepository>().InRequestScope();
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
-            kernel.Bind<AcademicYearLogic>().ToSelf().InRequestScope();
+            kernel.Bind<ISecurityService>().To<SecurityService>().InRequestScope();
+            kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
+            kernel.Bind<IDataImportService>().To<DataImportService>().InRequestScope();
+            kernel.Bind<IEducationLevelRepository>().To<EducationLevelRepository>().InRequestScope();
+            kernel.Bind<IPasswordGenerationService>().To<RandomPasswordGenerationService>().InRequestScope();
+            kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
+            kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
+            kernel.Bind<IAcademicGradeRepository>().To<AcademicGradeRepository>().InRequestScope();
+            kernel.Bind<INotificationHandlerService>().To<NotificationHandlerService>().InRequestScope();
+            kernel.Bind<IPrivilegeRepository>().To<PrivilegeRepository>().InRequestScope();
         }        
     }
 }

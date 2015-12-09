@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
+using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -16,191 +15,181 @@ namespace Mhotivo.Controllers
     {
         private readonly IGradeRepository _gradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
+        private readonly IPensumRepository _pensumRepository;
+        private readonly IEducationLevelRepository _educationLevelRepository;
+        private readonly ISessionManagementService _sessionManagementService;
+        private readonly IUserRepository _userRepository;
 
-        public GradeController(IGradeRepository gradeRepository)
+        public GradeController(IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository, IPensumRepository pensumRepository, IEducationLevelRepository educationLevelRepository, ISessionManagementService sessionManagementService, IUserRepository userRepository)
         {
             _gradeRepository = gradeRepository;
+            _academicGradeRepository = academicGradeRepository;
+            _pensumRepository = pensumRepository;
+            _educationLevelRepository = educationLevelRepository;
+            _sessionManagementService = sessionManagementService;
+            _userRepository = userRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        //
-        // GET: /Grade/
-
-        public ActionResult Index()
+        /// GET: /Grade/
+        [AuthorizeAdminDirector]
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            IEnumerable<DisplayGradeModel> displayGradeModels =
-                _gradeRepository.Query(x => x).ToList().Select(x => new DisplayGradeModel
-                                                                    {
-                                                                        Id = x.Id,
-                                                                        Name = x.Name,
-                                                                        EducationLevel = x.EducationLevel
-                                                                    });
-
-            return View(displayGradeModels);
-        }
-
-        //
-        // GET: /Grade/Details/5
-
-        public ActionResult Details(long id)
-        {
-            Grade thisgrade = _gradeRepository.GetById(id);
-            var grade = new DisplayGradeModel
-                        {
-                            Id = thisgrade.Id,
-                            Name = thisgrade.Name,
-                            EducationLevel = thisgrade.EducationLevel
-                        };
-
-            return View("Details", grade);
-        }
-
-        [HttpGet]
-        public ActionResult DetailsEdit(long id)
-        {
-            Grade thisGrade = _gradeRepository.GetById(id);
-            var grade = new GradeEditModel
-                        {
-                            Id = thisGrade.Id,
-                            Name = thisGrade.Name,
-                            EducationLevel = thisGrade.EducationLevel
-                        };
-            return View("DetailsEdit", grade);
-        }
-
-        [HttpPost]
-        public ActionResult DetailsEdit(GradeEditModel modelGrade)
-        {
-            Grade myGrade = _gradeRepository.GetById(modelGrade.Id);
-            myGrade.Name = modelGrade.Name;
-            myGrade.EducationLevel = modelGrade.EducationLevel;
-
-            Grade grade = _gradeRepository.Update(myGrade);
-            _gradeRepository.SaveChanges();
-            const string title = "Padre o Tutor Actualizado";
-            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
-            return RedirectToAction("Details/" + modelGrade.Id);
-        }
-
-        //
-        // GET: /Grade/Add
-
-        public ActionResult Add()
-        {
-            return View("Create");
-        }
-
-        //
-        // POST: /Grade/Add
-
-        [HttpPost]
-        public ActionResult Add(GradeRegisterModel modelGrade)
-        {
-            var myGrade = new Grade
-                          {
-                              Name = modelGrade.Name,
-                              EducationLevel = modelGrade.EducationLevel
-                          };
-
-            if (IsNameAvailble(modelGrade.Name))
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            var grades = (bool)ViewBag.IsDirector
+                ? _gradeRepository.Filter(
+                    x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id)
+                : _gradeRepository.GetAllGrade();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.EducationLevelSortParam = sortOrder == "education_asc" ? "education_desc" : "education_asc";
+            if (searchString != null)
             {
-                Grade grade = _gradeRepository.Create(myGrade);
-                _gradeRepository.SaveChanges();
-                const string title = "Alumno Agregado al Grado";
-                var content = "El Alumno " + myGrade.Name + " ha sido agregado exitosamente.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                page = 1;
             }
             else
             {
-                const string title = "Error";
-                var content = "El Alumno " + myGrade.Name + " no fue agregado.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                searchString = currentFilter;
             }
-            
-
-            
-
-            return RedirectToAction("Index");
-        }
-
-        public bool IsNameAvailble(string name)
-        {
-            var tag = _gradeRepository.First(g => g.Name.CompareTo(name) == 0);
-            if (tag == null)
+            if (!String.IsNullOrEmpty(searchString))
             {
-                return true;
+                grades = ((bool)ViewBag.IsDirector
+                ? _gradeRepository.Filter(
+                    x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id)
+                : _gradeRepository.GetAllGrade()).Where(x => x.Name.Contains(searchString)).ToList();
             }
-
-            return false;
+            var displayGradeModels = grades.Select(Mapper.Map<Grade, GradeDisplayModel>).ToList();
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "education_desc":
+                    displayGradeModels = displayGradeModels.OrderByDescending(s => s.EducationLevel).ToList();
+                    break;
+                case "education_asc":
+                    displayGradeModels = displayGradeModels.OrderBy(s => s.EducationLevel).ToList();
+                    break;
+                case "name_desc":
+                    displayGradeModels = displayGradeModels.OrderByDescending(s => s.Name).ToList();
+                    break;
+                default:  // Name ascending 
+                    displayGradeModels = displayGradeModels.OrderBy(s => s.Name).ToList();
+                    break;
+            }
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(displayGradeModels.ToPagedList(pageNumber, pageSize));
         }
 
-        //
-        // GET: /Grade/Edit/5
-
-        public ActionResult Edit(int id)
+        /// GET: /Grade/Add
+        [HttpGet]
+        [AuthorizeAdminDirector]
+        public ActionResult Add()
         {
-            Grade thisGrade = _gradeRepository.GetById(id);
-            var grade = new GradeEditModel
-                        {
-                            Id = thisGrade.Id,
-                            Name = thisGrade.Name,
-                            EducationLevel = thisGrade.EducationLevel
-                        };
-
-            return View("Edit", grade);
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            if (isDirector)
+            {
+                var firstOrDefault = _educationLevelRepository.Filter(x => x.Director != null && x.Director.Id == user.Id)
+                    .FirstOrDefault();
+                if (firstOrDefault != null)
+                    return View("Create", new GradeRegisterModel {EducationLevel = firstOrDefault.Id});
+            }
+            var list = _educationLevelRepository.GetAllAreas();
+            ViewBag.EducationLevels = new SelectList(list, "Id", "Name");
+            return View("Create");
         }
 
-        //
-        // POST: /Grade/Edit/5
-
+        /// POST: /Grade/Add
         [HttpPost]
-        public ActionResult Edit(GradeEditModel modelGrade)
+        [AuthorizeAdminDirector]
+        public ActionResult Add(GradeRegisterModel modelGrade)
         {
-            Grade myGrade = _gradeRepository.GetById(modelGrade.Id);
-
-            myGrade.Name = modelGrade.Name;
-            myGrade.EducationLevel = modelGrade.EducationLevel;
-
-            Grade grade = _gradeRepository.Update(myGrade);
-            _gradeRepository.SaveChanges();
-
-            const string title = "Grado Actualizado";
-            var content = "El Alumno " + myGrade.Name + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
+            string title;
+            string content;
+            var gradeModel = Mapper.Map<GradeRegisterModel, Grade>(modelGrade);
+            var query =
+                _gradeRepository.Filter(
+                    g => g.Name.Equals(gradeModel.Name) && g.EducationLevel.Id == gradeModel.EducationLevel.Id);
+            if (query.Any())
+            {
+                title = "Error!";
+                content = "El Grado ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            var grade = _gradeRepository.Create(gradeModel);
+            title = "Grado Agregado";
+            content = grade.Name + " grado ha sido guardado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
-
-        //
-        // POST: /Grade/Delete/5
-
+        /// POST: /Grade/Delete/5
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
-            Grade grade = _gradeRepository.GetById(id);
-            _gradeRepository.Delete(grade);
-            _gradeRepository.SaveChanges();
+            if (!_academicGradeRepository.Filter(x => x.Grade.Id == id).Any())
+            {
+                var grade = _gradeRepository.Delete(id);
+                const string title = "Grado ha sido Eliminado";
+                var content = grade.Name + " ha sido eliminado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                const string title = "Error!";
+                const string content = "No se puede borrar el grado pues existe un año académico con este grado.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+        }
+        
+        /// GET: /Grade/Edit/5
+        [HttpGet]
+        [AuthorizeAdminDirector]
+        public ActionResult Edit(long id)
+        {
+            var grade = _gradeRepository.GetById(id);
+            var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            if (isDirector) return View("Edit", gradeModel);
+            var list = _educationLevelRepository.GetAllAreas();
+            ViewBag.EducationLevels = new SelectList(list, "Id", "Name", gradeModel.EducationLevel);
+            return View("Edit", gradeModel);
+        }
 
-            const string title = "Alumno ha sido Eliminado del Grado";
-            var content = "El Alumno " + grade.Name + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
+        ///  POST: /Grade/Edit/5
+        [HttpPost]
+        [AuthorizeAdminDirector]
+        public ActionResult Edit(GradeEditModel modelGrade)
+        {
+            if (!_gradeRepository.Filter(x => x.Id != modelGrade.Id && x.Name == modelGrade.Name).Any())
+            {
+                var myGrade = _gradeRepository.GetById(modelGrade.Id);
+                myGrade = Mapper.Map(modelGrade, myGrade);
+                _gradeRepository.Update(myGrade);
+                const string title = "Grado Actualizado";
+                var content = myGrade.Name + " grado ha sido actualizado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                return RedirectToAction("Index");
+            }
+            const string titulo = "Error!";
+            const string contenido = "Ya existe un grado con esa informacion.";
+            _viewMessageLogic.SetNewMessage(titulo, contenido, ViewMessageType.ErrorMessage);
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public ActionResult ContactAdd(long id)
+        [AuthorizeAdminDirector]
+        public ActionResult Details(long id)
         {
-            var model = new ContactInformationRegisterModel
-                        {
-                            Id = (int) id,
-                            Controller = "Parent"
-                        };
-            return View("ContactAdd", model);
+            var pensums = _pensumRepository.Filter(x => x.Grade.Id == id).Select(Mapper.Map<PensumDisplayModel>);
+            return View(pensums);
         }
     }
 }

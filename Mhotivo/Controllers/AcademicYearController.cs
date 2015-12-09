@@ -1,100 +1,145 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.WebPages;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
-
-using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement.Repositories;
 using AutoMapper;
-using Mhotivo.Logic;
-using Mhotivo.Models;
-using Mhotivo.Data;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
+using Mhotivo.Interface.Interfaces;
+using Mhotivo.Logic.ViewMessage;
+using Mhotivo.Models;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
     public class AcademicYearController : Controller
     {
-        private readonly AcademicYearLogic _academicYearLogic;
         private readonly IAcademicYearRepository _academicYearRepository;
-        private readonly IMeisterRepository _meisterRepository;
+        private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IUserRepository _userRepository;
+        private readonly ISessionManagementService _sessionManagementService;
 
-        public AcademicYearController(IAcademicYearRepository academicYearRepository,
-            IMeisterRepository meisterRepository, AcademicYearLogic academicYearLogic)
+        public AcademicYearController(IAcademicYearRepository academicYearRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService)
         {
             _academicYearRepository = academicYearRepository;
-            _meisterRepository = meisterRepository;
-            _academicYearLogic = academicYearLogic;
+            _userRepository = userRepository;
+            _sessionManagementService = sessionManagementService;
+            _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Management()
+        [AuthorizeAdminDirector]
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            //var elements = new AcademicYearViewManagement
-            //               {
-            //                   Elements =
-            //                       _academicYearRepository.Filter(x => x.IsActive)
-            //                       .ToList()
-            //                       .Select(x => new AcademicYearViewData
-            //                                    {
-            //                                        Approved = x.Approved ? "Active" : "Inactive",
-            //                                        Course = x.Course.Name,
-            //                                        Grade = x.Grade.Name,
-            //                                        Id = x.Id,
-            //                                        EndDate =
-            //                                            (x.TeacherEndDate == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.TeacherEndDate.Value.ToShortDateString()),
-            //                                        Limit = x.StudentsLimit,
-            //                                        Meister =
-            //                                            x.Teacher == null ? "Sin Maestro Asignado" : x.Teacher.FullName,
-            //                                        Room = x.Room.IsEmpty() ? "Sin Aula Asignada" : x.Room,
-            //                                        Schedule =
-            //                                            x.Schedule == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.Schedule.Value.ToShortTimeString(),
-            //                                        Section = x.Section,
-            //                                        StartDate =
-            //                                            x.TeacherStartDate == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.TeacherStartDate.Value.ToShortDateString(),
-            //                                        Year = x.Year.Year
-            //                                    }),
-            //                   CurrentYear = DateTime.Now.Year,
-            //                   CanGenerate = true
-            //               };
-
-            //return View(elements);
-            return ViewBag();//TODO: Esto no va.
-
-        }
-
-        [HttpGet]
-        public ActionResult SelectNewTeacher(long id)
-        {
-            IQueryable<Meister> meisters = _meisterRepository.Query(x => x);
-            ViewBag.AcademicYearId = id;
-            return View(meisters);
+            _viewMessageLogic.SetViewMessageIfExist();
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            var allAcademicYears = _academicYearRepository.GetAllAcademicYears();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "year_desc" : "";
+            if (searchString != null)
+                page = 1;
+            else
+                searchString = currentFilter;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                try
+                {
+                    var year = Convert.ToInt32(searchString);
+                    allAcademicYears = _academicYearRepository.Filter(x => x.Year.Equals(year));
+                }
+                catch (Exception)
+                {
+                    allAcademicYears = _academicYearRepository.GetAllAcademicYears();
+                }
+            }
+            var academicYears = allAcademicYears.Select(Mapper.Map<AcademicYearDisplayModel>).ToList();
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "year_desc":
+                    academicYears = academicYears.OrderByDescending(s => s.Year).ToList();
+                    break;
+                default:  // Name ascending 
+                    academicYears = academicYears.OrderBy(s => s.Year).ToList();
+                    break;
+            }
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(academicYears.ToPagedList(pageNumber,pageSize));
         }
 
         [HttpGet]
-        public ActionResult ChangeTeacher(long id, long teacherId)
+        [AuthorizeAdminDirector]
+        public ActionResult Edit(long id)
         {
-            AcademicYear academicYear = _academicYearRepository.GetById(id);
-            Meister meister = _meisterRepository.GetById(teacherId);
-           // academicYear.Teacher = meister;
-            _academicYearRepository.Update(academicYear, false, false, false);
-            _academicYearRepository.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            var academicYear = _academicYearRepository.GetById(id);
+            var academicYearModel = Mapper.Map<AcademicYearEditModel>(academicYear);
+            return View("Edit", academicYearModel);
         }
 
         [HttpPost]
-        public ActionResult ManagementPost()
+        [AuthorizeAdminDirector]
+        public ActionResult Edit(AcademicYearEditModel modelAcademicYear)
         {
-            _academicYearLogic.GenerateSectionForGrades();
+            if (modelAcademicYear.IsActive &&
+                _academicYearRepository.Filter(x => x.IsActive && x.Id != modelAcademicYear.Id).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "Solo puede haber un año académico activo.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            var myAcademicYear = _academicYearRepository.GetById(modelAcademicYear.Id);
+            myAcademicYear = Mapper.Map(modelAcademicYear, myAcademicYear);
+            myAcademicYear = _academicYearRepository.Update(myAcademicYear);
+            const string title = "Año Académico Actualizado ";
+            var content = "El año académico " + myAcademicYear.Year + " ha sido actualizado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index");
+        }
 
-            return RedirectToAction("Management");
+        [HttpPost]
+        [AuthorizeAdminDirector]
+        public ActionResult Delete(long id)
+        {
+            //TODO: Extra validations when deleting.
+            var academicYear = _academicYearRepository.GetById(id);
+            if (academicYear.IsActive)
+            {
+                const string title = "Error";
+                const string content = "No se puede borrar el año académico activo.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                academicYear = _academicYearRepository.Delete(academicYear);
+                const string title = "Año Académico Eliminado";
+                var content = "El año académico " + academicYear.Year + " ha sido eliminado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpGet]
+        [AuthorizeAdminDirector]
+        public ActionResult Add()
+        {
+            return View("Create", new AcademicYearRegisterModel());
+        }
+
+        [HttpPost]
+        [AuthorizeAdminDirector]
+        public ActionResult Add(AcademicYearRegisterModel academicYearModel)
+        {
+            if (_academicYearRepository.Filter(x => x.Year == academicYearModel.Year).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "Este año académico ya existe.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            var toCreate = Mapper.Map<AcademicYear>(academicYearModel);
+            toCreate = _academicYearRepository.Create(toCreate);
+            const string title = "Año Académico Agregado";
+            var content = "El año académico " + toCreate.Year + " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index");
         }
     }
 }

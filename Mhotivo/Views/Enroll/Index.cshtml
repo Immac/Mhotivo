@@ -1,16 +1,44 @@
-﻿@model IEnumerable<Mhotivo.Models.DisplayEnrollStudents>
+﻿<h2>Estudiantes Matriculados</h2>
 
+@model PagedList.IPagedList<Mhotivo.Models.EnrollDisplayModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Enroll/Add?gradeId=@ViewBag.GradeId"><span class="btn btn-small btn-primary">Matricular Estudiante</span></a>
+@{
+    if (ViewBag.GradeId == -1)
+    {
+        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Enroll/DeleteAll/"><span class="btn btn-small btn-primary">Eliminar matriculas por seccion</span></a>
+    }
+    else
+    {
+        <a class="toDelete" role="button" id="Grade_Val"><span class="btn btn-small btn-primary">Eliminar Matriculas Para Esta Seccion</span></a>
+        using (Html.BeginForm("DeleteAllFromCurrentAcademicGrade", "Enroll", new { gradeId = ViewBag.GradeId }, FormMethod.Post,
+                                new { id = "Form_Grade_Val", style = "display: none" })) { }
+        <input type="hidden" id="Grade_Val_Message"
+               value="¿Realmente desea eliminar todas las matriculas de esta seccion?" />
+    }
+}
 
-<h2>Estudiantes Registrados  </h2>
-,
-<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Enroll/Add/"><span class="btn btn-small btn-primary active">Agregar Estudiante</span></a>
+<div style="float:right">
+    @using (Html.BeginForm("Search", "Enroll", new { gradeId = ViewBag.GradeId ?? -1 }, FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        @Html.Hidden("gradeId", ((long)ViewBag.GradeId))
+        <p>
+            Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <button class="btn btn-small btn-primary" type="submit">
+                <i class="icon-search"></i>
+            </button>
+        </p>
+    }
+</div>
 
+<div class="space"></div>
 @if(!Model.Any())
 {
     <div class="well well-large">
@@ -22,39 +50,73 @@ else
 {
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
 	    <thead>
-		    <tr>
-                <th>@Html.DisplayNameFor(model => model.UrlPicture)</th>
-				<th>@Html.DisplayNameFor(model => model.FullName)</th>
-                <th>@Html.DisplayNameFor(model => model.AccountNumber)</th>
-                <th>@Html.DisplayNameFor(model => model.Gender)</th>
-                <th>@Html.DisplayNameFor(model => model.Grade)</th>
-                <th>@Html.DisplayNameFor(model => model.Section)</th>
-                <th></th>
-		    </tr>
+	        <tr>
+	            <th>@Html.DisplayNameFor(model => model.First().Photo)</th>
+	            <th>@Html.DisplayNameFor(model => model.First().FullName)</th>
+	            <th>@Html.DisplayNameFor(model => model.First().AccountNumber)</th>
+	            <th>@Html.DisplayNameFor(model => model.First().MyGender)</th>
+	            @{
+                        if (ViewBag.GradeId == -1)
+                        {
+                            <th>@Html.DisplayNameFor(model => model.First().Grade)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Section)</th>
+                        }
+                }
+	            <th>Eliminar</th>
+	        </tr>
 	    </thead>
         <tbody>
-        
             @foreach (var item in Model) {
                 <tr>
-                    <td data-id="Enroll/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
-                        <a href="~/@Html.DisplayNameFor(model => model.UrlPicture)" data-rel="colorbox">
-							<img alt="150x150" src="~/@Html.DisplayNameFor(model => model.UrlPicture)" />
-							<div class="text">
-							</div>
-						</a>
+                    <td data-id="Student/Details/@Html.DisplayFor(modelItem => item.StudentId)" class="toDetails">
+                        <div id="Photo">
+                            @Html.ValidationSummary(true)
+                            @{
+                                var imgSrc = "";
+                                if (item.Photo != null)
+                                {
+                                    var base64 = Convert.ToBase64String(item.Photo);
+                                    imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                                }
+                            }
+                            <img alt="150x150" height="150" width="150" src="@imgSrc" />
+                        </div>
+                        <div class="text">
+                        </div>
                     </td>
-				    <td data-id="Enroll/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.FullName)</td>
-                    <td data-id="Enroll/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AccountNumber)</td>
-                    <td data-id="Enroll/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Gender)</td>
-                    <td data-id="Enroll/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Grade)</td>
-                    <td data-id="Enroll/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Section)</td>
+				    <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AccountNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MyGender)</td>
+                    @{
+                        if (ViewBag.GradeId == -1)
+                        {
+                            <td>@Html.DisplayFor(modelItem => item.Grade)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Section)</td>
+                        }
+                    }
                     <td>
-                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Enroll/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
-                        <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
-                        @using (Html.BeginForm("Delete", "Enroll", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
-                            new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
-                        <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea eliminar al alumno @Html.DisplayFor(modelItem => item.FullName)?" />
+                        @{
+                            if (ViewBag.GradeId == -1)
+                            {
+                                <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.StudentId)_Val"><i class="icon-trash bigger-120"></i></a>
+                                using (Html.BeginForm("Delete", "Enroll", new {id = item.StudentId, gradeId = item.AcademicGradeId, academicGradeId = -1}, FormMethod.Post,
+                                     new {id = "Form_" + Html.DisplayFor(modelItem => item.StudentId) + "_Val", style = "display: none"}))
+                                 {
+                                 }
+                                <input type="hidden" id="@Html.DisplayFor(modelItem => item.StudentId)_Val_Message"
+                                       value="¿Realmente desea eliminar al alumno @Html.DisplayFor(modelItem => item.FullName)?" />
+                            }
+                            else
+                            {
+                                <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.StudentId)_Val"><i class="icon-trash bigger-120"></i></a>
+                                using (Html.BeginForm("Delete", "Enroll", new { id = item.StudentId, gradeId = item.AcademicGradeId, academicGradeId = ViewBag.GradeId }, FormMethod.Post,
+                                     new { id = "Form_" + Html.DisplayFor(modelItem => item.StudentId) + "_Val", style = "display: none" }))
+                                {
+                                }
+                                <input type="hidden" id="@Html.DisplayFor(modelItem => item.StudentId)_Val_Message"
+                                       value="¿Realmente desea eliminar al alumno @Html.DisplayFor(modelItem => item.FullName)?" />
+                            }
+                        }
                     </td>
                 </tr>
             }
@@ -63,6 +125,12 @@ else
     
 }
 
+<p>
+    Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+</p>
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }));
 <!-- Modal -->
 <div tabindex="-1" class="modal hide fade" id="EditModal" style="display: none;" aria-hidden="true">
     <div id="body" class="modal-body">
